@@ -65,12 +65,13 @@ You're already ~1.5 weeks in (thesis-writing guide, Overleaf setup done).
 **Goals**
 - Resolve the open items above (OKF definition, RQ3 podcast candidate, community-validation feasibility).
 - Build a working literature map in Zotero across the core areas, tagged by theme.
+- Draft the Background chapter's general sections (ASR/Whisper transcription basics, NER, coreference and entity resolution, entity linking, property graphs, RDF and the Semantic Web, OWL and ontologies) — these don't depend on your own results, so they can be written alongside the literature review. The Open Knowledge Format subsection stays blocked until the supervisor clarifies it (applied properly in Phase 3).
 - Finalize scope: confirm which entity types (philosophers, concepts, works, schools, speakers, places, periods) are must-have vs. stretch — the speaker-diarization gap in the dataset makes "speakers" worth an explicit scoping decision now.
-- Decide the technical stack: NLP (spaCy / Hugging Face transformers / LLM-based extraction), graph store (Neo4j vs. RDF triple store like GraphDB/Fuseki, or both), entity linking targets (Wikidata? Stanford Encyclopedia of Philosophy? DBpedia?), frontend approach for the exploration interface.
+- Decide the remaining technical stack: graph store (Neo4j vs. RDF triple store like GraphDB/Fuseki, or both), entity linking targets (Wikidata and/or VIAF — see [LITERATURE.md](LITERATURE.md)), frontend approach for the exploration interface. **NLP approach decided (2026-08-17): a classical pipeline, no LLM** — generic pretrained NER (spaCy) + a curated gazetteer (built from Wikidata/SEP/VIAF entries) for the domain-specific entity types generic NER won't recognize, a dedicated coreference model for cross-mention resolution, and a separate entity-linking step. Fine-tuning a pretrained NER model on the gold-standard sample stays an optional stretch if off-the-shelf + gazetteer underperforms.
 - Set up the project repo and environment; do a first read-through of the `HoP/` dataset structure (you now have a head start on this from the folder review).
 - Draft a one-page internal problem statement + refined RQs.
 
-**Deliverable by end of phase:** Related Work outline (bullet-level, in Overleaf) + confirmed tooling decisions + cleaned reading list in Zotero.
+**Deliverable by end of phase:** Related Work outline (bullet-level, in Overleaf) + Background chapter first draft (general sections) + confirmed tooling decisions + cleaned reading list in Zotero.
 
 ---
 
@@ -94,7 +95,7 @@ Scope shifted from *building* the corpus to *validating and normalizing* the one
 This is the methodological core answering **RQ1** — it now has 6 weeks instead of 5.
 
 **Goals**
-- Weeks 6–7: ramp-up + first real NER pass, building on (not just reusing) the existing rough `02_nlp/` baseline. Evaluate off-the-shelf NER vs. fine-tuned/LLM-prompted extraction for domain entities. Build a small gold-standard annotated sample for precision/recall.
+- Weeks 6–7: ramp-up + first real NER pass, building on (not just reusing) the existing rough `02_nlp/` baseline. Build the gazetteer (from Wikidata/SEP/VIAF) for domain-specific entity types, combine with off-the-shelf NER, evaluate against a small gold-standard annotated sample; fine-tune only if that combination underperforms.
 - Weeks 8–10: entity resolution — coreference within and across episodes (the existing baseline shows "Aquinas"/"Thomas Aquinas" as unmerged, so this is genuinely unsolved), linking to external identifiers (Wikidata/SEP/VIAF as appropriate).
 - Week 11: run precision/recall evaluation against the gold sample, error analysis, iterate.
 
@@ -141,20 +142,11 @@ Note: this spans the holidays — treat it as a lighter-intensity phase and shif
 
 **Goals**
 - Integrate all previously-drafted sections into a coherent whole; write Introduction and Conclusion last.
+- Finalize the Implementation chapter's Reproducibility section — repo structure, how to (re)run the pipeline, config/data locations — describing the project as it actually ended up, not as planned.
 - Full read-through for argument coherence, not just prose polish.
 - Reserve the **last ~1.5–2 weeks purely as buffer** — formatting, references, printing/binding/submission logistics, supervisor's final read, unexpected fixes. Do not schedule real new work here.
 
 **Deliverable:** Submitted thesis.
-
----
-
-## Weekly check-in template
-
-1. What got finished this week vs. planned?
-2. What's blocking or slower than expected?
-3. What's the single most important thing for next week?
-4. Any scope decision that needs supervisor input?
-5. Did anything get written up this week (even rough)? If not, why not?
 
 ---
 
