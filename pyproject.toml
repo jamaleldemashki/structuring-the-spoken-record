@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spoken-record"
+version = "0.14.0"
+description = "Passage-grounded exploration of podcast transcripts"
+requires-python = ">=3.11,<3.13"
+dependencies = ["pydantic>=2.7,<3", "spacy>=3.8,<3.9"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+coreference = ["fastcoref==2.1.6"]
+relations = ["glirel==1.2.1", "loguru==0.7.3"]
+linking = ["requests>=2.32,<3", "torch==2.14.0", "transformers==4.57.6"]
+verification = ["torch==2.14.0", "transformers==4.57.6", "sentencepiece>=0.2,<0.3"]
+
+[project.scripts]
+spoken-record = "spoken_record.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

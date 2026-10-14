@@ -1,0 +1,328 @@
+{
+  "$defs": {
+    "Episode": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "created_by_run_id": {
+          "minLength": 1,
+          "title": "Created By Run Id",
+          "type": "string"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "corpus_id": {
+          "title": "Corpus Id",
+          "type": "string"
+        },
+        "source_key": {
+          "title": "Source Key",
+          "type": "string"
+        },
+        "source_path": {
+          "title": "Source Path",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "language": {
+          "title": "Language",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "audio_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Url"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Publication Date"
+        },
+        "metadata_status": {
+          "enum": [
+            "matched",
+            "missing",
+            "ambiguous"
+          ],
+          "title": "Metadata Status",
+          "type": "string"
+        },
+        "metadata_method": {
+          "title": "Metadata Method",
+          "type": "string"
+        },
+        "facets": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Facets",
+          "type": "object"
+        },
+        "legacy_audit_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Legacy Audit Id"
+        }
+      },
+      "required": [
+        "created_by_run_id",
+        "episode_id",
+        "corpus_id",
+        "source_key",
+        "source_path",
+        "title",
+        "language",
+        "metadata_status",
+        "metadata_method"
+      ],
+      "title": "Episode",
+      "type": "object"
+    },
+    "SourceSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "created_by_run_id": {
+          "minLength": 1,
+          "title": "Created By Run Id",
+          "type": "string"
+        },
+        "segment_id": {
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "transcript_version_id": {
+          "title": "Transcript Version Id",
+          "type": "string"
+        },
+        "source_segment_id": {
+          "title": "Source Segment Id",
+          "type": "string"
+        },
+        "index": {
+          "minimum": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "char_start": {
+          "minimum": 0,
+          "title": "Char Start",
+          "type": "integer"
+        },
+        "char_end": {
+          "minimum": 0,
+          "title": "Char End",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "start_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start S"
+        },
+        "end_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End S"
+        },
+        "speaker_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker Label"
+        },
+        "quality": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Quality",
+          "type": "object"
+        }
+      },
+      "required": [
+        "created_by_run_id",
+        "segment_id",
+        "transcript_version_id",
+        "source_segment_id",
+        "index",
+        "char_start",
+        "char_end",
+        "text"
+      ],
+      "title": "SourceSegment",
+      "type": "object"
+    },
+    "TranscriptVersion": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": 1,
+          "default": 1,
+          "title": "Schema Version",
+          "type": "integer"
+        },
+        "created_by_run_id": {
+          "minLength": 1,
+          "title": "Created By Run Id",
+          "type": "string"
+        },
+        "transcript_version_id": {
+          "title": "Transcript Version Id",
+          "type": "string"
+        },
+        "episode_id": {
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "raw_asr",
+            "plain_text"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Source Sha256",
+          "type": "string"
+        },
+        "adapter": {
+          "title": "Adapter",
+          "type": "string"
+        },
+        "adapter_version": {
+          "title": "Adapter Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "created_by_run_id",
+        "transcript_version_id",
+        "episode_id",
+        "kind",
+        "text",
+        "source_sha256",
+        "adapter",
+        "adapter_version"
+      ],
+      "title": "TranscriptVersion",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "episode": {
+      "$ref": "#/$defs/Episode"
+    },
+    "transcript": {
+      "$ref": "#/$defs/TranscriptVersion"
+    },
+    "segments": {
+      "items": {
+        "$ref": "#/$defs/SourceSegment"
+      },
+      "title": "Segments",
+      "type": "array"
+    }
+  },
+  "required": [
+    "episode",
+    "transcript",
+    "segments"
+  ],
+  "title": "SourceBundle",
+  "type": "object"
+}

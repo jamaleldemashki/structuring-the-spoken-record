@@ -1,0 +1,34 @@
+{
+  "audit_run_id": "run_s01_20260908T103715Z",
+  "tool_version": "corpus_audit/1.0.0",
+  "schema_version": 1,
+  "started_utc": "2026-09-08T10:37:15.540805+00:00",
+  "finished_utc": "2026-09-08T10:39:57.679413+00:00",
+  "python": "3.7.0",
+  "inputs": {
+    "transcripts_dir": "HoP/01_whisper",
+    "n_transcripts": 724,
+    "metadata_file": "HoP/00_infos/hop_episodes_cache.jsonl",
+    "n_metadata_records": 756,
+    "metadata_with_filename": 542
+  },
+  "thresholds": {
+    "SHORT_TRANSCRIPT_WORDS": 100,
+    "HIGH_NO_SPEECH_PROB": 0.5,
+    "HIGH_NO_SPEECH_FRAC": 0.3,
+    "LOW_CONFIDENCE_LOGPROB": -1.0,
+    "BOILERPLATE_MIN_EPISODES": 30,
+    "BOILERPLATE_HEAD_SEGMENTS": 8
+  },
+  "results": {
+    "n_audited": 712,
+    "n_quarantined": 12,
+    "join_tiers": {
+      "tier1_filename": 542,
+      "tier2_group_number": 170
+    },
+    "n_boilerplate_hashes": 8,
+    "total_words": 2913236,
+    "total_hours": 294.6
+  }
+}

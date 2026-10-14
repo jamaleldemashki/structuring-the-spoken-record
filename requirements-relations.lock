@@ -1,0 +1,11 @@
+# GLiREL (relations stage) for Python 3.11.8 on macOS arm64.
+# Install after requirements-dev.lock, requirements-model.lock, and requirements-coreference.lock.
+# Install seqeval==1.2.2 with --use-pep517 first (see DEVELOPMENT.md).
+glirel==1.2.1
+seqeval==1.2.2
+scikit-learn==1.9.1
+joblib==1.6.0
+narwhals==2.26.0
+threadpoolctl==3.7.0
+cloudpickle==3.1.2
+loguru==0.7.3

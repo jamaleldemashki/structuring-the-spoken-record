@@ -1,0 +1,50 @@
+# Supervisor-provided dataset — large, not version-controlled (see README.md)
+HoP/
+
+# OS
+.DS_Store
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.gz
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Prototype environments, model downloads, and transcript-bearing outputs
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.cache/
+data/prototype1/
+export/prototype1/
+
+# Web app: dependencies, build output, and transcript-bearing data copied from an export
+web/node_modules/
+web/dist/
+web/public/data/
+
+# Old notes, configs, scripts and exports, kept locally only
+archive/
+
+# Independent Overleaf repository
+/6a8316847f1d770aff3cb407/
+
+# Third-party papers and private thesis/participant materials
+/Papers/
+/2026-MA-Jamal.pdf
+/MA_Thesis_Participant_Poster_Jamal.png
+/reference/action-research/
+/PapersMarkdown/
