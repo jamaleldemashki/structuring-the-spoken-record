@@ -18,6 +18,36 @@ This thesis designs and implements a pipeline that takes a podcast archive and p
 
 The corpus itself, around 700 Whisper-transcribed episodes spanning the main _History of Philosophy_ show and its Africana, Indian, Chinese, and German-philosophy sub-series, plus scraped episode metadata, was provided directly by the supervisor, who did the transcription himself. This thesis's own contribution starts at corpus validation and cleaning and runs through extraction, resolution, representation, and interface.
 
-## Repo contents
+## What is in this repository
 
-This repository holds the LaTeX thesis source, the working plan and literature tracking, and (once development starts) the pipeline code itself. The raw dataset is supervisor-provided and kept out of version control due to size.
+```
+src/spoken_record/   the pipeline (Python), one module per stage
+config/              recipes, stage configs and the HoP profile, pilots and reviewed aliases
+web/                 the exploration web app (Svelte, TypeScript, Cytoscape)
+tests/               pipeline tests on synthetic transcripts with offline model fakes
+scripts/             the HoP corpus audit that the HoP adapter relies on
+data/audit/          output of that audit (metadata joins, no transcript text)
+schema/              JSON schema of the source records
+```
+
+The pipeline reads Whisper transcripts and episode metadata and runs these stages:
+
+ingest, segment into passages, extract mentions (GLiNER), resolve identities, refine Person
+identities, link to Wikidata, pronoun coreference (FCoref), relations (GLiREL), check relations
+with NLI, find related passages (MPNet), add Wikidata lifespans, and export to Obsidian or to
+the web app.
+
+Every stage writes a new snapshot (JSONL plus a `manifest.json` with hashes) and never changes
+its input, so each result can be traced back to the transcript passage it comes from. The web
+app shows the archive as a graph of people, works, concepts and so on, where every connection
+opens the passages behind it and plays the audio from there.
+
+Nothing in the pipeline or the app is specific to History of Philosophy. A podcast is described
+by config files, see [DEVELOPMENT.md](DEVELOPMENT.md#add-another-podcast).
+
+- [DEVELOPMENT.md](DEVELOPMENT.md): setup, running the pipeline and the web app, adding a podcast
+- [ARCHITECTURE.md](ARCHITECTURE.md): how the stages, records and exports fit together
+
+The transcripts were provided by the supervisor and are not in this repository. Everything
+that contains transcript text (`data/prototype1/`, `export/prototype1/`, `web/public/data/`)
+stays local and is ignored by git.
