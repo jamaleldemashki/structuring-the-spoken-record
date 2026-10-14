@@ -1,0 +1,2856 @@
+{
+  "schema_version": 1,
+  "name": "archive-accepted-v1",
+  "split": "exploratory",
+  "selection_basis": "All 712 accepted records from the existing audit; excludes quarantine. Frozen audit hashes only; source files are checked by pipeline preflight. This exploratory selection includes the evaluation holdout.",
+  "episodes": [
+    {
+      "source_path": "HoP/01_whisper/08HPI08-CaseWorker-PaninisGrammar.json",
+      "source_sha256": "04b01eb4c9cfb14639f08b2f90dd984d893f845d0eeb4e058582ec4cda5c88f6"
+    },
+    {
+      "source_path": "HoP/01_whisper/120_HAP_120_-_Redemption_Songs_-_Reggae_and_Rastafari6toc3.json",
+      "source_sha256": "dedac1c72f35442e0eda4328f50c193a1933b487c8f8c57661966104f6ce4019"
+    },
+    {
+      "source_path": "HoP/01_whisper/169_HoP_169___A_Matter_of_Principles___Albo_and_Abravanel.json",
+      "source_sha256": "5338ed095ceb9a071d2de320a426ae77969d53cca10e772f3c597b0532422c5e"
+    },
+    {
+      "source_path": "HoP/01_whisper/170_HoP_170___Gad_Freudenthal_on_Jewish_Philosophy_and_Science.json",
+      "source_sha256": "ca1ec5fe497f4e9675af0b3935696615b91520c65524ececa14c44ffbbdd16d0"
+    },
+    {
+      "source_path": "HoP/01_whisper/173_HoP_173___For_the_Sake_of_Argument___Fakhr_al_Din_al_Razi.json",
+      "source_sha256": "134f08a3dcf3afefe429123fe8b7cc0277c559df54191452d3b0394746e80cd2"
+    },
+    {
+      "source_path": "HoP/01_whisper/177___Essence_Existence.json",
+      "source_sha256": "22d52a27488a65d6c5aa6ac3c043b9dc5bc9587c237429b35eb2747d6891dffc"
+    },
+    {
+      "source_path": "HoP/01_whisper/19_HPI_19_-_When_in_Doubt_-_the_Rise_of_Skepticism.json",
+      "source_sha256": "cd3df20cf3633c7558db92c9367f106982f163063cb6ac68e4f7d89b66fb1e92"
+    },
+    {
+      "source_path": "HoP/01_whisper/345_HoP_345_-_What_a_Piece_of_Work_is_Man_-_Manetti_and_Pico_on_Human_Nature.json",
+      "source_sha256": "3741b983e015d2d04086bf4fdb99cf721ae078ac2a73362768b731605c3bdc0d"
+    },
+    {
+      "source_path": "HoP/01_whisper/356_HoP_356_-_I_d_Like_to_Thank_the_Lyceum_-_Aristotle_in_Renaissance_Italya0qvq.json",
+      "source_sha256": "4fc613244ca316b5e1efb9ff4b388d021d90c00e1d02933cce39fc2f9e1a9b1c"
+    },
+    {
+      "source_path": "HoP/01_whisper/8iCnO2HoP_099___Richard_Sorabji_on_the_Commentators.json",
+      "source_sha256": "ef13c1e6dc41665eb1316f1da93ca8e39c215e212026a95e75d914e603cae91a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP53-Pilgrim_sProgress-AlexanderCrummellauwqx.json",
+      "source_sha256": "1e6a3cc3746e9108562209f5b5e683a4fc1ef7db7428bc5e5e21cc9f3ca45be1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP54-WilsonMosesontheRootsofBlackNationalismaxnma.json",
+      "source_sha256": "1a69e2f1deaf7dd516afdb6b9590a0a38e4fba72d49e91965e98c5ca60c42728"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_01_-_Something_Old_Something_New_-_Introducing_Africana_Philosophy.json",
+      "source_sha256": "6bdf47733ba53daf79410a8f9102961fa8fb8ee99365766c9e4c2e2e61acd7ec"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_02_-_Its_Only_Human_-_Philosophy_in_Prehistoric_Africa_1.json",
+      "source_sha256": "0982aecd17ad42f839983c6141049441d5e8ae610baa7cb500309e7c46455dc6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_03_-_Fertile_Ground_-_Philosophy_in_Ancient_Mesopotamia.json",
+      "source_sha256": "350505ff4f979b3512715d73a96674f2571128bc23f30130a0a717f7c181b54e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_04_-_Pyramid_Schemes_-_Philosophy_in_Ancient_Egypt.json",
+      "source_sha256": "fca70332b6d144fddf951dfcda0c92bd0a71a6c26d879d4065bbeb988e596fa7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_05_-_Father_Knows_Best_-_Moral_and_Political_Philosophy_in_the_Instructions.json",
+      "source_sha256": "cbd982631d89c703e93f7f6e75cc480c93530726ac46079185697489114fd2dc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_06_-_Heated_Exchanges_-_Philosophy_in_Egyptian_Narratives_and_Dialogues.json",
+      "source_sha256": "2cf9a47b34653dba0add2206bdc7595ab86a73f71b44df3c814776f093a1fb71"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_07_-_Richard_Parkinson_on_Egyptian_Poetry.json",
+      "source_sha256": "0ec5e2aa0d97eb4d86534d6b0aa192d7c515e383c003167fee18095c0c0d8f03"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_08_-_Solomon_Socrates_and_Other_Sages_-_Early_Ethiopian_Philosophy.json",
+      "source_sha256": "d44cf00d6aafd8c9edbbdcac5a9b4fc403322a3df75c9908a710e1d8b33ca14f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_09_-_In_You_I_Take_Shelter_-_Zera_Yacob.json",
+      "source_sha256": "1408ebc416482dc7a26cf44eae5db4982d28252f64527bcd7f2fb88eaa8c9899"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_100_-_Chike_Jeffers_on_the_Early_Twentieth_Centurya7q4s.json",
+      "source_sha256": "eb4dbc5c11783253d65bd0654b77fbfb8b77d5a3ccca5fcec21bb6c25ed27ce8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_101_-_Crossing_Paths_-_the_Last_Years_of_Malcolm_X_and_Martin_Luther_King_Jr8934a.json",
+      "source_sha256": "bc1fdb6fd3f5894ea2f5d14841bab315907539a5f8343316c5fae185bf38a02b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_102_-_From_Cuba_with_Love_-_Juan_Rene_Betancourt9irn0.json",
+      "source_sha256": "9b2e78fac1276994dbe1255482e93c851f42e0fdc4ca593f00b19da41db6dda4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_103_-_A_Federal_Case_-_Nnamdi_Azikiwe_and_Obafemi_Awolowo913j8.json",
+      "source_sha256": "80ac932af3f240e53ab17f7eafe877a61f20f21dee711b4b3ada2b30f59398b0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_104_-_In_Unity_Lies_Strength_-_Kwame_Nkrumah7844z.json",
+      "source_sha256": "0c2c9857ec04b297b460aa10326b8f08ba9ec95edd5171889b639569d94c12c6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_105_-_Meeting_the_Gaze_-_Frantz_Fanon_s_Black_Skin_White_Masks6nb8w.json",
+      "source_sha256": "2316639d2a33d6a9c74351b95732629f3213a64ef09aee58f589dd727a7564f7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_106_-_Combat_Literature_-_Franz_Fanon_s_Wretched_of_the_Earth7runz.json",
+      "source_sha256": "390041da2f7a604b6ccde5a6270e99af22ad1d490e1a0c353eac26b79da68f03"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_107_-_Lewis_Gordon_on_Frantz_Fanonbit2l.json",
+      "source_sha256": "6687d1141260ad6e7a82b69a3771928da6301a1df6abb70e9f6f42449b2d39c7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_108_-_Or_Does_It_Explode__-_Lorraine_Hansberrya8vik.json",
+      "source_sha256": "eadd05e1c40180b15b87397b69655814c9e14052ed05ebb8e0d69146444be1f5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_109_-_Say_It_Loud_-_Black_Powerb153u.json",
+      "source_sha256": "cb993410a590659aac22df27336bfffbca4572c5fe3c3fd32e2a9d4b5e3b6908"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_10_-_Think_for_Yourself_-_Walda_Heywat.json",
+      "source_sha256": "5c253a25fa24edf8ce6b3ebe8d74ea05bb60db3d123531b8aa7df0bf9e917e12"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_110_-_Politics_with_Bloodshed_-_the_Black_Panthersbht7o.json",
+      "source_sha256": "c0c2a7665c3d67cadd470ea78391e63df9a536e8e58597716a61eb6e229042ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_111_-_A_Kwanzaa_Story_-_Maulana_Karenga8ogw7.json",
+      "source_sha256": "e116b6c4389a722a814884ba065f830394c7c6e67f28a77b753479f5a9134ed5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_112_-_Poems_That_Kill_-_the_Black_Arts_Movement7mwfl.json",
+      "source_sha256": "782a86fe46ff06ebbc01f30d939f1013c976a947092a25aaee451ef7a171f1c6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_113_-_A_Fighting_God_-_Black_Theologyaygh6.json",
+      "source_sha256": "38c7e13ba922540340b03b362ab0145c63bb8cd3c05c7f889d15a44eaaf6d90f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_114_-_Teacher_Taught_Me_-_Julius_Nyerere8x6aw.json",
+      "source_sha256": "f9a2a132a3d30d76b593c198bc4130041479592bd7df5a445afebe361ed750da"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_115_-_Weapon_of_Choice_-_Ami_lcar_Cabralaqdqt.json",
+      "source_sha256": "b57c1376a867775d2a2a27a568a06d96dd2575098080195db11e282b755411b2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_116_-_Olufemi_Taiwo_and_Olufemi_Taiwo_on_Cabral8cljj.json",
+      "source_sha256": "04c07589de85d769e142cc5e77145930398a4338add39ee0778fb7bd220e49ee"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_117_-_Spear_of_the_Nation_-_Nelson_Mandela_and_the_ANC9vs1m.json",
+      "source_sha256": "a78c5ece43e48bf2bf219b445b28f9ef08db4b1372501daea39be3474987c36a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_118_-_African_Survivals_-_Abdias_do_Nascimento7rhas.json",
+      "source_sha256": "de8972650cf66e51b55fc34193706937778c69faa75a741eae5a9eb417e8036e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_119_-_The_Space_Race_-_Afrofuturismamaaq.json",
+      "source_sha256": "e3dfeddc589614ccb0d82b27759623d1ad1fe2e8637288cbad8275c09b6bf49a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_11_-_Teodros_Kiros_on_Ethiopian_Philosophy.json",
+      "source_sha256": "a8fd2c638809086f4a97fb2ded1549ccccadc04dc3333bc91ecfc24f32bfa052"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_121_-_No_Agreement_-_Fela_Kuti_and_Wole_Soyinka7wn2o.json",
+      "source_sha256": "a011b30cfa7eb6d4ff8161036cc0bba4f7b63df961a75af997962b5de87caa7b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_122_-_A_More_Human_Face_-_Steve_Biko60p1h.json",
+      "source_sha256": "fe8d0671e0d0f6650f4d7a461d9b139416cb452d62539f3f1f9fca5ae7796699"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_123_-_History_Teaches_Us_-_Walter_Rodney6ypd3.json",
+      "source_sha256": "2c142e507ef0bdecadb8aa8f488bd062175f9db3de8b678b1482c2e519d6379a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_124_-_Double_Jeopardy_-_Black_Feminism9hua4.json",
+      "source_sha256": "5a44a48065bb8e847e9f807a85dab8d9a459d83bda6a98df94880d9a8d92984d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_125_-_Phenomenal_Woman_-_The_Black_Women_s_Literary_Renaissance87717.json",
+      "source_sha256": "090ff9b50996edbec9150612d66c88e54c5005db33214babbff2dbf8e21e0538"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_126_-_Fugitive_for_Justice_-_Angela_Davis9r3qb.json",
+      "source_sha256": "23ad5ce49e74faa910e120a44639aea93622245a66140a6fb2787d364b0fee21"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_127_-_Knowing_the_Difference_-_Audre_Lordebr0yw.json",
+      "source_sha256": "b4bf7fb9d5e04c500179369389458855dc93433788cc989d2a84fc47fd97815f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_128_-_Marginal_Comments_-_bell_hooks_and_Patricia_Hill_Collinsaqxfn.json",
+      "source_sha256": "d221915f24fbf102c6dd5234296d51d3b617e41c8c4c9dd02779875e3488840c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_129_-_Afrophone_Home_-_Ngu_gi_wa_Thiong_o96hh6.json",
+      "source_sha256": "266c8446f94571dd69e030d6e17f271d51e922f9c70dd3a3efe6eace581ca7d4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_12_-_From_Here_to_Timbuktu_-_Subsaharan_Islamic_Philosophy.json",
+      "source_sha256": "29947b09bd7a33568713ce4a86242e09ff46372bc5cafdebed35cb5b75a66bc4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_130_-_Ngu_gi_wa_Thiong_o_on_Himself_697i8.json",
+      "source_sha256": "5f9cbaf0e557cd2f49c17cccd4cc7d16cc18d478d0d34ec16295332d4ec821b7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_132_-_French_Creolizing_-_Edouard_Glissant_and_the_Creolite_Movementbr40z.json",
+      "source_sha256": "b911fc0b19151f95c4a9f9255bfa35a8d5f1be64388b88b9c159121a0334a8aa"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_132_-_Mixed_Messages_-_Black_British_Cultural_Studies7qjii.json",
+      "source_sha256": "0e63f305f4732016f0315a9ef38e6e341963fa6271c2820445a0db4098f5f5be"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_133_-_John_Drabinski_on_Edouard_Glissant9bgbk.json",
+      "source_sha256": "0cebb840908c512be97e09f915c9a3ffdda7c007185e9d65841bf06f14019625"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_134_-_The_Marx_Brothers_-_Cedric_J_Robinson8ti80.json",
+      "source_sha256": "fd876176b93baa379c6771f522829070db302bd0e086285a74a644ccd23a7b44"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_135_-_Mastering_Ceremonies_-_Sylvia_Wynterb1ycv.json",
+      "source_sha256": "0f763e32af4afa2dfaa4d272a09ce9bf66d2dc6f4cfa684853626a176b129fc5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_136_-_Civilization_Reclaimed_-_African-Centered_Thoughtaam4k.json",
+      "source_sha256": "60ab86a3869a6a0f1affb62f0c79dacd72f2a18c0952920d7fb2274ad0b9e07d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_137_-_Asante_Sana_-_Molefi_Asante_s_Afrocentricity6nlbv.json",
+      "source_sha256": "2ab09506eb6c4322b62c3b4c66c42da045503b12fd2ce642cdcd6ee0ce91c064"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_138_-_Taking_it_Out_of_Neutral_-_Critical_Race_Theorybl8op.json",
+      "source_sha256": "8bc91fcffb0dab628830ce3a93fc76a3dd812354f3a16e72ca674771b8c19410"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_139_-_A_Love_Supreme_-_Cornel_West790ui.json",
+      "source_sha256": "ebf585fc26783d3c7ed10192e14abc4eb528447743f16fbfdf9096822aceee14"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_13_-_Renewing_the_Faith_-_the_Sokoto_Caliphate.json",
+      "source_sha256": "485bb97ba29ceceb5038bd65e648f278a0bb17c44c5198df3bffd8cf0fcba2cb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_140_-_Cornel_West_on_Himself6vzj0.json",
+      "source_sha256": "9af94782464982632a256fdc36342de5b6261b0baa710e747527c213389f4a95"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_141_-_Job_Openings_-_the_Rise_of_Africana_Professional_Philosophy_18uuqf.json",
+      "source_sha256": "398bf8acc37c2020e72ec1a1060c747d5ebcf543db4f5e66bff3a4b8681f455e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_142_-_Final_Chat_with_Chike_Jeffers86plq.json",
+      "source_sha256": "f7bbb6b5979f857032fec02e470885dba4701a487d6a75d232fbd5ec2dcc5722"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_14_-_Souleymane_Bachir_Diagne_on_Islam_in_Africa.json",
+      "source_sha256": "db0a28393d20c051d4b9a3ff1412c94d7f4eb75380d7825c16f5a76126517cac"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_15_-_Heard_it_Through_the_Grapevine_-_Oral_Philosophy_in_Africa.json",
+      "source_sha256": "dd784221914a035bdb761c823720b1f3893c5b8cdbaa485ba880036aa2bb1e1c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_16_-_Samuel_Imbo_on_Okot_p_Bitek_and_Oral_Traditions.json",
+      "source_sha256": "cead1b39a6e337ab7ea8b1ffcd0c10b98364f6d4e846d0bf04015067c8b10353"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_17_-_Event_Horizon_-_African_Philosophy_of_Time.json",
+      "source_sha256": "4025063dc911ab2593011b7ce031a8faf87ec7d05370ca204cbf0cfe4afc592e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_18_-_One_to_Rule_Them_All_-_God_in_African_Philosophy.json",
+      "source_sha256": "2e6f4fcab24afb48d98644fbd737940cb76ae4af328532182f43077997126473"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_19_-_Behind_the_Mask_-_African_Philosophy_of_the_Person.json",
+      "source_sha256": "90bf0228a640062c4b85d3449fc6645d5b34ec5007bbd8de503ba6e89e7f2807"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_20_-_I_Am_Because_We_Are_-_Communalism_in_African_Ethics_and_Politics.json",
+      "source_sha256": "4d5cfd0ca09df037c31d5057be6ffee6bf37248b3e2482de0843899b675f685e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_21_-_The_Doctor_Will_See_You_Now_-_Divination_Witchcraft_and_Knowledge.json",
+      "source_sha256": "f586e93f13b54c2ecbb537bf1e99894166696131a756cd8f678da3ff32076f55"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_22_-_Women_Have_no_Tribe_-_Gender_in_African_Tradition.json",
+      "source_sha256": "659d71bfea39d89bf76236d3143b6adb555bc3e64eaf6d47b6ecdbf3ab621d43"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_23_-_Nkiru_Nzegwu_on_Gender_in_African_Tradition.json",
+      "source_sha256": "338c1a4480a8113f5d6f5fb580656b6f4cc65515ec3962fa4484d1ba91dacbdf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_24_-_Professionally_Speaking_-_The_Reaction_Against_Ethnophilosophy.json",
+      "source_sha256": "1f4656dd29f9d881a86eea9ee3bf5a9f25c8bce1f4483c591c971ed745accd50"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_25_-_Wise_Guys_-_Sage_Philosophy.json",
+      "source_sha256": "6deda5970484c1eae85e5cbfeabf22333dd135949d1cd05c6ff88b40422eab22"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_26_-_Kai_Kresse_on_the_Anthropology_of_Philosophy.json",
+      "source_sha256": "35073b8ea3ec6ee2a9060823ef44046619e089f4fe116d2b570745a48a4c5033"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_27_-_Beyond_the_Reaction_-_The_Continuing_Relevance_of_Precolonial_Traditions.json",
+      "source_sha256": "b3ac9ce9ba4cfb527db0438939d36f924b5bf294d0b721a70eb85b1e92e4ce1d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_28_-_Chike_Jeffers_on_Precolonial_African_Philosophy.json",
+      "source_sha256": "3197162d4c6f1b16d52acb9a2e3ddac0dcba374c48f1c73a49677911056aab61"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_29_-_Out_of_Africa_-_Slavery_and_the_Diaspora.json",
+      "source_sha256": "286a2ac70bad9203fb4ff1140f5318d91b7f35346bbc3e2ca3d9d1e90df5d250"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_30_-_Dualist_Personality_-_Anton_Wilhelm_Amo.json",
+      "source_sha256": "772f6565fda0518486dd319f402346dbb93a7220f1d98fe1d2175961d4ce0cc9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_31_-_Justin_Smith_on_Amo_and_Race_in_Early_Modern_Philosophy.json",
+      "source_sha256": "ea79120141de99857de48707cb9f971b4a444af44a21a6fe1b9500c5fedc8bbb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_32_-_Talking_Book_-_Early_Africana_Writing_in_English.json",
+      "source_sha256": "08740e0187ba816a0eebea5d53451bffcc1b96fd4d7c78f1a384d48b512fab59"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_33_-_Young_Gifted_and_Black_-_Phillis_Wheatley.json",
+      "source_sha256": "6e20c4a38cb77f1901dba215d12ee57f56013bc93dc34fca872c1f294423bbb6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_34_-_New_England_Patriot_-_Lemuel_Haynes.json",
+      "source_sha256": "1f87796eadf3082811ce5ab6db30a9107995368468b2caecd38b861f582eda46"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_35_-_Letters_from_the_Heart_-_Ignatius_Sancho_and_Benjamin_Banneker.json",
+      "source_sha256": "afeb8022f855e833925076c00a45a068ea56d70212fb17249b1e5b2578637699"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_36_-_Sons_of_Africa_-_Quobna_Ottobah_Cugoano_and_Olaudah_Equiano.json",
+      "source_sha256": "0a00887164997d35d1cd72302bd9414bac9baf29dfbc27735601daa0fd6716da"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_37_-_Liberty_Equality_Humanity_-_The_Haitian_Revolution.json",
+      "source_sha256": "00b1a66aa914ad2640f4b206a9aab919ce363feb0ea53726c826ea4c5fc028c5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_38_-_My_Haitian_Pen_-_Baron_de_Vastey.json",
+      "source_sha256": "b059cc2dd12a002756ff56cfe23e3ab0b7ce8b52b8add767ae863210684fe5bd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_39_-_Doris_Garraway_on_the_Haitian_Revolution.json",
+      "source_sha256": "c82a152fc39e6f7af83b67b84c52efb139b3be98622ce99ccccea4058c5ab40e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_40_-_American_Africans_-_Early_Black_Institutions_in_the_US.json",
+      "source_sha256": "3903ff94c4923bb4c87b5cfb4d5365c4a957cde8098cb2418d4777dcc6d2d9fd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_41_-_Should_I_Stay_or_Should_I_Go__-_The_Colonization_Controversy.json",
+      "source_sha256": "101e7e3b01280914fc8f7ae51d305ead9973a4a642e8f4acac8bd11afae37a93"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_42_-_James_Sidbury_on_African_Identity.json",
+      "source_sha256": "ea0f6297f6ffb358ec22349d17013a0ea509e219232271508da03535f1dedb76"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_43_-_Kill_or_Be_Killed_-_David_Walker_s_Appeal.json",
+      "source_sha256": "1b573258808c8b476239e775f130d8b439486052ef61884bf75ba827b0a2bedd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_44_-_Religion_and_Pure_Principles_-_Maria_W_Stewart.json",
+      "source_sha256": "bc555c2493e9be976d56eb54d3762c94305eb0392565a75fa2eea307335c3aac"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_45_-_Unnatural_Causes_-_Hosea_Easton_s_Treatise.json",
+      "source_sha256": "fd9226197ef301635a58662e063efef30de580ab0a373bb55a7e0529d6992f98"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_46_-_Melvin_Rogers_on_19th_Century_Political_Thought.json",
+      "source_sha256": "5004ebf2f001a75babf00c2dfaa99dacb4997d79cc45fca0a4fc46c44ed223f2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_47_-_Written_by_Himself_-_the_Life_of_Frederick_Douglass.json",
+      "source_sha256": "2d19e169e43f6ac4ff0e2f14b221ddba1c9bbc9db3e807f3a91e657086df65e8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_48_-_Happy_Holidays_-_Two_Speeches_by_Frederick_Douglass.json",
+      "source_sha256": "c4d587e9e1a6f42d58feb92191ddde109c796080ffdbff46554c44948275cf3c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_49_-_Let_Your_Motto_Be_Resistance_-_Henry_Highland_Garnet.json",
+      "source_sha256": "68719bcf8b5f2cbd77114b7dc2f76bad5d8979d85b7309505291baf298014027"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_50_-_Nation_Within_a_Nation_-_Martin_Delany.json",
+      "source_sha256": "5e86e089ac3e6adb05a4bcc66c436f5be735a48a8fd9f4eced551023cc37755d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_51_-_I_Read_Men_and_Nations_-_Sojourner_Truth_and_Frances_Harper.json",
+      "source_sha256": "1b5724e6b75c5b6a848974ca134d71f139538c8400e8fdafb4d74c99975db0f1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_52_-_Great_White_North_-_Emigration_to_Canada.json",
+      "source_sha256": "304cca7f4b43c61563937991dd11676e1073a87a8d6bc3e00020dd609db8e765"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_55_-_Planting_the_Seeds_-_James_Africanus_Beale_Horton_algzz.json",
+      "source_sha256": "0a692faa1f4e22013c1671bc9a8e86e020820382190250cab17e2a4cb6af2b1c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_56_-_African_Personality_-_Edward_Blyden_71baz.json",
+      "source_sha256": "e47b6ad92fb488fdbdf670aba011f65b6e266b6576a51c36ededbeb5698b1bdc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_57_-_Race_First_Then_Party_-_T_Thomas_Fortune_8q7hk.json",
+      "source_sha256": "1e8b413ef3eab7c51d7d9f9a597ce8def9205925df7a3f780d4d981dcde62262"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_58_-_A_Common_Circle_-_Ante_nor_Firmin6rzxb.json",
+      "source_sha256": "bc4523b2b9f83fc94dc08d2b87e4c0605475ed7fbdcd9051e3662c9ba05a3a9a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_59_-_Frowning_at_Froudacious_Fabrications_-_JJ_Thomas_and_FA_Durham6ttxu.json",
+      "source_sha256": "8705be4f0ec8a20826a2f16ce824bcd217dd0d92fb2275238b9d93ab70a46a73"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_60_-_Though_Late_It_Is_Liberty-_Abolitionism_in_Brazil8y0oe.json",
+      "source_sha256": "c7cc81b3e06b3ab5565900f59861711e339af0d106c41b1a13041120b147910d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_61_-_When_and_Where_I_Enter_-_Anna_Julia_Cooper9b7z6.json",
+      "source_sha256": "3830d50b431be39672942abf1af3516a79cf958b53932e9f2c78b85833cbf019"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_62_-_American_Barbarism_-_Ida_B_Wellsaganb.json",
+      "source_sha256": "a7d097f8445f0a560b113afdb38a2b028326c978b0382e7c5c85295f07bdb44a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_63_-_Brittney_Cooper_on_Black_Women_Activists6wm5e.json",
+      "source_sha256": "d018399a15e7a25c604fd0c1e14352ab308d612809d733d524382f0e947cb378"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_64_-_God_is_a_Negro_-_Henry_McNeal_Turner7tukn.json",
+      "source_sha256": "c19cdee34e221a675ad4e7574cfa319bdce963a81f76567a1dc61a45e48e032a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_65_-_Separate_Fingers_One_Hand_-_Booker_T_Washington9sr8n.json",
+      "source_sha256": "8d10a36216c080e0fc139b56337e026915019605a87ee2fef25aca407a2fac2e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_66_-_Lifting_the_Veil_-_Introducing_WEB_Du_Bois6vd2x.json",
+      "source_sha256": "4e363df80d235bfb404aea4fb7db1840eb9fe19679f78ff20349631fe1393212"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_67_-_Chike_Jeffers_on_Slavery_and_Diasporic_Philosophy6cz1u.json",
+      "source_sha256": "e73d883a3269253930acec66bf94622ee1acce7bec509dd53cf84323299c6dbf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_68_-_The_Problem_of_the_Color_Line_-_Introducing_the_Twentieth_Century8avtb.json",
+      "source_sha256": "1c064de7f3374a3c14bbb54f7cf569a52fcb0e866a07bcdebd8f3fb6a12a0285"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_69_-_The_Best_We_Have_-_The_American_Negro_Academy8gxl1.json",
+      "source_sha256": "210f4d92f0c556f34952f5a8e451c22f59937b9f58060d540936dcffda208646"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_70_-_Tommy_Curry_on_the_Early_20th_Centuryb2prz.json",
+      "source_sha256": "ab69f393d8c02fd033c50e9dcd3448acf6cc6e055988bbfb317dd746ae99d491"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_71_-_In_Blyden_s_Wake_-_West_African_Intellectuals_of_the_Early_Twentieth_Century9y9k2.json",
+      "source_sha256": "542c238c018ad8f157501fbb78730829bd9975209ac617817d75e05d0db20dd8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_72_-_In_A_Class_of_Their_Own_-_Early_African_American_Socialism6lfkw.json",
+      "source_sha256": "0231e3efbecc54c81f9232b9020d0f1b6c12e6e02d71495c54c5e5dc2182b7b5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_73_-_Vanessa_Wills_on_Africana_Marxism9pvpi.json",
+      "source_sha256": "0bf8672e3252597c65a977e8795f37cb66f3ba78a66104f65d59645e3a505c6e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_74_-_Black_Star_-_Marcus_Garvey7gx9u.json",
+      "source_sha256": "d6d6ff2fb77a82bfc01b754d90a25688de774e198a195829e03cab406490143f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_75_-_Now_I_Have_a_Rival_-_The_Two_Amy_Garveysa3bn0.json",
+      "source_sha256": "b3ef1eb7a88b2a2a76309a92361c2477ce489ce440dd5bfc6912a1e7e0da2bbf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_76_-_Michael_Dawson_on_Garvey_and_Black_Nationalism8vb1c.json",
+      "source_sha256": "1db00e41ac036858a0590b8c56df4d3bcc23625f3090d0288a5c7fa2e0a1a745"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_77_-_A_Race_Capital_-_Harlem_Renaissance901ld.json",
+      "source_sha256": "024627e447874f5323c39fa257fc7987a8dca93d0721c59e590e561edc008b99"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_78_-_Freedom_Through_Art_-_Alain_Locke6yftm.json",
+      "source_sha256": "6c1c169863ed3383f2958ec9b83c70523a4aeafdedd17cfcebdfe2e90344ed19"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_80_-_Scholarly_Contributions_-_African_American_Professional_Philosophers6c9w5.json",
+      "source_sha256": "ddd1e9eba59efd7bc24a5f36de23ee34e202dc2d297cec995739a3655de7a93d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_81_-_Making_History_-_Carter_G_Woodson67hi4.json",
+      "source_sha256": "b3b485e4c3170f934d313c401727f0d1971a70497a222cd5f38a7ce805385cf1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_82_-_The_Florida_Project_-_Zora_Neale_Hurston6sf7o.json",
+      "source_sha256": "1d74a51cf1d2b69c00de9ef1cf293a0930a6a67fc9a4c390200e83d666c3d9b6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_83_-_Songs_of_the_People_-_Paul_Robeson_and_the_Negro_Spiritual7epb2.json",
+      "source_sha256": "54eb2f616933dba7d6dee4bbc8cdefc7eb1922bf454c6da8a9fbdc1847cdfeff"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_84_-_Live_Long_and_Protest_-_WEB_Du_Bois_1920-1963639an.json",
+      "source_sha256": "a9a2e95b9b1ad4d9647b2faa450bf8e3187e56c7353728baa2f95a53880e9065"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_85_-_Liam_Kofi_Bright_on_Du_Bois_Philosophy_of_Science8eje8.json",
+      "source_sha256": "8b75e9da85416d545d928ca864135362bf09b7cf61485980c9a90644b628fc41"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_86_-_French_Connection_-_The_Negritude_Movement6lgwx.json",
+      "source_sha256": "8dbff8ed9223518334b73ef2eb81ac0bd17b9fe0d18e0ea9001d970b246efaa1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_87_-_Call_It_Intuition_-_Leopold_Senghor7nlz1.json",
+      "source_sha256": "dbadba000215d2ce1f1cb689652ac7ed7412f70357f5c52993200673502386f9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_88_-_The_Surreal_Deal_-_Aime_and_Suzanne_Ce_saire7rfyy.json",
+      "source_sha256": "db431b7f7535eeb29adc3bf66b4b0bcdf85a0c6d4842fc63434879aa58d10f15"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_89_-_Separate_but_Unequal_-_E_Franklin_Frazier8jnm3.json",
+      "source_sha256": "e8ec215ef19c642f85436aa4ce34b2d7108ec84781f4e7d02e6159d468fb948a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_90_-_Move_Fast_and_Break_Things_-_CLR_Jamesaaugs.json",
+      "source_sha256": "0ad81b206b88abbb67315b159ecb005f889ff1d6321a0c8ee293bf96dcc98465"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_91_-_Massa_Day_Done_-_Oliver_Cox_and_Eric_Williams810zz.json",
+      "source_sha256": "6a211c741c9e0785ac681c11cf7307a60a271fb854355b5a5c11f3c32154c7e3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_92_-_Half_the_World_-_Claudia_Jones7khqu.json",
+      "source_sha256": "0a3e260bcfe3837cda40d0aaa3638a878471733fc841b28ca22c7d779bb25ed2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_93_-_Carole_Boyce_Davies_on_Claudia_Jones73zz2.json",
+      "source_sha256": "e16f0a100a1be7176fe0e22ae74c5109f3ec3e8f5e15adf83a5f10c628b9bdf5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_94_-_How_Did_You_Happen__-_Richard_Wrighta7co7.json",
+      "source_sha256": "c8a0ba7353e43c296d76e6d15d0c123edce5fc46a199e3a5353031091ff6a297"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_95_-_Black_and_Blue_-_Ralph_Ellison709j4.json",
+      "source_sha256": "6161764a48d1b5383ddcc4887311341e1740f7555d750ddfd931e0e6a53187ea"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_96_-_A_Lover_s_War_-_James_Baldwin75qgc.json",
+      "source_sha256": "1789be7eb371fe7ec1cf89ee0f908df3522a5e93d62fd686b05c61da229855a7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_97_-_American_Dream__Martin_Luther_King_Jradeky.json",
+      "source_sha256": "bf01cd724aaa68cd7dcca660d64d1f2cb6bb18227afc03fe4c51f087ec9ba1c6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_98_-_Meena_Krishnamurthy_on_Martin_Luther_King_Jr9l558.json",
+      "source_sha256": "940fa128e6f30cc7c09ba1db1a0e04d3f0efc606e407aab449fe6c7db6ad01e6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_99_-_American_Nightmare_-_Malcolm_X65uj1.json",
+      "source_sha256": "3af11442c5669f6296aa9174948a1df6532cc5c4ad8981d1add6edc56e101c91"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_001_-_Journey_of_a_Thousand_Li_Introduction_to_Chinese_Philosophybch0i.json",
+      "source_sha256": "eb849aa9eb6d5bbaa500ad7fb4e5c30ed0b6ffa2b6e95a2367d588865ad2e8e2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_011_Mark_Csikszentmihalyi_on_Early_Confucianism95m0q.json",
+      "source_sha256": "0119f35a7950872f1ee82ed88528139a7b1df673e1038e58cdd27700068c47e8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_018_-_Erica_Brindley_on_Music_and_the_Cosmos_in_Confucianismb0rw1.json",
+      "source_sha256": "c60630bdd21e4c54dd3892526952e3ebe29e8348428c879458e211941c7075a9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_03_Karyn_Lai_on_Classical_Chinese_Philosophy6rpw8.json",
+      "source_sha256": "4c470f218bdf948e338c41fadf17ab5d5c0ade3846ccd34570ef2752077dd519"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_06_Franklin_Perkins_on_Excavated_Texts6bn8t.json",
+      "source_sha256": "ab462010835f8e2a936e270fbd8c8288dd0fbdf6c4a22fd0310a8e2a8f154e70"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_21_Sor-Hoon_Tan_on_Confucian_Democracy8zdtb.json",
+      "source_sha256": "df57f78c8db4cb7df8de9af79aa68f0bd88779df58714caf57c7060c86b7d9aa"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_23_Amy_Olberding_on_Confucian_Ethics8hhub.json",
+      "source_sha256": "70e1b49a1e88eb066c698b48b305ada0faa4f6ecb296a065a4016037e12a83ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_28_Ting_Mien_Lee_on_Mohism_and_Confucianism6uji4.json",
+      "source_sha256": "cee98ed5ffcfa1628ca83111ef90dd1c3530453309f455e41cc00eba3e15def8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_32_Chris_Frazier_on_Mohism9lx1f.json",
+      "source_sha256": "be3f35906c630f7fb8d28e4d0ef3136cbcfeccc24d4317dd562c4a19a01ea924"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_33_Let_Us_Count_the_Ways_What_is_Daoism7grtm.json",
+      "source_sha256": "e5457461601b7f8f86c8592c18ce1f3902cd9b91f64976b5ce81caf8b10ec9a6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_39_Robin_Wang_on_Yin-Yang_Thinking8y2gx.json",
+      "source_sha256": "29c216fe8e7834d30afb9ff11aa0d572ae8fd46a9c4fc13cefa3147e521e03b4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_43_Chiu_Wai-Wai_on_the_Zhuangzi_and_Mohism9genv.json",
+      "source_sha256": "1bfc635d2aefdbdc794cc26b8e162932b912113664304e0eed84dcc48a681206"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_47_Live_and_Let_Die_the_Zhuangzi_on_Deathbc3o1.json",
+      "source_sha256": "83cbd2428ecb79b9b66b2e94f7ee42b805021b44c1e8bc6fa2a6fabf8d546250"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI01-BeginattheEndAnIntroductiontoPhilosophyinIndia.json",
+      "source_sha256": "6735e89f879bcb9f23536ce6ed1d516d9ca4c4a2c4b84b94b107217569311821"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI02-SagesSchoolsandSystemsaHistoricalOverview.json",
+      "source_sha256": "fd3d497c14e5848612b513c12cf6400c042eefe2ea5120d73065ea8dc3e2d2e6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI03-KingdomforaHorse-IndiaintheVedicPeriod.json",
+      "source_sha256": "c52e54b3d353dc2aa8d423570ae236108415f63268ec69ba5a5f38cd288bbd67"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI04-HideandSeekTheUpanisads.json",
+      "source_sha256": "8e38c6e7cb954cb865d5e3b9c05dd0c9d3cf70a9ec1adf39d7ef8a4d074cb41c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI05DoitYourselfIndrasSearch.json",
+      "source_sha256": "a44f5bab26d74bd583c8a1c38ea60b034d8ff8c98c840713dab2f9e9e4b86428"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI06-YouAreWhatYouDo-Karma.json",
+      "source_sha256": "e2155ab0419e1c4f000c3926157faf29619c597545f995051cc660ab4e69f8b2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI07-BrianBlackontheUpanisads.json",
+      "source_sha256": "7bf659c4fb07bd3917396d4d7619b61ef8b44c29853ba42e898f6afb1c0d4af4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI09-SufferingandSmiling-theBuddha.json",
+      "source_sha256": "7b759c622928382bd0545f83ebc9879d10b04ce1cef22885d139fabefd105641"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI10-CrossoverAppeal-TheNatureoftheBuddhasTeaching.json",
+      "source_sha256": "c227ce328d94d6d27fa39ec69db097ba750229c041342aaeaf050b44939e91b4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI11-CarryaBigStick-AncientIndianPoliticalThought.json",
+      "source_sha256": "6d906602e0fec3552adc803f5a348a65178a572506710c6ed5a38491601db52f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI12-RupertGethinonBuddhismandtheSelf.json",
+      "source_sha256": "545756fb622ceaad6d6d3c9b35627dfd41c35b491099abde60409512cc750de2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI13-GrandIllusion-DharmaandDeceptionintheMahabharata.json",
+      "source_sha256": "b01301d92735793609d9d3f4e96eee447cf299f98b3d6447f1f911a1a44c63c4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI14-WorldonaString-TheBhagavad-Gita.json",
+      "source_sha256": "049a51623ec14519efb7e83fcdd94eb7b51104d1426d4254f531ac69e12dcbb8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_017_-_Jessica_Frazier_on_Hinduism_and_Philosophy.json",
+      "source_sha256": "d3db1044b200d481866186fa78161d12c7263b475acf09119255c206ec5c4f39"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_029_-_Practice_Makes_Perfect_-_Patanjali_s_Yoga-Sutra.json",
+      "source_sha256": "ce7ca913372a49cd6f6123bb05bba52c63a879c4cb89a98da9948ae73d5e9773"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_15_-_Mostly_Harmless_-_Non-Violence.json",
+      "source_sha256": "76b4ab34560918e20843e12929940467b86f8972e69162038cc8be36d7e0f24e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_16_-_Better_Half_-_Women_in_Ancient_India.json",
+      "source_sha256": "39adffdcceb97204493bf3209249676c84889ea2e6b9e354bcf7f17aa74756d1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_18_-_A_Tangled_Web_-_the_Age_of_the_Sutra.json",
+      "source_sha256": "63ee69db2e11ce068de52ee41acd7783ee59945679ff85f8b6a019bfda2a548a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_20_-_Master_of_Ceremonies_-_Jaimini_s_Mimamsa-Sutra.json",
+      "source_sha256": "92794733e2f2d29d1ec5a4935fd1a51f0465b815d652c7ef1109514d796d9463"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_21_-_Innocent_Until_Proven_Guilty_-_Mimamsa_on_Knowledge_and_Language.json",
+      "source_sha256": "82cb066b674543c1a31b6548fb35f1b186145b7ef4b8145eff4eaab75d373be9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_22_-_Elisa_Freschi_on_Mimamsa.json",
+      "source_sha256": "6ac5ff55b3e79b1ea5acc2f77a74bf9fcd877930998f0e30282fd417d2768ea9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_23_-_Source_Code_-_Badarayanas_Vedanta-sutra.json",
+      "source_sha256": "f41aab96796245bc8b2f4d0bc29eac6d41efc7ae9adc9aad285d36e68e289982"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_24_-_No_Two_Ways_About_It_-_Sankara_and_Advaita_Vedanta.json",
+      "source_sha256": "132c543420f78fcc8ece32ab336f0fddcf22c26e16b8cbaa6c68be3f15158811"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_25_-_Communication_Breakdown_-_Bhartrihari_on_Language.json",
+      "source_sha256": "435fa61de1c3f92e0254a6d1c80d7d1aad8868a07436a3c0e6d5871220db92f5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_26_-_Francis_Clooney_on_Vedanta.json",
+      "source_sha256": "cb802ef5adff6699dc52538670e0883ec5faaad1f293141d8b5701954b9270ed"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_27_-_The_Theory_of_Evolution_-_Isvarakrsna_s_Samkhya-karika.json",
+      "source_sha256": "f5401e9c4b729c8589a6aae9b4d4acafb1beb3f80f4c12081d02d629c42842b6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_28_-_Who_Wants_to_Live_Forever__-_Early_Ayurvedic_Medicine.json",
+      "source_sha256": "69e3072b1c5ffa12c8e414f7b65ab7c5a5f88da0f4b8f1bbb47b68d50843bc9e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_30_-_Philipp_Maas_on_Yoga.json",
+      "source_sha256": "66ff351aea5c08a6cd5834efcdf62580465ef3dc86285cf6a95db18767018b12"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_31_-_Where_There_s_Smoke_There_s_Fire__Gautama_s_Nyaya-Sutra.json",
+      "source_sha256": "512cf5f663f536b9bf14e4a65df79519bebf600f6f1134ce07e7be61c82f2fba"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_32_-_What_You_See_Is_What_You_Get_-_Nyaya_on_Perception.json",
+      "source_sha256": "31f0385dc9603e72f478ea2fad4775526acf12b88560c4c512e8f0827d507e09"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_33_-_Standard_Deductions_-_Nyaya_on_Reasoning.json",
+      "source_sha256": "8f3ff53380924445bdcba52908159eca290f2cbc74bb9d3c5d0dbae6859f8c85"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_34_-_The_Truth_Shall_Set_You_Free_-_Nyaya_on_the_Mind.json",
+      "source_sha256": "f93ab7e31b2af9419ee8f02a77dba7176d83aaa63cf1cf95422ab8da11cd5a23"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_35_-_Ujjwala_Jha_and_V_N_Jah_on_Nyaya.json",
+      "source_sha256": "90c37721b8b4e8ca3b84ec293c7104e945822050e66b877fa5b50db3f83f110c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_36_-_Fine_Grained_Analysis_-_Kanada_s_Vaisesika-Sutra.json",
+      "source_sha256": "f1bd01e243af95c71d46cb238334c81f3b727b4f2050f029089f4f6e3c07baa3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_37_-_The_Whole_Story_-_Vaisesika_on_Complexity_and_Causation.json",
+      "source_sha256": "8a6732a3c8afaefcf856eeb420a70ceaa10bd1c5d78fd484c24191011fb8239d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_38_-_A_Day_in_the_Life_-_Theories_of_Time.json",
+      "source_sha256": "21f53bfc15d14e76682a540cb6105ef52aef8eea4363c9556417f60060dd1068"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_39_-_The_Wolfs_Footprint_-_Indian_Naturalism.json",
+      "source_sha256": "476a57474d2f0f0f450a5bb746404c0c78c04b4b1021d514d1e8d6797d9ef396"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_40_-_Mind_out_of_Matter_-_Materialist_Theories_of_the_Self.json",
+      "source_sha256": "e0766601c1dbb2e5216379fa059e9a2e8f0b221f1f3b881baac8c630f7eee687"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_41_-_Monima_Chadha_on_Indian_Philosophy_of_Mind.json",
+      "source_sha256": "2e1b3c094aca3ec2f6ebf10a7835c13d270e037c1ebd1c13182772e05c8f6827"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_42_-_In_Good_Taste_-_The_Aesthetics_of_Rasa.json",
+      "source_sha256": "0f95de66a5bf1a308db05b7ec144367ad788266eeb23f99eedd1834dbedd01a9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_43_-_We_Beg_to_Differ_-_the_Buddhists_and_Jains.json",
+      "source_sha256": "074c58d53632674462a56e2f74f31197b12b734562cab4c60ba22be8c5aeda9e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_44_-_It_All_Depends_-_Nagarjuna_on_Emptiness.json",
+      "source_sha256": "e48f46c115a84d2bdc56f69c541d3c2130ae92f9f2919bd1b173ebb8f184d4d4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_45_-_Motion_Denied_-_Nagarjuna_on_Change.json",
+      "source_sha256": "5071a7b6fb837d180e9ce9e3e6163e9d4afadebfc6ea4085f9f3b842319c2bfa"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_46_-_No_Four_Ways_About_It_-_Nagarjunas_Tetralemma.json",
+      "source_sha256": "a4d4c121d8518ae441c8f41e0f4a59bc9aef4f846e74ac487d8e654a174a4b75"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_47_-_Jan_Westerhoff_on_Nagarjuna.json",
+      "source_sha256": "2f0a3f34b157598776f20c90c1d20a914afdf65b023b8afd09d95ddb26785ca3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_48_-_Taking_Perspective_-_the_Jain_Theory_of_Standpoints.json",
+      "source_sha256": "6aba88da0c4467a1f6576e68dc2c9c39b6470641c921d852927fe9084f0fe423"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_49_-_Well_Qualified_-_the_Jains_on_Truth.json",
+      "source_sha256": "2de1cf10c1917d641890974f43c8f071a3a930d2f60d5f431cf47dbdca5e92b8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_50_-_Marie-He_le_ne_Gorisse_on_Jain_Epistemology.json",
+      "source_sha256": "3b9b44f1ea0acc2705e7390b4c419327d28fd2ebeea49b89d357b4ddb7f68cf6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_51_-_Change_of_Mind_-_Vasubandhu_and_Yoga_ca_ra_Buddhism.json",
+      "source_sha256": "a39a30d5e5cdd5176a3c2e9440762118b89885b0a3f2c77a8a8050e8f95294fe"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_52_-_Under_Construction_-_Dignaga_on_Perception_and_Language.json",
+      "source_sha256": "f117d68dc90ca73c9f64292deaba6fd23cbfe6b0b8adfd6f11d67ac74a8f5ac1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_53_-_Follow_the_Evidence_-_Dignaga_s_Logic.json",
+      "source_sha256": "92a9a5e277b819f9601725ed93b975f6de0494b64a0e875a6c28950556346992"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_54_-_Graham_Priest_on_Logic_and_Buddhism.json",
+      "source_sha256": "ff8c44c2282b4f5bd523f699a1e75e0c91a0224e86cfb578f7c0e7e8be7b659f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_55_-_Doors_of_Perception__Dignaga_on_Consciousness.json",
+      "source_sha256": "f6db5f041aeca768cf22f28e15d27ba79d42654c21ed6c75bfce89475350d0c5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_56_-_Who_s_Pulling_Your_Strings__-_Buddhaghosa.json",
+      "source_sha256": "7dbfd932d219b1491d58d0db874af897ee1fd5d43bd601b77db0f3eb758532cb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_57_-_Learn_by_Doing_-_Tantra.json",
+      "source_sha256": "d7de38aa80500f3ac44add14f94953b28f10145b83412a2ddcacc657f81da9e9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_58_-_Amber_Carpenter_on_Animals_in_Indian_Philosophy.json",
+      "source_sha256": "ba4278573c69129898334a043dd06e98485933ca9ce7d700362eaf682652b9d2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_59_-_Looking_East_-_Indian_Influence_on_Greek_Thought.json",
+      "source_sha256": "1d17d4579dbff34ec4b5c643c11d4cc49d0d438414e7f2986b28193cc7846113"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_60_-_The_Buddha_and_I_-_Indian_Influence_on_Islamic_and_European_Thought.json",
+      "source_sha256": "bca5554d579b5fa1a5311a444ae704b420cf74c40075ed65e36310761e950eb9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_61_-_What_Happened_Next_-_Indian_Philosophy_After_Dignaga.json",
+      "source_sha256": "1b07a07fea37906b224fe5945a94050a044483b5dc27e76e778b4a210cfb636f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI_62_-_Kit_Patrick_on_Philosophy_and_Indian_History.json",
+      "source_sha256": "b9d3e1205824f1f9c0c26cd43ed61b56f0799a793b13d136e994f581157c4b15"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP001-EverythingisFullofGods-Thales.json",
+      "source_sha256": "3a58c3b59010bcb8b9da521a5ecd3f809a75a4e68ae947ce71975662ee32950c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP033-LastJudgments-PlatoPoetryandMyth.json",
+      "source_sha256": "c609b31b5291d11ed80500b477e3f8afc7113fec49bf021b3bf047dc90da9ca7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP047-GodOnlyKnows-AristotleonMindandGod.json",
+      "source_sha256": "7aa3782ee93a0869f39b1cb1b7e5d25e4e508da22d7196b31292e67bbd7e48dd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP083-NotWritteninStone-AlexanderofAphrodisias.json",
+      "source_sha256": "e63f36bbe20f6d363ce9d7e4200e683cb57f403ebf419e5dd257525b365bcca9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP084-SilverTonguesinGoldenMouths-RhetoricandAncientPhilosophy.json",
+      "source_sha256": "74b9f62a7a6f05273b68407c2c98cde1ea36d7228dae79b9f992d6cba5ec2fe3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP113-HeavenandEarth-AugustinesCityofGod.json",
+      "source_sha256": "28fc75eb9df48a7c64a978d8d8f533a35e1de6a404f951478c63956be6d6a630"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP191-TheYoungOnes-EuropeanEncounters.json",
+      "source_sha256": "69720e65c5a55edd224df6bfae49029411afe810b4222570221175e96dfaffcf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP192-TheStrongerSex-WomenScholarsandIslam.json",
+      "source_sha256": "8f362416f1dc641d2aa03a99842391c08e671d7339813f5937aa615eefd8a286"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP193-AllforOneandOneforAll-MuhammadIqbalandMuhammadAbduh.json",
+      "source_sha256": "981b84c3fb7bd71c077e2df4b6be939ffed308c45e1ca7b269330763e8296283"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP194-IranSoFar-AfterSadra.json",
+      "source_sha256": "0d08f498bfa2511598afa2ebff124c6312936bd6b44a3f080900699a3eedfe4d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP195-AnkevonKugelgenonContemporaryIslamicThought.json",
+      "source_sha256": "217cab44c7f3a9c1df6bd9d3fcfbabd921ab3c06f1dd47c2add96e78b3380cc0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP196-ArtsofDarkness-IntroductiontoMedievalPhilosophy.json",
+      "source_sha256": "c5ffc4e3b0d08da2ab4ebb7d3f57fec32c2f4c96e2955c9d88c0dd10bd66219a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP197-CharlesinCharge-TheCarolingianRenaissance.json",
+      "source_sha256": "56515af73df4652f65a9208eac531f66f6780523e38e563f1de15cd74c1a4a92"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP199MuchAdoAboutNothing-EriugenasPeriphyseon.json",
+      "source_sha256": "872b1fa6ee400957903524dacebfcf015c42df5b67961b5084f424e80c2b145b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP200-JillKrayeandJohnMarenbononMedievalPhilosophy.json",
+      "source_sha256": "b8861fc07a5bbce333f0cb116d44daf5975c6c2262e6005bf7f96fb609e409d6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP201-StephenGershonMedievalPlatonism.json",
+      "source_sha256": "66ab36e82bce9139d2b84c4769d6de7134587f95a09f59e1b53e878de3270ab7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP202-PhilosophersAnonymous-theRootsofScholasticism.json",
+      "source_sha256": "3a1d782680a46b7f855aaaf22662d8db4dfb166df2429ecb0a2c132d36693fa5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP203-VirginTerritory-PeterDamianonChangingthePast.json",
+      "source_sha256": "7ee25ff1f236d49dc803dcc74946e5d33f01f97e8367b841ab807322b8f5501e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP204-ACanterburyTale-AnselmsLifeandWorks.json",
+      "source_sha256": "5f6a57b7ce8afbefb059d1e357308c4fc3191bb2c69ee1b5b3e977d6e66fc66c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP205-SomebodysPerfect-AnselmsOntologicalArgument.json",
+      "source_sha256": "9f7332bbba0dfd332397a983ef59eb67070c5c49b72289d9f8ff3984da5046de"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP206-EileenSweeneyonAnselm.json",
+      "source_sha256": "cd0f35e842c7fc9869859fd9e7dd0ce4dbde1d57c2b36f3a2702fa549e0ec928"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP207-AllorNothing-TheProblemofUniversals.json",
+      "source_sha256": "9540bbd3f1ebdb44159c8bd633b828f1fc7921c79f20d77839a8c4995968393d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP208-GetTheetoaNunnery-HeloiseandAbelard.json",
+      "source_sha256": "995eb04a735fa5cbb4a60cac1b455cbf5c0850182f9d419ec143b362136633c6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP209-ItstheThoughtthatCounts-AbelardsEthics.json",
+      "source_sha256": "7cf90b5df8ba5d2ee8b24aa13a148df2acc2c33f606b436e6de72d6c8af59dde"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP210-JohnMarenbononPeterAbelard.json",
+      "source_sha256": "40dfb36880d986856a9e8e9ddd406c8001ec363dc850e13844ac5cc536cc4b7d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP211-LearnEverything-theVictorines.json",
+      "source_sha256": "990a4305de7ac50537894bf13225de48a090b87a5eb22a703aebccec4d771931"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP212-LikeFatherLikeSon-DebatingtheTrinity.json",
+      "source_sha256": "80c4222f44b3ae91a1fb5d537b379f5432aba6979248db6e767c38868198b93f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP213-OntheShouldersofGiants-PhilosophyatChartres.json",
+      "source_sha256": "cde6fa88acca152765df16c30e6961f0ca2c6f8bfd97ccb4a8955071fbe8a661"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP214-TheGoodBook-PhilosophyofNature.json",
+      "source_sha256": "150c8a0189c0badec38c1729f1f64e95c45a1a739f9f57eea88843303b8cdc6f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP215-TheMedievalPodcasters.json",
+      "source_sha256": "8fa65a551cb671ab0cbaa4f0e4d1e1cbae2c092f55946516ad3295b7603633e5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP216-OneofaKind-GilbertofPoitiersonIndividuation.json",
+      "source_sha256": "6dfb26fb6151867b90d460dcba570de055cd170f1b9e517b9b6455b57b090c2c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP217-AndrewArligonPartsandWholes.json",
+      "source_sha256": "6ea2a8aef7cea6b3433d739b20a7c7649092139907114eaa190534bd8ab99a91"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP218-TwoSwords-EarlyMedievalPoliticalPhilosophy.json",
+      "source_sha256": "30eea87c41be91251a6d06a0c5a9d8e566adf146b55c9b2a47e85e84ff366bb4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP219-LawandOrder-GratianandPeterLombard.json",
+      "source_sha256": "981c96084cb5f6d8a50755cbf94287af24580f54d1a0efa039da63976b27b400"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP220-CarolineHumfressontheRootsofMedievalLaw.json",
+      "source_sha256": "49d3e3ae0343b61c54f1e0b0ec87c475518c02b26fbaba48af0cb2fac31fda35"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP221-LeadingLight-HildegardofBingen.json",
+      "source_sha256": "cd59aeb8c1cc5d48b6165c06cdd35429b6bb76e285eba036366fc59b2d7096c1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP222-RediscoveryChannel-TranslationsintoLatin.json",
+      "source_sha256": "de4fa7c45e5b992266d6e280b171a7b4cb927b8b35aee955b7c7f7027a0e8697"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP223-StrawMen-theRiseoftheUniversities.json",
+      "source_sha256": "f645b7cb405fb0618f8c16127f7df3e43e535070be35a73cfdefda9a5629c0cb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP224-KentEmeryonInstitutionsofLearning.json",
+      "source_sha256": "4235b85a758fa5c817123d07b4420c3674d8a4b88c8f8f68f8b244f84705ad4d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP225-NoUncertainTerms-ThirteenthCenturyLogic.json",
+      "source_sha256": "a954aa92338b9c33264c5c913b3843b61d8dfb816d2677f7c1b088f4618b39d7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP226-FullofPotential-ThirteenthCenturyPhysics.json",
+      "source_sha256": "9147024cf87c8cc0fdcb5517006d1d7b3b3bdb9e2d7ac9a0ac43bdd5134367b8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP227-StayinAlive-ThirteenthCenturyPsychology.json",
+      "source_sha256": "e74199a8d449290b629df7d98660be3d58a71e60477d1cb010de2c2b639ead46"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP228-ItsAllGood-TheTranscendentals.json",
+      "source_sha256": "a71f6ec0a26fc32d8070e835a4d1b2c5f3acd372696a3a9bcc521adc27497797"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP229-DotheRightThing-ThirteenthCenturyEthics.json",
+      "source_sha256": "67b1f76f91b184d9f459f1a2f25fef9a2d2dd95571ae9e5ded8e506621730d3b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP230-ALightThatNeverGoesOut-RobertGrosseteste.json",
+      "source_sha256": "2083e7cd28ba8bef2f940c99cb46d339f3a0a443c61c445ad46670860915da54"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP231-OriginofSpecies-RogerBacon.json",
+      "source_sha256": "a46cdcfb477208efd3f3f800a17f9288b0552a0cca7c48884e7d2fd145bdfaa0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP232-CharlesBurnettonMagic.json",
+      "source_sha256": "04b642640f5e4584f3f5f56ca0128cdfdc3c4d5705077bbdde9a2ee239eb8e97"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP233-StairwaytoHeaven-Bonaventure.json",
+      "source_sha256": "441cb5f5544298f171b8337be04afb20d1ffefa1ea9d051f73dcb14b7680110f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP234-YourAttentionPlease-PeterOlivi.json",
+      "source_sha256": "129bb069fd85b3e1d2a9106024dec0485a93cb065687da96f4b016482e1a571c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP235-JuhanaToivanenonAnimalsinMedievalPhilosophy.json",
+      "source_sha256": "e626ccdda447f4a23ab488016ad719e45b84e7d4cb1ed4323e069cf201e74f1f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP236-NoneforMeThanks-FranciscanPoverty.json",
+      "source_sha256": "ee4f9f94efdf62724f5b570acd0214dbafc409e311427a52378ee3309f8805ed"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP237-BegintheBeguine-HadewijchandMechthildofMagdeburg.json",
+      "source_sha256": "67bef945b173580fde7766af13d8abce97f0ddc5744d9a139b617da7fdf73777"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP238-BindingArbitration-RobertKilwardby.json",
+      "source_sha256": "652ea1fcc74a2d5b4adb3fa59c64b39a07bb1357c1c113f54ac86c282c933675"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP239-CatarinaDutilhNovaesonMedievalLogic.json",
+      "source_sha256": "1f2061053782981ced4e50e153df5bdb9fd8b341634fa4a3d0ba907697a465f3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP240-AnimalVegetableMineral-AlberttheGreat_sNaturalPhilosophy.json",
+      "source_sha256": "75c7e9a4600dbf80e14c51eae85646ef766b671d92461f9db6786e5f994bb57e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP241TheShadowKnowsAlberttheGreatsMetaphysics.json",
+      "source_sha256": "99a0d575226805b19b9904438d626271113731af2147ca6b5c62e79327d68429"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP242-ThereseCoryonSelf-AwarenessinAlbertandAquinas.json",
+      "source_sha256": "ba3fd909bd12621eae7fdb1e87a21cb1289bad27e7e980e113cda047f9dffd13"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP243-TheOxHeardRoundtheWorld-ThomasAquinas.json",
+      "source_sha256": "e854da6347f8889f8ace84ee3b13e005ff9960f55902c075b065b88abd207fdf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP244-EverybodyNeedsSomeBody-AquinasonSoulandKnowledge.json",
+      "source_sha256": "872aff7fd335b74d0b0c3d0f5e4aaffaa6e3d623d796e4fbce327a7e63a9c858"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP245-WhatComesNaturally-EthicsinAlbertandAquinas.json",
+      "source_sha256": "182481819389121e16dfa46a9e7c54e0836c3d3dde8b2beb83b19da54dab6ba3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP246-WhatPleasesthePrince-TheRuleofLaw.json",
+      "source_sha256": "15aa2d147188527868260d1506c8f4dcb944a92c0477cbe626a4f0babf644fdc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP247-OnwardChristianSoldiers-JustWarTheory.json",
+      "source_sha256": "bca342f76d2c6c60a284cc86df78a3dc587abc9e791bf8f4dbd17e0b32a99a61"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP248-ScottMacDonaldonAquinas.json",
+      "source_sha256": "c09d7c7320031542bd40ab41f7d101a09bc779976e552730e4087bfd80933ab0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP249-ParisWhenitSizzles-theCondemnations.json",
+      "source_sha256": "b68230f7ef1fa82b2f8eb7b033b5a2b97ed27520e7de8e77baa38666f708d2da"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_002_Infinity_and_Beyond_Anaximander_and_Anaximines1.json",
+      "source_sha256": "4fbf850a42bb1ffe7fb816133651ee49f7b346caa13950667a4c1263b4e8f267"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_004_The_Man_With_The_Golden_Thigh_Pythagoras.json",
+      "source_sha256": "2132aa5a020e2fb111f55b4f2661a21e1d29d33f1e6017990fac63ac6acbae22"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_005_Old_Man_River_Heraclitus.json",
+      "source_sha256": "e0dd6beac706e1f0043f6543dbbee819ff6b8de2e1fe83e661e71b7395963735"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_006_MM_McCabe_on_Heraclitus.json",
+      "source_sha256": "22220a4af9444df072f132d4aecae752ee08320a2d2416317897ae964c104a00"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_007___The_Road_Less_Traveled_Parmenides.json",
+      "source_sha256": "5d76bcd59c14d7bbd58b68712816d54e246b01c57e1c5c31e807eb293a276462"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_008_You_Cant_Get_There_From_Here_Zeno_And_Melissus_2_.json",
+      "source_sha256": "9c41142c6702a5fdfbd790dea9adce1d2b99721ef6e27192437a47e998a09252"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_009_The_Final_Cut_Democritus_And_Leuccipus.json",
+      "source_sha256": "df8a4cc852f0143cc34cdc0bf2ab0acc3f5477cc266f74ef3aa7be5dda1ba3ad"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_010_Mind_Over_Mixture_Anaxagoras.json",
+      "source_sha256": "de34a0d8afc161e7cb6dd6d8a26a2834a890be2bd804afd933d7574fbeded687"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_012_Malcolm_Schofield_on_the_Presocratics.json",
+      "source_sha256": "e43f63b8ed9846792543b8d4a2783003596087519ed9bcd40a086940bbb4a432"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_013_Good_Humor_Men_the_Hippocratics.json",
+      "source_sha256": "52516b4e1e1aa494c8bc88b97bf3fb7394df15d67eef1b3de042bd96f1854707"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_014_Making_the_Weaker_Argument_the_Stronger___the_Sophists.json",
+      "source_sha256": "9f4b78aa6900b655ea04d01930b834fd58ee8b5cae7dba2f485fecf03c7cbe54"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_015_Socrates_without_Plato.json",
+      "source_sha256": "f469bb093f87bd287c60c7c4496e6c051ce13a0de5b035ef3e69c56296f23c5b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_016_Method_Man_Platos_Socrates.json",
+      "source_sha256": "879c28d295143f32c8246f8dce56b87a9104d4e4a8143505903838b253a6f22a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_017_Raphael_Woolf_on_Socrates.json",
+      "source_sha256": "14447f665c29f1f5308403e0d383b779973f8d79cbe80531f5b0323dd925cca2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_018_In_Dialogue_The_Life_And_Writings_Of_Plato.json",
+      "source_sha256": "cd8bf1f15fcdb882c209ea0665178151fa88e553dad927f38e6daea50ad24263"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_019_Know_Thyself_Two_Unloved_Platonic_Dialogues.json",
+      "source_sha256": "bd6f146a589e602abb0789bbbac3a9ec555b2942efcf27fd4f55d0fa7afaa762"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_020_Virtue_Meets_Its_Match_Platos_Gorgias.json",
+      "source_sha256": "8f4ce9bc35ea15248ce51fe4ae6a54364346b0c10bf5ed0e241dec41dae595c9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_021_Plato_Meno.json",
+      "source_sha256": "fab94a24f9f0ee6a78cf45e2242a11be5ce95504260545ed4bb6309ee91bbcf1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_022_I_Know_Because_The_Caged_Bird_Sings_The_Theaetetus.json",
+      "source_sha256": "ee96a79ddb8aac103ae8f8400efe5852f88b956c65e0154d8b394f86de58f0ed"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_023_MM_McCabe_on_Knowledge_in_Plato.json",
+      "source_sha256": "e1778ac8af7b3794652f83065747cdcc1214b2e1ee77316122af41d332dc1e99"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_024_Famous_Last_Words_Plato_Phaedo.json",
+      "source_sha256": "4a934350a54155d88df67aef859988da873ac4650569b5c4a72c6ac298076c70"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_025_Soul_and_The_City_Plato_Political_Philosophy.json",
+      "source_sha256": "5adaa65ae3de9936bc7c4976541eba17838003ba7433a3c275d70310fc8d0512"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_026_Aint_No_Sunshine_The_Cave_Allegory_of_Platos_Republic.json",
+      "source_sha256": "b69f92ba9483c2619c8494f7be6dbf80aa5319f1956251fcbb451393b6bdfbd0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_027_Second_Thoughts_Platos_Parmenides_and_the_Forms.json",
+      "source_sha256": "714faf754fd58f432dfc6676ef35282d8115dd57cce6a26f1e40fe86008c4fd2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_028_Fiona_Leigh_on_Platos_Sophist.json",
+      "source_sha256": "eafc3d46866f715f2b3c06e48786be67f419804c4a7886105512b7a8da8d6896"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_029_Whats_in_a_Name_Platos_Cratylus.json",
+      "source_sha256": "b85510ad9fb6951538f3bbfe372e6449b7d78ad069161f65b677608593fec5bf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_030_A_Likely_Story_Platos_Timaeus.json",
+      "source_sha256": "f5f0ced4ef8c8343a5422d59aab84384160f9ecd46658860e0e4858a657f2f2b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_031_Wings_of_Desire_Plato_Erotic_Dialogues.json",
+      "source_sha256": "be2cc929d5631201ec94b7c157319545b2877ba75fbc61f3fc680c6463905efe"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_032_Frisbee_Sheffield_on_Platonic_Love.json",
+      "source_sha256": "b2fd28d8952692bfdc5f902758bb03073e128658c2bd363bd3e70ec566adc2d6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_034_Mr_Know_It_All_Aristotle_Life_And_Works.json",
+      "source_sha256": "c93f7aa1fc14ffc8ea9dff531985915aef94c126d018bb0337564772757d83ec"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_035_The_Philosophers_Toolkit_Aristotles_Logical_Works.json",
+      "source_sha256": "31cc3d54ce5cf29dab8a0bf870c127926932d70f2c84e92f3c12880fa1ca20b3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_036_A_Principled_Stand_Aristotles_Epistemology.json",
+      "source_sha256": "43551d16529583d2860b434613afdb8a558d7e8d4de0a0d36dd8f2e9e6192521"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_037___Hugh_Benson_on_Aristotelian_Method.json",
+      "source_sha256": "83d3f0212cc7db38cd78b440f69b8eb19b8d89d062a7b63b51714216ab0c2bd5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_038___Down_To_Earth___Aristotle_on_Substance.json",
+      "source_sha256": "1db4d0fc89db73f0ef3b255d5160b6dfab6a6e1653f85466765a44e6a8db2774"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_039___Form_And_Function___Aristotles_Four_Causes.json",
+      "source_sha256": "e828d6f74ab7f2feaa7fd907f571ccd2ad6b1ca73beace4d14077b14164f1ffb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_040___Lets_Get_Physical___Aristotles_Natural_Philosophy.json",
+      "source_sha256": "b78a40da0f7c889b5ee867b7f638a183ac1aa985062789b1fbd3dc0d257340e7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_041___Richard_Sorabji_on_Time_and_Eternity_in_Aristotle.json",
+      "source_sha256": "fd7efbe8ae199fbac73268dddfe1e43d89af8bd3fa4383d46255a06ba1e34545"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_042___Soul_Power___Aristotles_De_Anima.json",
+      "source_sha256": "1f712e80ab731da2118b7220081519dd565125cc1ddcc96b66768c88b3b99e7c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_043___Classified_Information___Aristotles_Biology.json",
+      "source_sha256": "f3816608a9c75c5854ecf624ecd5e2c6494c6b04d2b2500c2aad16e74888d3bb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_044_-_The_Goldilocks_Theory_-_Aristotle_s_Ethics.json",
+      "source_sha256": "75e92cd19c8aa0bf0db72e4dde60c516006ffbc7b9699f21e4f70d9735b9cd07"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_045___The_Second_Self___Aristotle_On_Pleasure_And_Friendship.json",
+      "source_sha256": "1df539eb47b48edf39ccbee7e4433c87a7b8ea923d06c3894f269df31d1e1d5f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_046___Dominic_Scott_on_Aristotles_Ethics.json",
+      "source_sha256": "23f438b998e591bb87326e93376d4ab266738245e2351351784a3632dd1c51af"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_048___Constitutional_Conventions___Aristotles_Political_Philosophy.json",
+      "source_sha256": "7ec74fd0df58fd53bfc9307a7958c17495e04251798e864f787d2a883ed811be"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_049___Stage_Directions___Aristotles_Rhetoric_and_Poetics.json",
+      "source_sha256": "528f9ed28fd2da6604675f73d885b07f35ee43338d83ccb46d3f17e98f51a878"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_050___MM_McCabe_and_Raphael_Woolf_on_Aristotle_on_Plato.json",
+      "source_sha256": "b77e12c7e5da92ab753a5ff256028824bb5f78d83ebbc62074f5211e74fcc24a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_051___The_Next_Generation___the_Followers_of_Plato_and_Aristotle.json",
+      "source_sha256": "f37996d6fe88a636a08e5ee97ffae007097e6debe4f7cb4bd7fcf16081d5cf59"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_052___Fighting_Over_Socrates___the_Hellenistic_Schools.json",
+      "source_sha256": "cd2a310dff057588b66884513bb41392a20e29dc3f959aed2c70f4ec98a04232"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_053___Beware_of_the_Philosopher___the_Cynics_2.json",
+      "source_sha256": "2181c38706f6ef25f7e705a98b33517982b7fffb58b4da7ec5f68d575a78d7cd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_054___Instant_Gratification___the_Cyrenaics.json",
+      "source_sha256": "530187b935d68953848fcca4ee203c390d7dd5bd4d3a7f9eb2abdc59fbab5ed9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_055___The_Constant_Gardener___Epicurus_and_his_Principles.json",
+      "source_sha256": "c0797aebc89c4d982ba7539c175fdcc9a250463a583a45af2a1639b382c4b948"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_056___Am_I_Bothered____Epicurean_Ethics.json",
+      "source_sha256": "f7c52dc955c1b2c8bda366b5441b9c6c492b43366b326a34c9a9a2c74340be34"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_057___Nothing_to_Fear___Epicureans_on_Death_and_the_Gods.json",
+      "source_sha256": "7b4bb8c5d43d32a53c2b827d813954ba441e5deab74c35fa407955df2e62e43f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_058___Reaping_the_Harvest___Lucretius.json",
+      "source_sha256": "e0a6589faa9099f48334b7ce03393f6b073d4b74ac0599a6d89e647cebfecd28"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_059___James_Warren_on_Epicureanism.json",
+      "source_sha256": "120e03d7cb5c1a55e403335a2cec226cc93070743aa0e9c3353b9dbbe2e3feeb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_060___Walking_on_Eggshells___the_Stoics_on_Logic.json",
+      "source_sha256": "2a37ff2d5a26f5b456d47f6cb0d5688c36c51227f1093800d24f909e66e72fba"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_061___Nobodys_Perfect___the_Stoics_on_Knowledge.json",
+      "source_sha256": "0ecd819b6aa75f4eab7855cf9e1678f4a4d2f23fe57e6ae8c8aacc5acb5a0cb4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_062___We_Didnt_Start_the_Fire___the_Stoics_on_Nature.json",
+      "source_sha256": "e9bffa28ac17fd51e360dfa1b612288fdd8e7e568fefa20ca0b653e6dbf1f62f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_063___Like_a_Rolling_Stone___Stoic_Ethics.json",
+      "source_sha256": "c97be4379cf4b12aa28db27be56f3c04f9bc3184258f2a6ce006858509fb8f42"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_064___David_Sedley_on_Stoicism.json",
+      "source_sha256": "7417042d9a561ba47f72238416a8aea308950879f4d6212c84df96c4d6a6a7d2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_065___Anger_Management___Seneca.json",
+      "source_sha256": "2be6baa14fdc1f2c1011aed124710df790d0c3103e78a94d7fc15fb085922c86"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_066___You_Can_Chain_My_Leg___Epictetus.json",
+      "source_sha256": "8dc6fa0d1176f977e2cd07030cefb09fccc2e4896daa3bfdb2b73c12f01d303f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_067___The_Philosopher_King___Marcus_Aurelius.json",
+      "source_sha256": "cb1fba6722a18c117d4eb106d006605b0a18c555034b3a7af130b7ddbe9d2bd0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_068___John_Sellars_on_the_Roman_Stoics.json",
+      "source_sha256": "ac55a956702e3a260e8a3768a7b06fab54c9f80ee03ae649437120acbcd5cb0f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_069___Beyond_Belief___Pyrrho_and_Skepticism.json",
+      "source_sha256": "8b522ee85eca289411c3e5c6c5b366167d8dcd11b7a42c88a729b311d0005530"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_070___The_Know_Nothing_Party___the_Skeptical_Academy.json",
+      "source_sha256": "9c773849dda844eeb4032f4ed9e71fc431b68cf0fb8ee238382da646732bd3b1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_071___Rhetorical_Questions___Cicero.json",
+      "source_sha256": "77d0472ac9163c9e98d3cce55b4b833a24d8ff1a9f40c3c68db5be7f3c5c06b6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_072___Raphael_Woolf_on_Cicero.json",
+      "source_sha256": "77725bd7105634518f3df9f6ae95d909a43275035c549b6c6c2f63497e2eb315"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_073___Healthy_Skepticism___Sextus_Empiricus.json",
+      "source_sha256": "b61df106f031a9ab05162232ebd90646ddf802e0cfac1cd6b34f1c6a23358455"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_074___Tony_Long_on_the_Self_in_Hellenistic_Philosophy.json",
+      "source_sha256": "69f83ac9acfcf390d561a466d522706d2fed4af62e022885f814ed636ed65854"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_075___The_Joy_of_Sects___Ancient_Medicine_and_Philosophy.json",
+      "source_sha256": "c805fb25b322ca2cf89ae2eecb999b7d93237ffe6940f031a57f5afad38fd26d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_076___RJ_Hankinson_on_Galen.json",
+      "source_sha256": "f5e5a6eb286b2b90a4114c49b204efadf1598a97b475c4bd00c143870dcfaa38"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_077___Caesarian_Section_____Philosophy_in_the_Roman_Empire.json",
+      "source_sha256": "ff9b314d8846014d71ea668c8fb8a3db8dc584aa047344137ece7ca19e09dc6f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_078_Middle_Men__the_Platonic_Revival.json",
+      "source_sha256": "9427953ac743c3c5987f00b78c911fb387f0fd2946eea51976fb24d45cb05e9c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_079___To_the_Lighthouse___Philo_of_Alexandria.json",
+      "source_sha256": "8d2383f2eb296bc10858dd2dcb1d5f2ffa14f88612411232c2c7405f7bb655f6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_080___Delphic_Utterances___Plutarch.json",
+      "source_sha256": "38cb05f6c74bae0173bb9b38c88b7a83eecbce4cb3df350c79ff5f516398bf18"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_081___Jan_Opsomer_on_Middle_Platonism.json",
+      "source_sha256": "d6a9b59155ec8fcb81f85bf6e382612d11263a565a7f53f841033cc24a6a80cf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_082_Lost_and_Found_Aristotelianism_after_Aristotle.json",
+      "source_sha256": "31f2068051fdf155ba39ba6f0650945bdf5fd1c363ed7b52660a59b2bc481a80"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_085___Sky_Writing___Astronomy_Astrology_and_Philosophy.json",
+      "source_sha256": "3ee5c878ec652c36984c3215e84d6abb81629bf242286c057af1d3269911c648"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_086___Serafina_Cuomo_on_Ancient_Mathematics.json",
+      "source_sha256": "2456cc527caed5f473f3d134f8e941452c10f1803aacb1de265618f3af4832a4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_087___A_God_is_My_Co_Pilot___the_Life_and_Works_of_Plotinus.json",
+      "source_sha256": "09086f578498a560185610397eebcb3bf062af07d17a6ff8a5a2bcfd11253c0f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_088___Simplicity_Itself___Plotinus_on_the_One_and_Intellect.json",
+      "source_sha256": "4d153408b731a7bec389a13d6f4089d5ccb5e60da0ede4828667dfc2b0b7b899"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_089___On_the_Horizon___Plotinus_on_the_Soul.json",
+      "source_sha256": "8554c02a2a0a47cca54497b4be168f30b44983c5aef592b5504e869eca437c5f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_090_A_Decorated_Corpse_Plotinus_on_Matter_and_Evil.json",
+      "source_sha256": "64e78dfd796f663eb8fa19056a09af7b3eef30e1b8e9a15bd711117200691eb7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_091___James_Wilberding_on_Nature_and_Neoplatonism.json",
+      "source_sha256": "a4dedc57c4f822f571ce3d72c4a42a4f0f99784801f959ed094f2d5019380c2b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_092___King_of_Animals___Porphyry.json",
+      "source_sha256": "904eade2357255773d8d8b387219670817da046861fd6f9cd50eb2e29f84d410"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_093___Pythagorean_Theorems___Iamblichus.json",
+      "source_sha256": "d189e2d9498211e0557d7b547ab2e0ea09cec7872350f9c617905a77d3e2ee43"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_094___The_Platonic_Successor___Proclus.json",
+      "source_sha256": "9062dfea48d4c092312c3d7ac91701c28871698f3b6fc0ff81573cd9e2e48d80"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_096___Dominic_OMeara_on_Neoplatonism.json",
+      "source_sha256": "6cea24c6add3e7758c29d1dafebc17212a095666537abe375e61a69c084f9360"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_097_-_A_Tale_of_Two_Cities_-_The_Last_Pagan_Philosophers.json",
+      "source_sha256": "fdf4023396d1aa8c3bd497bc85de22816e2af596cdbb61bcdca96fa7ebcf526a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_098___For_a_Limited_Time_Only___John_Philoponus.json",
+      "source_sha256": "0a29b734f8d7833e5e5f8c6f4493690cc0c162dc9209810608ed53f79a81d86c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_100___Michael_Trapp_and_Caroline_Humfress_on_Ancient_Culture_and_Philosophy.json",
+      "source_sha256": "489f2de5162902aeba2bcfd67d258eb230dc0daaef6aa310369db159130fed77"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_101___Father_Figures___Introduction_to_Ancient_Christian_Philosophy.json",
+      "source_sha256": "83cf5bf57511d0cb18fe932a0a90441451429356e987f73b9565d9ee9ed1e240"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_102___Please_Accept_Our_Apologies___the_Greek_Church_Fathers.json",
+      "source_sha256": "980030d3c63530245ced98dde80648cda2f56131a438d482f707eb722215ed82"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_103___Fall_and_Rise___Origen.json",
+      "source_sha256": "de4f07827fb8d26d2d08618aa95dbee396c9aec4f124a0a0514c1666ffe1bb01"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_104___Lets_Talk_Turkey___the_Cappadocians.json",
+      "source_sha256": "aa71a782df857d0c2e62428a6f322a7914ec505b2f773ed63ef07e6ab566ad9f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_105___Naming_the_Nameless___the_Pseudo_Dionysius.json",
+      "source_sha256": "54277236bf44fd4110eae5b840fb498aa0c7e9481ae3466707c94e1f15e941ba"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_106___Double_or_Nothing___Maximus_the_Confessor.json",
+      "source_sha256": "aa9d07d637a444127c533c71aad29c0bafed8c1dc1c1c1524c6aeb80318ce325"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_107___Practice_Makes_Perfect___Christian_Asceticism.json",
+      "source_sha256": "c2164088357f8c0b4e0e2bdf35b407f721c48dec126d6b20a6ab1070b916a56d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_108___George_Boys_Stones_on_the_Greek_Church_Fathers.json",
+      "source_sha256": "b4f1f88bd1533d725fcd41d85832fd28ed2eea122463e00924a75ab7792f2993"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_109___Spreading_the_Word___the_Latin_Church_Fathers.json",
+      "source_sha256": "3f06202efe55e79bfe8d53e5dfcf35efc1320b381be7cfb81382bee37f28a710"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_110___Life_and_Time___Augustines_Confessions.json",
+      "source_sha256": "1d06e55617975ec97b40fca487bbee46512c8d8a11c75a1c0cc916fca9dc4ce9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_111___Papa_Dont_Teach___Augustine_on_Language.json",
+      "source_sha256": "bcccb5954a0911b137495f8cbf6c961db17106f20f6efb512997912a27ccf90a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_112___Help_Wanted___Augustine_on_Freedom.json",
+      "source_sha256": "1e84ecf8a8b43795a6e2f40b548f1093aeb7e1ea838d7ed710aee27f675a7b80"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_114___Sarah_Byers_on_Augustines_Ethics.json",
+      "source_sha256": "e4344450ffa17deb65ad8e54b5831e3a1455f67cd1c89005f903ed147b277cad"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_115___Me_Myself_and_I___Augustine_on_Mind_and_Memory.json",
+      "source_sha256": "2b797e52dc624f0f1da7ca237438b4c0f8a2b74aee41b0360e3899b28f1dd623"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_116___Charles_Brittain_on_Augustines_On_the_Trinity.json",
+      "source_sha256": "5998840997fea358a3adda0137b52f2797728f02d18fa0a1b26b3282bf3f15dc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_117___Born_Again___Latin_Platonism.json",
+      "source_sha256": "a6fa99f1d9d9f8d1a77d8f22e6bf0514e1a2a75e1c97ea87ec706424453b8118"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_118___Fate__Hope_and_Clarity___Boethius.json",
+      "source_sha256": "f69c37ed1d25f03fa2ca4829ad3b416b0c453c0aab1cbf3679b9c7b58976112e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_119___John_Marenbon_on_Boethius.json",
+      "source_sha256": "4a93e042b2ed0cdbdea3430d29d38d8d641298aba2dd8427ed0c9c272297a067"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_120_The_Straight_Path_Philosophy_in_the_Islamic_World.json",
+      "source_sha256": "cc926e840de1310513162a868e981e3d01165ec2a622c757b49b0643236294f0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_121___This_is_a_Test___the_Mutazilites.json",
+      "source_sha256": "571abca6d925ecf37be30c0f4706d2004e7bb7c5d752800213a7291fc3ef5861"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_122____Founded_in_Translation___From_Greek_to_Syriac_and_Arabic.json",
+      "source_sha256": "6ebef147c2615de378af9fdb6bcd265ec6a5423e8997b253cab4b6e100951a95"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_123___Philosopher_of_the_Arabs___al_Kindi.json",
+      "source_sha256": "b542315a820a8b85f5b72af15cd6c77461f3ec4b28e22d81837e2e73d04439b1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_124___The_Chosen_Ones___Judaism_and_Philosophy.json",
+      "source_sha256": "e1bc7bb6bd604483f147aeeb4e5cafb64b09ef00803e2dd52383a1f9bc61dc54"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_125___Reasoned_Belief___Saadia_Gaon.json",
+      "source_sha256": "81eac57bff9da04fc33f4b3a476590473590c876d35b6db1f437f3c151ab7ad3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_126___High_Five___al_Razi.json",
+      "source_sha256": "75adc2ab147f63e0109c48a4c590a2edd2f35b80b94bea531e9ae669ea67f2f2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_127___Peter_E_Pormann_on_Medicine_in_the_Islamic_World.json",
+      "source_sha256": "4b7a4cd32f86c4a25ca5c5778c9b7a211fb48c9bac7c22cdecfddb3c66fe7aa1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_128___Aristotelian_Society___the_Baghdad_School.json",
+      "source_sha256": "533d40d433ddc520b4f586673ef9637a824bc0f79a7bf090c4f7f9f327e406dd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_129___The_Second_Master___al_Farabi.json",
+      "source_sha256": "acfc46288b0d33358f17989051cc36dd46b792f3519503c306239e730c5ca94b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_130___State_of_Mind_____al_Farabi_on_Religion_and_Politics.json",
+      "source_sha256": "dcd262541a35bf2ab5791327a946ab55cf877b006564f7bc88f78e187546e967"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_131_-_Deborah_Black_on_al-Farabi_s_Epistemology.json",
+      "source_sha256": "e041dabc636e16f6bd13efd6e1eb50654920c0ca75c5b5b9f9371d1a7dc1361e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_132___Eye_of_the_Beholder___Theories_of_Vision.json",
+      "source_sha256": "bfaafed5913220684fc6e4aaab938166c12a877cab15e6421a6fb54b74a017fe"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_133___Strings_Attached___Music_and_Philosophy.json",
+      "source_sha256": "1a908281f2657a788332434e3d3f1ace2b655d72b0e7b4afed259638e6f5f865"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_134___Balancing_Acts___Arabic_Ethical_Literature.json",
+      "source_sha256": "73f80d8f4a823085afe3b2e0d9099642189cf561927160f49830d54d353223d2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_135___Undercover_Brothers___Philosophy_in_the_Buyid_Age.json",
+      "source_sha256": "c407478d822bb6a614c59560cf39f633da631d3fab78e465955c64a9026de6ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_136___Farhad_Daftary_on_the_Ismailis.json",
+      "source_sha256": "80142c4bf04b4c6de83a6aaf14c659ca2da45945e70e3c20af3799dc70d1c640"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_137___God_Willing___the_Asharites.json",
+      "source_sha256": "ef1cae238d439035de9d6da5b97cd18055c4945ceb7b0e84acb8d429f4d2408d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_138___The_Self_Made_Man___Avicennas_Life_and_Works.json",
+      "source_sha256": "65fabab4c7652f4b8d2dc2063ab0000aecb95c2f2e969f66d52dd68ce058ecb9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_139___By_the_Time_I_Get_to_Phoenix___Avicenna_on_Existence.json",
+      "source_sha256": "24b2b110c5111bed76a0ebacbb919842785f354aed8200f69580c84f19d37c5d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_140___By_All_Means_Necessary___Avicenna_on_God.json",
+      "source_sha256": "c388f565dcd0b5bbd7aa2dd5caa59274dfb32535a22da6a3ee696e2deb316938"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_141___Into_Thin_Air___Avicenna_on_the_Soul.json",
+      "source_sha256": "5a34f595a18675b10c5f3ee8457f4878945e92260d0e336eb1f24a5f654125ef"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_142___Dimitri_Gutas_on_Avicenna.json",
+      "source_sha256": "7fc849866582e0b6b64d9bb6253eb78b303cbb1552a1d6a84b2fdee191325a9b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_143___Special_Delivery___al_Ghazali.json",
+      "source_sha256": "ff9690187268793cbf88f79b1611c18cca78dc63f0d0764d630d67ce9b2fb480"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_144___Miracle_Worker___al_Ghazali_against_the_Philosophers.json",
+      "source_sha256": "1f6d0bd71197e328cf21bec802607cb6dfce93a0379391e8ef9aea29fa83545b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_145___Frank_Griffel_on_al_Ghazali.json",
+      "source_sha256": "128192b89177c1e42e2c35fe241b1a5bb64b1513e00cff2d205bcf3980726093"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_146___Philosophys_Reign_in_Spain___Andalusia.json",
+      "source_sha256": "fede0ee477d279c4369fc1f2a45e1a506835278cb05845a9776fdb88442ef8df"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_147___Laying_Down_the_Law___Ibn_Hazm_and_Islamic_Legal_Theory.json",
+      "source_sha256": "b90ae684b740ff27abb71eadb19e751099470bc73137bab5eb13e56d88e6e361"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_148___Fantasy_Island___Ibn_Bajja_and_Ibn_Tufayl.json",
+      "source_sha256": "9db0e34b4aee73b74d286561b88375c6810ace164417f160fbf07155fd2ace53"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_149___Back_to_Basics___Averroes_on_Reason_and_Religion.json",
+      "source_sha256": "8bc1458d9517a52a891af50317ba99d66379adae97a1ee4d98cdc72659d93664"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_150___Charles_Burnett_and_Dag_N_Hasse_on_Arabic_Latin_Translations.json",
+      "source_sha256": "bb86ca0d0fd93f95074497aa8522fd7bdddc4ed04dfd77ef26bde78e637b159e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_151___Single_Minded___Averroes_on_the_Intellect.json",
+      "source_sha256": "bd37ed5c1d18451c60e7fed904f01444233710066be2d6c445169e2d73f53204"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_152___Richard_Taylor_on_Averroes.json",
+      "source_sha256": "dc188a2def5035936e470138b7fc259e83efc5a9e513ec1a39bd73f66261971c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_153___A_Matter_of_Taste___Ibn_Arabi_and_Mysticism.json",
+      "source_sha256": "92fb0ed4016f71b085a6d4801eb7ec0047927905149a2597de9a481527cc7edd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_154___The_Philosophy_of_History___Ibn_Khaldun.json",
+      "source_sha256": "28c861ea642630259c840ad81247c9037db40c0b529e451548753c1afb030a74"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_155___Matter_over_Mind___Ibn_Gabirol.json",
+      "source_sha256": "1085499321c2b61ab9c7cc2f4192b5926d5b2e020453dcd4b001f282289bc578"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_156___Sarah_Pessin_on_Jewish_Neoplatonism.json",
+      "source_sha256": "48ff3e2a2b97a8902f651d9b09b21418899c0d7933476f6903d5d77e78c8d703"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_157___Choosing_My_Religion___Judah_Hallevi.json",
+      "source_sha256": "36414e333b06252bed35bcdcf241028c5110e9d4193dc6b10f5576d509128f6e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_158___Born_Under_a_Bad_Sign___Freedom_and_Astrology_in_Jewish_Philosophy.json",
+      "source_sha256": "78095db9c0bff5350ddfa181d3e2200b79be706139188e72f7ca3b4210a71701"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_159___With_All_Your_Heart___Ethics_and_Judaism.json",
+      "source_sha256": "c50ed2355b8a8cb1398b648db4cfa1ed9d2a41287c12f222e768cc12358f45e4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_160___The_Great_Eagle___Maimonides.json",
+      "source_sha256": "4e97d44ceb84197791cbb9e8bace12f33013a1133296956470ad05ada77d1549"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_161___He_Moves_in_Mysterious_Ways___Maimonides_on_Eternity.json",
+      "source_sha256": "6869ec755a692351930ad74e031bbfae7cb33151e9d125465b85e4e70538c474"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_162___Sarah_Stroumsa_on_Maimonides.json",
+      "source_sha256": "36cf28d682d79aaccf80824ca786f10ea793aef7f31a9f4da5b4bfb192a10d61"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_163___Burnt_Offerings___The_Maimonides_Controversy.json",
+      "source_sha256": "3e3eeb7f3a21f9cbd80e4a4cc167311079950c35bc57210dce674babbdeb9bec"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_164___Man_and_Superman___Gersonides_and_the_Jewish_Reaction_to_Averroes.json",
+      "source_sha256": "58e8b0667f06ee9abcdf12f83fd71dece400998e9e85ab7685bd68bbf9361abb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_165___Neither_the_Time_Nor_the_Place___Hasdai_Crescas.json",
+      "source_sha256": "a7830d5c663a6f66d75c0996fdfc9fb0dd2236d6e66464966e7e6ed836d98095"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_166___Tamar_Rudavsky_on_Gersonides_and_Crescas.json",
+      "source_sha256": "e94c7c9790958cb73ff0fdf12d6a90787fbf536f9d162d7c245ce6b8b59cac3c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_167___When_Bad_Things_Happen_to_Good_People___Suffering_in_Jewish_Philosophy.json",
+      "source_sha256": "7e09e0e0934101dcd06961ef03c1a0d22af081b493226ae3359d7d1a44632f38"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_168___Chariot_of_Fire___Kabbalah.json",
+      "source_sha256": "6045a2212acab2c26c75b29a43fdbf79a7e549d4eec6a6c4e1c03475d50918e9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_171___Golden_Ages___The_Later_Eastern_Traditions.json",
+      "source_sha256": "1a00be654467232c04ec002447ab0aa7e52369d03242b0af2a3af45ae45410a9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_172___All_Things_Considered___Abu_l_Barakat_al_Baghdadi.json",
+      "source_sha256": "8228429f23e590a7062561650721bb9fdbd186eede044cecc73576fc2ae925a1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_174___Leading_Light___Suhrawardi.json",
+      "source_sha256": "e195f8dc20c3628de3e89d0f7e84dbc2770f331310db63afc0c7f85cfe860bb0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_175___Bright_Ideas___Illuminationism.json",
+      "source_sha256": "786515a976905f5645911f737ed13070911351afd7141f8e1c50d4341c3698d6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_176___A_Man_for_all_Seasons___al_Tusi.json",
+      "source_sha256": "95d8678bfb06e17e4b7bd996ff797e8113e2aaa93ec169c37e93b4a5b28762a4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_178___Eyes_Wide_Shut___Rumi_and_Philosophical_Sufism.json",
+      "source_sha256": "8804a7e6e59ba5060aada02a2b50a253a425950293dea9dfb516160d636ec083"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_179___Mohammed_Rustom_on_Philosophical_Sufism.json",
+      "source_sha256": "453408b4d5142eca87557bde4d6fd2555c9f96cf55e20cfd456d29fbc80b4b18"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_180___Proof_Positive___The_Logical_Tradition.json",
+      "source_sha256": "275e2ad6139dc8f8b1c7e2184861047143d627786427917c3934ce4082495ca3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_181___By_the_Book___Ibn_Taymiyya.json",
+      "source_sha256": "e4a6ca5936f8289455d18bb40dab4f88a22bd52fb8742e49bcd7171a4fb8ce42"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_182___Aftermath___Philosophy_and_Science_in_the_Mongol_Age.json",
+      "source_sha256": "391e1d76f38670ff539d885e66cc5599fff9f947111ea381586a7873b7383d23"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_183___Family_Feud___Philosophy_at_Shiraz.json",
+      "source_sha256": "0493807055464c7c4d885d1aedcb51047a472fdcd5dc9a76f881e1cb568696b6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_184___Robert_Wisnovsky_on_Commentary_Culture.json",
+      "source_sha256": "9707a3d150f2369a5015a646c5053c094daf8966742e3da073c73edd14f9b4e0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_185___Follow_the_Leader___Philosophy_under_the_Safavids.json",
+      "source_sha256": "5380e5e8aa081e5bec85b7f40a2d48a4a70d6964ec64a0b9b7eb3da2adfa318f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_186___To_Be_Continued___Mulla_Sadra_on_Existence.json",
+      "source_sha256": "d2f794f326c7240ff24739d218d323d84e7eb8d67ba507059cbe9c8aae6acbaa"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_187___Return_to_Sender___Mulla_Sadra_on_Motion_and_Knowledge.json",
+      "source_sha256": "68c1083b335c9569513e5d35cc9f737fdfc1384c9f18139266808bdaabb4dc10"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_188___Sajjad_Rizvi_on_Mulla_Sadra.json",
+      "source_sha256": "7cff8b090679f3c035e07710daec4e449b34415c5d45cd6d3ea2409177319da0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_189___Subcontinental_Drift___Philosophy_in_Islamic_India.json",
+      "source_sha256": "e45ffea5921daba080c2f84cdd71fb09fd93a19d3d0ea18f9f0809aeba85308e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_190___Turkish_Delights___Philosophy_under_the_Ottomans.json",
+      "source_sha256": "71e78a6ed7058fcc358b6f6740a5f3324c55cbb33065c3b7f04bcda75aa0686e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_198___Grace_Notes___Eriugena_and_the_Predestination_Controversy.json",
+      "source_sha256": "ef7151e7d66c0d34291421f45768f5bc3bb85a5fb62ee7df2083b24d8f721fff"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_250_-_Q_A.json",
+      "source_sha256": "48b3f10811e2c70c8b63f6d49bb3a51cf484660babf75155d0ae555c88909f10"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_251_-_Masters_of_the_University_-_Latin_Averroism.json",
+      "source_sha256": "3f59d91c37507fd2f74a6f4f38f5b2c6e731e60fc4790f8d9a70426e08a212b3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_252_-_Neverending_Story_-_the_Eternity_of_the_World.json",
+      "source_sha256": "3318cabfd148a32bb62f63bd6ff7fd3581e63c515e73878a00dc23542fbf5d18"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_253_-_Let_Me_Count_the_Ways_-_Speculative_Grammar.json",
+      "source_sha256": "ca5890a932ea1a6e62c4837be2e59403c84393e4ce77c641a77dc6c23207b675"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_254_-_Love_Reign_Over_Me_The_Romance_of_the_Rose.json",
+      "source_sha256": "5b7782dbc29a9d897b94cfe05611e81ef554c6c623949f02e213bd5215a04765"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_255_-_Andreas_Speer_on_Medieval_Aesthetics.json",
+      "source_sha256": "f28a31410cf0419a28a1b0511982102abe11389911c3a6896ce48362c9f43386"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_256_-_Frequently_Asked_Questions_-_Henry_of_Ghent.json",
+      "source_sha256": "3be8deb98dc9fb698c97f12877f2fcee5776e17e4c3a9e41da6b152a6253b0f4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_257_-_Martin_Pickave_on_Henry_of_Ghent_And_Freedom.json",
+      "source_sha256": "3de5c68aea564710afd783c6d33ef56383135634978912a54f56249d294e7316"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_258_-_Here_Comes_the_Son_-_The_Trinity_and_the_Eucharist.json",
+      "source_sha256": "15e6e77d31f03860313a8c9a917cdea34ec3432da42436d7e56c2bc2a60709df"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_259_-_Richard_Cross_on_Philosophy_and_the_Trinity.json",
+      "source_sha256": "43fcc2ab572e15fcaadc67f59ea121fefd3393ba4dff50beb4887c0c20935d8c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_260_-_Once_and_for_All_-_Scotus_on_Being.json",
+      "source_sha256": "9ff8f1db7eb60433f64e2cfaba3f6bafbef698b08ebfca2c7cf6291150fd7aa7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_261_-_To_Will_or_Not_to_Will_-_Scotus_on_Freedom.json",
+      "source_sha256": "20a0be08ed60f6bd451448b374533cbea6ba68e0c2e74f49dfd63d3d770c4814"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_262_-_On_Command_-_Scotus_on_Ethics.json",
+      "source_sha256": "3751ffacedf9cd62372a0b54292fdebe9160b4702707beb8738b3159b5b81742"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_263_-_One_in_a_Million_-_Scotus_on_Universals_and_Individuals.json",
+      "source_sha256": "d513996c74483f60ae97acc77e043d9b8f114a84ed6a7c778c8b29a89c437671"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_264_-_Giorgio_Pini_on_Scotus_on_Knowledge.json",
+      "source_sha256": "783419038f72665d0928ed1a8b3d52e7f4724362e62544d383b3612ba1e67a0d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_265_-_Time_of_the_Signs_-_the_Fourteenth_Century.json",
+      "source_sha256": "284555a222f74b67e33f31dcd811910dca13a07fc67999b0cdc8a5b09ba6e4b0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_266_-_Tom_Pink_on_the_Will.json",
+      "source_sha256": "d2fc29094e09e81fb9be2067216014165a55c50a2e650ccff94e6730ba1917d0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_267_-_After_Virtue_-_Marguerite_Porete.json",
+      "source_sha256": "a4fab72747579f699abbbf69f6a87e280dd950129bedee171588c6496dc3c5ff"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_268_-_To_Hell_and_Back_-_Dante_Aligheri.json",
+      "source_sha256": "e389c4214b7cc5cffd9c2c1b915a1f2a884bcfe7536473cff204a493eb5edb84"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_269_-_Our_Power_is_Real_-_The_Clash_of_Church_and_State.json",
+      "source_sha256": "8086b9b4ff3cdc6e174ff48cc8896bd7b39a07cac6012f8a61738cffff6dcacd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_270_-_Render_unto_Caesar_-_Marsilius_of_Padua.json",
+      "source_sha256": "f06cc00824b629c614211c90bd37c0f9e7c34bf70d8243d9c1c3a00bd20d6c9c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_271_-_Do_As_You_re_Told_-_Ockham_on_Ethics_and_Political_Philosophy.json",
+      "source_sha256": "2b154a513f841a1951e3c00ed5f59ccad73d59195f1e8ae233a92116668b329b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_272_-_A_Close_Shave_-_Ockham_s_Nominalism.json",
+      "source_sha256": "149e454364b42bdca19cae596618c632de6723b91adef46dab54ddce7bca07cd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_273_-_What_Do_You_Think_-_Ockham_on_Mental_Language.json",
+      "source_sha256": "991df5cf95cb64a74cbf53fe89b8eab97b0572047ca9a7ff91491c8861cb28d4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_274_-_Susan_Brower-Toland_on_Ockham_s_Philosophy_of_Mind.json",
+      "source_sha256": "dd38477b8168d3657d900880249ab0af6ddada73d513991d5bc24b487872cf22"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_275_-_Keeping_it_Real_-_Responses_to_Ockham.json",
+      "source_sha256": "ca9b308a26eebf2575e8e5d7a333c6d3b73eeebe1a5f2b645c66c4a6e042e301"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_276_-_Predestination.json",
+      "source_sha256": "cb8a4a0955279380837efdf868c672386aa6424c9c4159de7bd34c16e10e82b8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_277_-_Trivial_Pursuits_-_Fourteenth_Century_Logic.json",
+      "source_sha256": "b9bd794a09779241139b4ac16ad7678fa67171afb31d985f29ae57e33c9a7793"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_278_-_Sara_Uckelman_on_Obligations.json",
+      "source_sha256": "80a6ba84a008444decc78a6e15e5748c1c39850536ac79e34146a795cecbe09e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_279_-_Quadrivial_Pursuits_-_the_Oxford_Calculators.json",
+      "source_sha256": "ef322c431db88abf7fa016d5b36e0c349af3587f6cdac848c2cf8da93e8144b9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_280_-_Get_to_the_Point_-_Fourteenth_Century_Physics.json",
+      "source_sha256": "49bbf0ea533be879931e25c26abed8e9c7313b2c76e6de751f9f517379b0d2c4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_281_-_Monica_Green_on_Medieval_Medicine.json",
+      "source_sha256": "2f36eaa8131ddcfd24452117555969f54a5546ee7e6244cb75c0c3509308c363"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_282_-_Portrait_of_the_Artist_-_John_Buridan.json",
+      "source_sha256": "95ae3bd456d1d95d2bb925aa05fb055d403582a9ec66ef0d4ca0c19fe4e9cc9d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_283_-_Jack_Zupko_on_John_Buridan.json",
+      "source_sha256": "79bcac278a6e6bf049084b15b60a5b7895d2e31047ec1567c24ba5c78f45ab42"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_284_-_Seeing_is_Believing_-_Nicholas_of_Autrecourt_s_Skeptical_Challenge.json",
+      "source_sha256": "17cd7820669d41d891c6e0498c94d672cc810ed11f3f2c6988468fbe9361eeef"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_285_-_Dominik_Perler_on_Medieval_Skepticism.json",
+      "source_sha256": "aa1905777975ae8bd631f8175b48779c4e6b6621c4a5fccd025ac25225737980"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_286_-_On_the_Money_-_Medieval_Economic_Theory.json",
+      "source_sha256": "98995a8c573294daecf85f8b6a51fb36369fd80055630a0bf4a0b5fba5075cc3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_287_-_Down_to_the_Ground_-_Meister_Eckhart.json",
+      "source_sha256": "7c79c8d8bfcffe2ad8d87e1b32ad2ada12225971075b68dbf11599afa5f36fb0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_288_-_Men_in_Black_-_The_German_Dominicans.json",
+      "source_sha256": "67a754ec1872e07bcd4b0559bf16672686a21455da565c3427ef7a239eab2427"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_289_-_A_Wing_and_a_Prayer_-_Angels_in_Medieval_Philosophy.json",
+      "source_sha256": "9a4f4690aac41f6f636370e6630c017cb737eb447dc7a4bafe059d9d999431f5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_290_-_Martin_Pickave_on_Emotions_in_Medieval_Philosophy.json",
+      "source_sha256": "24b8f931d428495c7c938b5fb5cf6df8ce42f156c2c78ab0195dc3ff1608565b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_291_-_Alle_Maner_of_Thyng_Shall_be_Welle_-_English_Mysticism.json",
+      "source_sha256": "2dcd39419f028506a874109fb9a9caed2d43ab6bf675af56a9824b7f2928b714"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_292_-_Say_it_With_Poetry_-_Chaucer_and_Langland.json",
+      "source_sha256": "e2d08fd34fe0ccb8c748a5eb4b03a1c66dfdaad42a341ac769f3604f00dffec0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_293_-_The_Good_Wife_-_Gender_and_Sexuality_in_the_Middle_Ages.json",
+      "source_sha256": "90e0d6ba5bfee45a43c00871698c2476f415486c176e89767379bb941e7c53d9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_294_-_Isabel_Davis_on_Sexuality_and_Marriage_in_Chaucer.json",
+      "source_sha256": "1da20d95e7f6e7ebfff8212a07c645f919ee219072271e9faf44ac20c6572e20"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_295_-_The_Most_Christian_Doctor_-_Jean_Gerson.json",
+      "source_sha256": "1e6410f8d0103ce3361bf643703b95116ee00e9cf0900ea467de5bda19a37b16"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_296_-_Morning_Star_of_the_Reformation_-_John_Wyclif.json",
+      "source_sha256": "db77f8a72580e979b339fc61dde2a57fdc304cb5e7b388cfea7a5a2ebf4ad4d6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_297_-_The_Prague_Spring_-_Scholasticism_Across_Europe.json",
+      "source_sha256": "498cee1b98e3b6c2655ff4c9f79abc6b5281589024f19814ec62ff22920984c6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_298_-_Renaissance_Men_-_Ramon_Llull_and_Petrarch.json",
+      "source_sha256": "4e8bb747e757a13c6b9b6475349f2b68f229a4528166cb0c3040d69995415f8c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_299_-_Robert_Pasnau_on_Substance_in_Scholasticism.json",
+      "source_sha256": "46a0e53e4dd6f1e7bf871a6110a1a681395b7cfbefe2edc3e0c13a31b8e2a29e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_300a_-_The_Relevance_of_Ancient_Philosophy_Today.json",
+      "source_sha256": "8a1ec69066051e7a27b79bb4811e82465f07b0d45b908cb37630dc7bce24e74c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_300b_-_The_Relevance_of_Medieval_Philosophy_Today.json",
+      "source_sha256": "4f3a909041ef1fb094b7a0d077d4c9d8caee5f7b15007bea134b7935a1ecb753"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_301_-_The_Empire_Strikes_Back_-_Introduction_to_Byzantine_Philosophy.json",
+      "source_sha256": "91c1f04fa81d6b3d1ed24641e2a067acd54f36dfb85ecdba894142985cc3aeed"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_302_On_the_Eastern_Front_-_Philosophy_in_Syriac_and_Armenian.json",
+      "source_sha256": "d30eb6ff37e4a5867f59062f3a65a2fcb7723d3a9e29faca3fed7270cca54b5c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_303_-_Don_t_Picture_This_-_Iconoclasm.json",
+      "source_sha256": "3f0b78eff4fd2b1c82058df8653462b003ad584d34e29099d7143932d8108f50"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_304_-_Behind_Enemy_Lines_-_John_of_Damascus.json",
+      "source_sha256": "48eec0f0be8378444d7534e9c326208a92decec211b8c757a538ec509fdee24d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_305_-_Andrew_Louth_on_John_of_Damascus.json",
+      "source_sha256": "22dfe551422e8f3417f253c3d75319adfb275dbae74f877b35fd80b2b9cdeaa9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_306_-_Collectors__Items_-_Photius_and_Byzantine_Compilations.json",
+      "source_sha256": "b2d2e46fbdf9403a19fd38b4892d6ed660ee71a4c514fde3eaf4ae3a485ad7c7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_307_-_Consul_of_the_Philosophers_-_Michael_Psellos.json",
+      "source_sha256": "8ac50db02342f918b7975d016a28e67b43c670d882b0cc502dbf153f783d4f14"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_308_-_Dominic_O_Meara_on_Michael_Psellos.json",
+      "source_sha256": "ebbb73a17525d3ddf57b691365e49dccedfe350db1d37721d6d6e16c00151457"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_309_-_Hooked_on_Classics_-_Italos_and_the_Debate_over_Pagan_Learning.json",
+      "source_sha256": "da4b94ba96b03591bf7dddd3439139c6b7d8ed797577f8f0c60ff48b66a38e76"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_310_-_Purple_Prose_-_Byzantine_Political_Philosophy.json",
+      "source_sha256": "dfadaf7c79fc07f9e4a0a6dc2352ab7da2c4b578e022fb51069f012833f14f9c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_311_-_The_Elements_of_Style_-_Rhetoric_in_Byzantium.json",
+      "source_sha256": "74cd94ae02603d9d706226cf464e437ba5e2791dc1bf1d47fc3075f61abdf625"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_312_-_Past_Masters_-_Byzantine_Historiography.json",
+      "source_sha256": "2eb08677b244d107aa6e172e02c811575ae942d4f892ef51467b28bf15bde062"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_313_-_Queen_of_the_Sciences_-_Anna_Komnene_and_her_Circle.json",
+      "source_sha256": "6cf144c7c8eb425ec569abc6fdf125531386a6c093d48b8b145aff6ea7642c16"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_314_-_Katerina_Ierodiakonou_on_Byzantine_Commentaries.json",
+      "source_sha256": "de87216cdf1722eb89eb844dd720f75244882859c7b2d7ed7c26959cee716516"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_315_-_Wiser_Than_Men_-_Gender_in_Byzantium.json",
+      "source_sha256": "bbe45434323066905e211a339b8f9646f0269ff26b5aa06fce7e97807a5cc5f1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_316_-_Just_Measures_-_Law_Money_and_War_in_Byzantium.json",
+      "source_sha256": "50d6134ca3484947c80b369f6a417b89647f9c3248e77e65e9c678a4e8d23394"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_317_-_Made_by_Hand_-_Byzantine_Manuscripts.json",
+      "source_sha256": "bef87d2cfc8549f2116e52c75d2a2317e31185883a32c30ecee006cca016e118"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_318_-_Oliver_Primavesi_on_Greek_Manuscripts.json",
+      "source_sha256": "af8fc45d6596ca9096e3c67c0c9ea31424fd49a7be5fb87c328fed6f70e60a4f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_319_-_Georgia_on_My_Mind_-_Petritsi_and_the_Proclus_Revival.json",
+      "source_sha256": "768ecce33325785cc13fd6bcb7001c4eaaa6821194df8dde4617b927efd3227d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_320_-_People_of_the_South_-_Byzantium_and_Islam.json",
+      "source_sha256": "017c9c807bcc027ee7060d58b750d0f7c9e4e4984884f445c9e7a2b370f45b6f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_321_-_Judith_Herrin_on_Byzantium_and_Islam.json",
+      "source_sha256": "8de85d730ee51f110e5f4e37eb987f569796a6ecaeac2b1328d67fb3f0b49829"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_322_-_Do_the_Math_-_Science_in_the_Palaiologan_Renaissance.json",
+      "source_sha256": "59b3175d58ca59fadd93e36b3bf89e2e89bc5b9f4ce77293f40531c3702d9a9c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_323_-_Through_His_Works_You_Shall_Know_Him_-_Palamas_and_Hesychasm.json",
+      "source_sha256": "94fb1fd21b8b93179fab652aca09356d62e34d22e4cb15d909b38dba7e6d7f10"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_324_-_United_We_Fall_-_Latin_Philosophy_in_Byzantium.json",
+      "source_sha256": "3822a79ff03eb82f694d142a0c98e6ae2b4bf147df691f4074a99f2f9738258c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_325_-_Platonic_Love_-_Gemistos_Plethon.json",
+      "source_sha256": "5cf8d08a5ad398067375e58b0ad6ea91e57e6bff74b51042d26599dd40c08541"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_326_-_Istanbul_Not_Constantinople_-_the_Later_Orthodox_Tradition.json",
+      "source_sha256": "f2d92407e0292feb4987d5530706920eccfc0b612b1750d56e080477c3b70542"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_327_-_Michele_Trizio_on_Byzantine_and_Latin_Medieval_Philosophy.json",
+      "source_sha256": "5e16d7089c7d1f4fa22faf1f541681cde3f1060d150b0dad5ecd9f2cefec19dc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_328_-_Old_News_-_Introduction_to_the_Italian_Renaissance.json",
+      "source_sha256": "51f95ee08f48d8455e657760213a72e71535ab2b457996b390c79d7369885642"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_329_-_Greeks_Bearing_Gifts_-_Byzantine_Scholars_in_Italy.json",
+      "source_sha256": "f26a750d51d37912f87a59119439970067d3356b65a059f8a7965b1d2d76f73c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_330_-_Republic_of_Letters_-_Italian_Humanism.json",
+      "source_sha256": "1645a22db5665640c242498c8b5f557c9a20b61cb9e1f36fed004de1f21365fe"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_331_-_Literary_Criticism_-_Lorenzo_Valla.json",
+      "source_sha256": "318f345f58f35457b69cc7852b078f5ca0b86bdf13116bdfe7497a6681ceea51"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_332_-_Jill_Kraye_on_Humanism.json",
+      "source_sha256": "003eee36b4fef768bffc974fa8e6fe9c52ab785ae75a90b31c987b910aa61064"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_333_-_Difficult_to_Be_Good_-_Humanist_Ethics.json",
+      "source_sha256": "2eb6271ceee1eecb9f06991da4c13378ac6a41bb2a15021ecb7e0d82cab40224"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_334_-_Chance_Encounters_-_Reviving_Hellenistic_philosophy.json",
+      "source_sha256": "5c006f2d90fcdae137c5ecbe4ed38acdf2702b551cb32628c8fb1bc2aa5e666f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_335_-_Sabrina_Ebbersmeyer_on_Emotions_in_Renaissance_Philosophy.json",
+      "source_sha256": "458d89592f02626ea6186f87fd3471d113a9e3605633c443f94066c55d523c75"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_336_-_We_Built_This_City_-_Christine_de_Pizan.json",
+      "source_sha256": "e5269a946c00ad41b81dfe7caee85acba95397fbd2316be38a672aa88be08c35"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_337_-_More_Rare_Than_the_Phoenix_-_Italian_Women_Humanists.json",
+      "source_sha256": "250a428b1cf382e54319eb4262e9834960b6bede5441f168c0b06e1428814278"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_338_-_All_About_Eve_-_the_Defense_of_Women.json",
+      "source_sha256": "2f8773a3df1e8052cad76f1e95cca9ab7f0af50f168c85a3f6f998d840ef5c41"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_339_-_Id_Like_to_Thank_the_Academy_-_Florentine_Platonism.json",
+      "source_sha256": "13927fa9308d13bcb0f24173f52b27a0e0b61bf5c71146d18b03ffa93318348e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_340_-_Footnotes_to_Plato_-_Marsilio_Ficino.json",
+      "source_sha256": "779d3cc3a1c139b3501ae75f8f58067a66582e037ea58a15a6bd2894528a8726"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_341_-_True_Romance_-_Theories_of_Love.json",
+      "source_sha256": "9c80721f1b66bfdb8e9aa8c48b246d875bbd06d0db0ff9ceca8419de2e9712e1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_342_-_Denis_Robichaud_on_Plato_in_the_Renaissance.json",
+      "source_sha256": "e82cdf8531097299f6dd5f8338d7b582a39cbcbccead52c7dc72c5dd0375e8bd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_343_-_As_Far_as_East_from_West_-_Jewish_Philosophy_in_Renaissance_Italy.json",
+      "source_sha256": "d1cbe8d77856ee5bdf5a01a18534452ac47def5063de76359a8f84bbd81612ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_344_-_The_Count_of_Concord_-_Pico_della_Mirandola.json",
+      "source_sha256": "802910e5f93386d23adaa841851e08607d6c8b26b91091cd96e8754b7e044a65"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_346_-_Cecilia_Muratori_on_Animals_in_the_Renaissance.json",
+      "source_sha256": "fa2f695c8192a4e43d164cd628d038ef3d1531861e46f397fba00ec3f4c6e375"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_347_-_Bonfire_of_the_Vanities_-_Savonarola.json",
+      "source_sha256": "90aed16f701bc6fd5779dd7506bc11b45b7bded2465d13ae08b822ec53bd0e83"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_348_-_The_Sweet_Restraints_of_Liberty_-_Republicanism_and_Civic_Humanism.json",
+      "source_sha256": "23e0f1d4ece30b32fb936c55fb892564444bfb1459d3c83b632567cb8af3b3e7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_349_-_No_More_Mr_Nice_Guy_-_Machiavelli.json",
+      "source_sha256": "24da9a2feb9a747bb4eb42c90d99ff28c800ac8656815c31c9acd5d20df555e3"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_350_-_The_Sentence_-_Machiavelli_on_Republicanism_aujvt.json",
+      "source_sha256": "2da5cb3244842ec3f33a5af6472d95f41cd7283dcb3b21adf17f2692f693bbe2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_351_-_Quentin_Skinner_on_Machiavelli_89i4u.json",
+      "source_sha256": "2fb5c9aac2333ed5d898b9026e8b16a1112dc54e01a944b0ea2644859f491703"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_352_-_The_Teacher_of_Our_Actions_-_Renaissance_Historiography_a2gb6.json",
+      "source_sha256": "8dfda9cc681f9983344fd996a597b49abe45f44f6c786642c284e5d0f0dfbc48"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_353_-_The_Good_Place_-_Utopias_in_the_Italian_Renaissance_6mtjk.json",
+      "source_sha256": "b8ef480188d12342f11068d1764fff08ae876c54ffd01ea5c3687b9d793ddc50"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_354_-_Greed_is_Good_-_Economics_in_the_Italian_Renaissance_80cxd.json",
+      "source_sha256": "892665dfdbef9e85c7dbf813d3c4675da72e21e4a668ef45f7a7d4080c258e19"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_355_-_Town_and_Gown_-_Italian_Universities96e9m.json",
+      "source_sha256": "027910a3b874d696e971803d4eacb8581e8d5687bd7c183ea88e8c84f83f97a8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_357_-_David_Lines_on_Aristotle_s_Ethics_in_the_Renaissance6boi5.json",
+      "source_sha256": "46bed1d3ae167ac3a7677e027d967b9c28c258faf3b262ed574a6d81d7b6d81f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_358_-_Of_Two_Minds_-_Pomponazzi_and_Nifo_on_the_Intellect6xcxk.json",
+      "source_sha256": "49352b3edd92c1c18aa16b560a44ac5e86f697bc0b533b9733adc0e028ccd6fb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_359_-_There_and_Back_Again_-_Zabarella_on_Scientific_Method99m5s.json",
+      "source_sha256": "31705d68dc7dfdd20dd9d8992ea5a4c4b2750a8d8a853fca966e17cb52658139"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_360_-_Dag_N_Hasse_on_Arabic_Learning_in_the_Renaissance7e5y3.json",
+      "source_sha256": "037a4df8e82316adf098531fd69d2693a54d22fbff52529d4e89fcce96a8c7c7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_361_-_The_Measure_of_All_Things_-_Renaissance_Mathematics_and_Arta08p0.json",
+      "source_sha256": "6fd75e6fac0c53757f88e979e62a7c3edfe9d71b5312420fd1080f52a33d3410"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_362_-_Just_What_the_Doctor_Ordered_-_Renaissance_Medicinebo1sm.json",
+      "source_sha256": "f6ecdc987ec3020939304992ef9c7f159e3b9001e5f4911bd7482a3e7e2c11a2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_363_-_Man_of_Discoveries_-_Girolamo_Cardano6t24w.json",
+      "source_sha256": "8d229ec09f5d8ff615b9684c8f5a39e2dd9331fda8e3c96ee48c93dc8052d5ff"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_364_-_Guido_Giglioni_on_Renaissance_Medicineaqnip.json",
+      "source_sha256": "be166dc5b6abfa4427844bb70e6b60fc60c4fcbdd0f539acdce5f4fc2f29b385"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_365_-_Spirits_in_the_Material_World_-_Telesio_and_Campanella_on_Naturebhe1c.json",
+      "source_sha256": "20d554116258d68786991b604b6cf2aa9e3e324535baad85b377e2c8daf22a41"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_366_-_The_Men_Who_Saw_Tomorrow_-_Renaissance_Magic_and_Astrologybu62s.json",
+      "source_sha256": "33e198d6b30994aa0bae20e026bff90739a1b3c147f0c4da22a6c3a191da6cf2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_367_-_Brian_Copenhaver_on_Renaissance_Magic7pswk.json",
+      "source_sha256": "65385ac8d92ec4d0770d21efb31b7c6ecee338ba940c84fe5e0f4839245ff6dc"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_368_-_Boundless_Enthusiasm_-_Giordano_Bruno7vjqn.json",
+      "source_sha256": "1bc5cb3d33e2100086691e982c6058b5e8fbcc82276da8773bfd03babd7ab642"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_369_-_The_Harder_They_Fall_-_Galileo_and_the_Renaissancebfkg1.json",
+      "source_sha256": "69a8c3d15f2af48e35f7af8588ea68b3d6d09d2139a810fb7445aa1859c8b606"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_370_-_Ingrid_Rowland_on_Rome_in_the_Renaissance7oamj.json",
+      "source_sha256": "ceed6b7dcb221461ed465549a0eb46e5d634e64a2316f82e32d2851eb146755f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_371_-_European_Disunion_-_Introduction_to_the_Reformationa73y5.json",
+      "source_sha256": "eddce2ee67c226e642756bb677ede946e4b09f2dbe80b9424cec4c79ad559433"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_372_-_Strong_Silent_Type_-_the_Printing_Pressbwbks.json",
+      "source_sha256": "b84d8a6c7729ad3ab6261b729406b01844d0533ee1a863886d7b994d33522fa1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_373_-_Lords_of_Language_-_Northern_Humanismbstm9.json",
+      "source_sha256": "3dd622c46c44d3bf44ec13167b66c7f7ed9c4daa888d43a7aed25a777be1a2b8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_374_-_Opposites_Attract_-_Nicholas_of_Cusaaq5r4.json",
+      "source_sha256": "d869150c2ee5161176a307bc16a5ccffae242e7d06d0ca5d663e8c33380afe40"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_375_-_Paul_Richard_Blum_on_Nicholas_of_Cusab8hvf.json",
+      "source_sha256": "c71989399b607e66e4d7130bf9c3bcf3dc39aed34149330a0d6d45a1c01ef718"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_376_-_Books_That_Last_Forever_-_Erasmus9oneb.json",
+      "source_sha256": "9b0be2271e4d9e3c2114874c5123781891feac0bd51eadd42f2168f81c483460"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_377_-_One_Way_or_Another_-_Northern_Scholasticism70gir.json",
+      "source_sha256": "2870be83d57e0754ced84d28a3dca0cd3acdd5687e0fdf13156625366d1f929c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_378_-_Faith_No_More_-_Martin_Luther909fq.json",
+      "source_sha256": "0c6acd8d45848c924f895f77d4386d406a973dcd265834a5721f1ac89d9cabc1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_379_-_Lyndal_Roper_on_Luthera25kv.json",
+      "source_sha256": "ab5e676346d63c4f96f6af3309d63f56118af5dfb578a0433a295d43f988c9b4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_380_-_Take_Your_Choice_-_Erasmus_vs_Luther_on_Free_Will7eish.json",
+      "source_sha256": "f841fe41602c1d4f5a9f988f059c0eb462271af99ed9285c35ae8276d14207e7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_381_-_More_Lutheran_than_Luther_-_Philip_Melanchthon8gf8s.json",
+      "source_sha256": "0e8b8d553a62fca12a56d57b3e871a0ac4c09391b916529ba4bae5485d072791"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_382_-_No_Lord_but_God_-_the_Peasants__War_and_Radical_Reformation9vmdg.json",
+      "source_sha256": "1f73d70bd5c4807b7bf0899586b4daf20770bb594375cacfc0ab02e91bbfdcca"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_383_-_Slowly_But_Surely_-_Huldrych_Zwingli6s4ab.json",
+      "source_sha256": "f10fa9b2e56d336abc57801fc1e2d4544b307dc80a82c2c1f34e458fa3b5bd8e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_384_-_We_Are_Not_Our_Own_-_John_Calvinbjltt.json",
+      "source_sha256": "fa0ec2b464c27e1e9581ea8f58a3e75e0d49e25ee4fd78404ea82e7f430d6c41"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_385_-_I_Too_Can_Ask_Questions_-_Protestant_Scholasticism6qugj.json",
+      "source_sha256": "cd8b96214d0fa05a6a01b0e9b4d2147a512afa0e3f93c3c8f0f87a29054c3b68"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_386_-_Perhaps_Not_Wrong_-_Cornelius_Agrippabr237.json",
+      "source_sha256": "dfc710af74cd77654ae59510b196e18410579899e349015f1991120940b0057f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_387_-_Helen_Hattab_on_Protestant_Philosophy6d92f.json",
+      "source_sha256": "7d02845e54176de8dd6b62ddb9331580a1a96e620ab0d69e2c446688ea5cc636"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_388_-_Just_Add_Salt_-_Paracelsus_and_Alchemy7cbbe.json",
+      "source_sha256": "0f0407ac25fae73560ef39a56b56e604e1591c81af117166f3c8e36d79ba3e96"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_389_-_The_Acid_Test_-_Theories_of_Matterb0eom.json",
+      "source_sha256": "3c67039e9ac528aca01b216d5f737a80179038653388efb04d61f3bccccfc5d6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_390_-_Born_to_Be_Contrary_-_Toleration_in_the_Netherlandsa9woa.json",
+      "source_sha256": "8bf362561b7fcc81fabd25ea369d72ef4226f7d3fd6ec4e757c553d4e9f4b3d7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_391_-_Everything_is_Mine_and_Nothing_-_Lipsius_and_the_Revival_of_Stoicism7tu3d.json",
+      "source_sha256": "7393db921fe9305ff8622a306d83e6e2d192e3f5793663fe1614d939d91a30a0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_392_-_John_Sellars_on_Lipsius_and_Early_Modern_Stoicism9hhy4.json",
+      "source_sha256": "c6f799431b1cb3e693f70dcb730c28fcb3affb44bac5f3d5da05b66178ec95ff"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_393_-_The_World_Doesn_t_Revolve_Around_You_-_Copernicus83z2k.json",
+      "source_sha256": "8b77daf92c8e37f9315d36177a4e476f03639433996e26530dbe741bcd972433"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_394_-_The_Best_of_Both_Worlds_-_Tycho_Brahe8gclj.json",
+      "source_sha256": "d1862fef9e48a0a920f1a91cc08782f28406161de87f93e1570707a7f308d528"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_395_-_Music_of_the_Spheres_-_Johannes_Kepler82aip.json",
+      "source_sha256": "c78d6de8693f8165eaa8e7e1b4412ea47218a47ed632fe795eed494e9384e345"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_396_-_Lorraine_Daston_on_Renaissance_Sciencebbkn6.json",
+      "source_sha256": "2dc606c26132595313ca65696374cb55ebac05f2753124c1f38034dd1ad7a6b1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_397_-_Do_As_the_Romans_Did_-_French_Humanism76kxl.json",
+      "source_sha256": "4a14c1ce54bdb46694e730f0d5dc33cb1a91d66aa1bdfb74becd4f99a5a13c3e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_398_-_Pearls_of_Wisdom_-_Marguerite_of_Navarre8037h.json",
+      "source_sha256": "d5b0d5ffdb1888d636225bd7c1fb6b64066b93e3085724e6aca6ded27c96c437"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_399_-_Seriously_Funny_-_Rabelais9igrh.json",
+      "source_sha256": "72e1da3e201e023f1d6af819607d10bcc80ff13b805ef604e9e42ef0c61a1fa7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_400_-_Philosophy_Podcasters97w6k.json",
+      "source_sha256": "3576e5d8e874c4ba3a2c2b2b538b3861e143e2f3e5d4b82cd60452a1bb26f898"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_401_-_Word_Perfect_-_Logic_and_Language_in_Renaissance_France8peje.json",
+      "source_sha256": "ad246e2d97b6c956ca058f28cc8b5cd7af66317cf7434d8bee08b2d3e206b541"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_402_-_Life_is_Not_Enough_-_Medicine_in_Renaissance_France9go0w.json",
+      "source_sha256": "aacb674a52197f27a0013e64d250084b02198ec3211a20f309e143121ff95d57"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_403_-_Make_It_Simple_-_Peter_Ramus9xbgi.json",
+      "source_sha256": "e4ddd136cffd34b1adb7a05ca1b28ff00233c56a6e7e1bd2520ed8b2a7d64520"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_404_-_Robert_Goulding_on_Peter_Ramus8wsyl.json",
+      "source_sha256": "ac879618e6e0ec0c827bcc4d472c2155719005bcf1d15a3b75e0206a88c96b9d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_405_-_Divide_and_Conquer_-_the_Spread_of_Ramism7hpxw.json",
+      "source_sha256": "bac416de532d8d2e5e30b6d59dbb521fce4d305f244e36e9626615df6bddbcf0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_406_-_Believe_at_Your_Own_Risk_-_Toleration_in_Franceaeaz1.json",
+      "source_sha256": "3dec8d1c2d9129bc5d0041033fa9fb8ce787d479ae610a6007e421aa27e68e76"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_407_-_Maria_Rosa_Antognazza_on_Early_Modern_Toleration9y866.json",
+      "source_sha256": "8704a6b0aa005eb4538f9fe2b10aa28acc6a3898f2e0f7eab564075436a72e77"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_408_-_Constitutional_Conventions_-_the_Huguenots8wynz.json",
+      "source_sha256": "e031c64f9a1cdcf499e133c8fe2e0fd3a3ddbfaf4c7f3206be6758c255140a42"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_409_-_One_to_Rule_Them_All_-_Jean_Bodin68gtl.json",
+      "source_sha256": "89733667eabb409f7330ea5f24eccc2af058b83aff4934682c4330fcceab8982"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_410_-_Ann_Blair_on_Jean_Bodin_s_Natural_Philosophybdutq.json",
+      "source_sha256": "6ca44aca2ff85d026ab3053258e6941b50d3a9951774c1d51260acea430a56c7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_411_-_Pen_Pals_-_Later_French_Humanism62hdw.json",
+      "source_sha256": "74fd8582ab033773959440fa2f17a3d55f52817d142dc14766ccb1f0fd9d0d9f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_412_-_Not_Matter_But_Me_-_Michel_de_Montaigne8r3gt.json",
+      "source_sha256": "bbd09b3fbf5178315815e76f3dd970193d177ac8f5652df8e3f78f8094c588de"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_413_-_Don_t_Be_So_Sure_-_French_Skepticism7zkjn.json",
+      "source_sha256": "412557423cdbba6a443ef166107796ff5123cc86647ce2643df0c5be11187390"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_414_-_Henrik_Lagerlund_on_Renaissance_Skepticism6wywt.json",
+      "source_sha256": "8fbae5d479ad1ccd88b446cc2cec6db705b89f36d7da95929265023c49f8f6ba"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_415_-_The_Tenth_Muse_-_Marie_de_Gournay98j0o.json",
+      "source_sha256": "5b543c2b1196650da04f54d27ee20224b289f749a7aa146864c41d2fb7111cdb"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_416_-_Gods_is_the_Quarrel_-_The_English_Reformation96ou3.json",
+      "source_sha256": "04710cd3f3d592bd29538fa19c743de76ee674d771d537e0619101ca9c25f585"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_417_-_To_Kill_a_King_-_The_Scottish_Reformation6l0g7.json",
+      "source_sha256": "10fc00a4c4774ee72fe3ae54ad973fc1233dd96c9ab0a5633e0dbd8f598d398b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_418_-_Diarmaid_MacCulloch_on_the_British_Reformationsau1th.json",
+      "source_sha256": "32638431108f8f18f5a4eaa12ba7f60d8565a970d057449efcf8c93f167a828d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_419_-_Write_Till_Your_Ink_Be_Dry_-_Humanism_in_Britain9kjfz.json",
+      "source_sha256": "a847479bf08dbef6c79127c791caded32317a22764f2ee61c996f039ee601a40"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_420_-_No_Place_Will_Please_Me_So_-_Thomas_Moreaqy9k.json",
+      "source_sha256": "14ddae31ccfca9199f067b89f067771263adc91761cc1d736b39d24e7d642d4a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_421_-_With_Such_Perfection_Govern_-_English_Political_Thoughtagdcj.json",
+      "source_sha256": "e025a075376842928e0e4978b6bf12d11ec9495ed92478b5e39e7c1360bebd7f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_422_-_The_World_s_Law_-_Richard_Hookera69sv.json",
+      "source_sha256": "abcfbc329d44c33b3d0f6c86e0b53b431950be21a18ad9085b5e80ac2882c91e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_423_-_Heaven-Bred_Poesy_-_Philip_Sidney_and_Edmund_Spenseraaiy3.json",
+      "source_sha256": "6d6b6353df40d18f6c860bd737fc8817085992b2588ea4926f19bd54e41be2ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_424_-_Hast_Any_Philosophy_In_Thee__-_William_Shakespeare86qz1.json",
+      "source_sha256": "e4c1658ecf2ce2c4bc3ee26f86a50dc1c8e30707b949a948783d8c04c709098b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_425_-_Patrick_Gray_on_Shakespeare8ipn5.json",
+      "source_sha256": "12368b272b3c069bee949b921c598d2a261dfc6073f481a82ac9d784b543b804"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_426_-_A_Face_Without_a_Heart_-_Shakespeare_s_Hamlet_and_Individualism7mg1z.json",
+      "source_sha256": "184554cc931b9dad54f9b12ba0466555a0f1d6ec2d8c378f714127d3c2548825"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_427_-_Brave_New_World_-_Shakespeare_s_Tempest_and_Colonialism9tgnd.json",
+      "source_sha256": "bc3d7d69f674eb3489838b8c51791950c724bc874c906f0b06bfe417b391ffd1"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_428_-_Weird_Sisters_-_Shakespeare_s_Macbeth_and_Witchcraft8o64o.json",
+      "source_sha256": "f1a4e62af54fda7726462d9e68c45a428c49ef9cb2a8c1b7243acb7cc8ab88a5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_429_-_She_Uttereth_Piercing_Eloquence_-_Women_s_Spiritual_Literature99mnb.json",
+      "source_sha256": "7ce3a465cb11a7eea71fe9511810049802fff1c0fc7f9f2a6f55f9cc8713fb7e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_430_-_I_ll_Teach_You_Differences_-_British_Scholasticismaliao.json",
+      "source_sha256": "fa2a63b482ca334faf87a7a7e14a24552e6441d55537a6e380fa5f85821e9294"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_431_-_Calvin_Normore_on_Scholasticism8fmsy.json",
+      "source_sha256": "5de50c761bb58a45402b435283149eda9e941196b8517e96d39b2ffde95b97d8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_432_-_If_This_Be_Magic_Let_It_Be_an_Art_-_John_Dee7vozr.json",
+      "source_sha256": "5db455a8ca2218e1bb6299fa2d8b85e600d1c6f60339a55870b4f7122670f75b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_433_-_Nature_s_Mystery_-_Science_in_Renaissance_England9kwkv.json",
+      "source_sha256": "d7d6827833b6b3b43162b5d2866cf455c605008c9614ea09092c531fb9102c7c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_434_-_The_Eye_Sees_Not_Itself_But_By_Reflection_-_Theories_of_Visionanr3c.json",
+      "source_sha256": "926148e47042a55de4daa0cc50d65d28c00979a2d77ca2443e0746811f266d2e"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_435_-_Metal_More_Attractive_-_William_Gilbert_and_Magnetismboa6k.json",
+      "source_sha256": "11cc5c65ce93444e705edde4d38fe47ef730fafe645ef7eb39e8f725d0fde161"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_436_-_Unpathed_Waters_Undreamed_Shores_-_Robert_Fluddasn6k.json",
+      "source_sha256": "94c592e96211d1d394563acb9dc1d4297558ad3e093927e53a231a6835514ac5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_437_-_Jennifer_Rampling_on_Renaissance_Alchemy9wx33.json",
+      "source_sha256": "7554e10433aedd3d05f8d1d3261fe93186e32fb96729c215858bb27165480e54"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_438_-_Don_t_Give_Up_Pope_-_Catholic_Reformationajck6.json",
+      "source_sha256": "c7beee31bce86798e2401f3df90081747b8f9d0bce602d06f35a74c32dfc6110"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_439_-_Cancel_Culture_-_The_Inquisitionajvd8.json",
+      "source_sha256": "aab2ceaff9714a2ff288eae6f6ecafbc48b924aca37ef0b7ca77f60bf25f577b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_440_-_Longitudinal_Studies_-_Exploration_and_Science6mphg.json",
+      "source_sha256": "ed6ced9f0fdedd649cfe535708c4864b24e1a18fcf5744bd713bbe03cb25f9a6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_441_-_Lambs_to_the_Slaughter_-_Debating_the_New_World8dlub.json",
+      "source_sha256": "bc82701fcfcd261a2b5a53f561af46503154adc94b00373e5346935505d57080"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_442_-_Scott_Williams_on_Disability_and_the_New_Worldbjy43.json",
+      "source_sha256": "60f2783a60f6f069b698679d64abc895555245e3f29e2be11775ee7bb36988ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_443_-_Marketplace_of_Letters_-_Iberian_Humanismbriko.json",
+      "source_sha256": "839f417b8a6f51314e361b33c0ea4836fdcc669ea412930304fb2a2b154e19ab"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_444_-_The_Dark_Night_Rises_-_Spanish_Mysticismab8y1.json",
+      "source_sha256": "e3191a2fad3bbb352bd74f591bf92ca4066d72965e76a15e97f4024f99b98da8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_445_-_Band_of_Brothers_-_the_Jesuitsaz8ik.json",
+      "source_sha256": "5bdab4ad20b1190ab6e5202ae77f46376be88d892097b201f3cd53b3c0accae7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_446_-_Not_Doubting_Thomas_-_the_Aquinas_Revivalalwvm.json",
+      "source_sha256": "aea8d8d2bab37d6248f24279e56c93d04a1de5187d0da3d36d968d3165cb4571"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_447_-_Andre_s_Messmer_on_Spanish_Protestantismbsaqm.json",
+      "source_sha256": "7e3896938c5cef2ac203acad23c2b32e8ce735703046f117d1be8f2981ef1c9d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_448_-_Secondary_Schools_-_Iberian_Scholasticisma1kuj.json",
+      "source_sha256": "276fed02d7f11acb1ee941d84dc3016b7356bc3b63f5a412fb6907d9b85cfa71"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_449_-_Anna_Tropia_on_Jesuit_Philosophy6lsd2.json",
+      "source_sha256": "90c826e8348a07aaaaf11c45a1d0a7e56ef0f5faebaa074c8cf081c462f7e474"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_450_-_Depicting_What_Cannot_Be_Depicted_-_Philosophy_and_Two_Renaissance_Artworksbwfcz.json",
+      "source_sha256": "663125d428fd99934d0dd45e269a76cc7586e689adce49a10b91dbaf46aded3d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_451_-_Could_ve_Would_ve_Should_ve_-_Free_Will_in_the_Second_Scholastic79icc.json",
+      "source_sha256": "670ce1dbde43686979ea85a0d5f40da8b3c297c347badf5069085a546ec8ed3c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_452_-_Better_Than_Nothing_-_Metaphysics_in_the_Second_Scholastic6krjk.json",
+      "source_sha256": "008c3dabd7aaf73c5d38381d64591fa27f82856fffce02111457f4a3ffd21293"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_453_-_The_Price_is_Right_-_Law_and_Economics_in_the_Second_Scholastic5yxzh.json",
+      "source_sha256": "18031a82663e3c078d4856e89ce75b77158562ae20956e539ce9d009b5d3e497"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_454_-_By_Appointment_Only_-_Political_Philosophy_in_the_Second_Scholastic7t6mw.json",
+      "source_sha256": "4aff081ae35c806cd3e73b27f1e9c6514d25805b4a2d5b44caf1b12d3bacf0b7"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_455_-_Tom_Pink_on_Francisco_Sua_rezbd1jq.json",
+      "source_sha256": "7bf167dde3a798a3ed91802c49dd1ba33339f76abbd9035590bedac023eedf3a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_456_-_Touch_Me_With_Your_Madness_-_Cervantes_Don_Quixotea4q40.json",
+      "source_sha256": "430a34bd59524191f862466cb379be01c654c8090b6aa896ccb94d0948e9681b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_457_-_Take_Your_Medicine_-_Oliva_Sabuco_and_Camilla_Erculianibsb4r.json",
+      "source_sha256": "649f5c79f720256afb845d0483f75c287e5b0b7907db29e6e4b53ca2c0d0af0a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_458_-_Outsider_Philosophy_-_The_Cheese_and_the_Wormsahfii.json",
+      "source_sha256": "b686618a13ba97aa4048f425f94a650b7ab222f41bcce686e4d39651d9c9bd7a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_459_-_Cardinal_Rule_-_Robert_Bellarmine7elpb.json",
+      "source_sha256": "a1c8f1e4396896b97aed5a48d4a16112082ac4dd85cd819478ad5475f2529f58"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_460_-_Trial_and_Error_-_Galileo_and_the_Inquisition6soim.json",
+      "source_sha256": "2d9c75655826ccfef3ac58dcc68dc794014266c26350e11d69d22c2e8fc84346"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_461_-_Eileen_Reeves_on_Galileo_and_the_Telescope9luff.json",
+      "source_sha256": "9c0f53b6d2e05184beda0ae8565cc28f296fad2465841f6c9d2e5a9d2ba5dc7b"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_462_Freedom_to_Philosophize_Introduction_to_Early_Modern_Philosophyas401.json",
+      "source_sha256": "7102634fb67cfe3581ffc97eb576f79d4de8903736a993e9e162e0682e4817fd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_463_Doctors_without_Borders_the_Republic_of_Lettersb2hq6.json",
+      "source_sha256": "e61c04395a210afe94863763b6de10f8627ddf16f359dc09ddcdf9013f02b646"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_464_Howard_Hotson_on_the_Republic_of_Letters72imq.json",
+      "source_sha256": "20bfc6f23e26fede5c7156e71b797640fd69ede5d4dcd6d948a6d799b91209ca"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_465_Modern_Times_France_and_the_Netherlands_in_the_17th_Century7pkps.json",
+      "source_sha256": "bee1c354da0e0c755bade33681b80b3d7d43aeb6d265842884b889e82391402f"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_466_Well_Hidden_Descartes_Life_and_Worksaaayw.json",
+      "source_sha256": "4cfe5ed43ae4d3d0feb757910833ba1ac6b7b326751f4b4bb377d48b55ab547c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_467_Written_in_Mathematics_Descartes_Physics8bdpw.json",
+      "source_sha256": "9a4b4ed88a008b2f8c8b49761e7f9c8a3ced251662a20709f6c44ee04a47dcc9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_468_Perchance_to_Dream_Descartes_Skeptical_Method7pfrw.json",
+      "source_sha256": "7401a217df35a23e60d274834fc85f9f6a9e38370fc6e669063328c83b089db9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_469_Ghost_in_the_Machine_Cartesian_Dualism9icas.json",
+      "source_sha256": "285c9ee56bfa2de7c210d1b209c4f4d0083e320131cc1209c03c34dfaabf3066"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_470_Gary_Hatfield_on_Descartes_Meditations6ukvl.json",
+      "source_sha256": "7abb41ed39a6d1d241b32114cddc1baeba5889af70aeca6eca311cec55485983"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_471_Unclear_and_Indistinct_Ideas_Debating_the_Meditations8onwx.json",
+      "source_sha256": "fa7fd074d8a4a42e611fa6af6242788db8ecba3bc02ff60f09dd411cfb5f98a5"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_472_Less_Cheer_More_Knowledge_Descartes_Ethics8prxr.json",
+      "source_sha256": "fd18ab4eb63cd27ac0883336bb5d58c8037538b094298b8e23abfe429f858fea"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_473_As_Rational_As_You_Elisabeth_of_Bohemia9v2qu.json",
+      "source_sha256": "9c304ce6d855f10bfacfaae4614987391328d0320562d59c7ecbc1a826ca4efd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_474_States_of_the_Union_Descartes_on_the_Passions7kfod.json",
+      "source_sha256": "69bd2f6b868a610c376982c07d45800d599b4afc4fc6a1ab0dd777ac2d68b9a6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_475_Ariane_Schneck_on_Elisabeth_and_Descartes8z677.json",
+      "source_sha256": "3680e3c6f198520f69d22eed98fd15ae34fd846710c23eb4bfbaa7b7577a8a35"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_476_What_He_Should_Have_Said_the_Early_Cartesians7gcj1.json",
+      "source_sha256": "35afb2c29dda94044d94692ef98b8640f15fb95ed6f88cbad18cf1b4677bab33"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_477_The_Mind_Has_No_Sex_Cartesianism_and_Gender8hyix.json",
+      "source_sha256": "51ae54309f772b37945d187066d357a63b4b5cab34a0f4018e000cf804d467b4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_478_This_Gland_Is_Your_Gland_Cartesian_Science6zq9w.json",
+      "source_sha256": "24c454703da7b446000ae8166d21fd652e71db76fa694f616855c04ae5c1d338"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_479_Gideon_Manning_on_Cartesian_Medicine6k4gc.json",
+      "source_sha256": "a47bfaa6a0ef73ce817eb6930849b0c1051411f0a1b26f24c83a30c609d38258"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_480_Honorable_Ignorance_French_Skepticism6yb8v.json",
+      "source_sha256": "4f71b2aa59ac4bae9d14b9b7eee105e00e9ae6b65f30ed6d772ad641b9fcceca"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_481_True_Fools_Gold_Pierre_Gassendi6gxt8.json",
+      "source_sha256": "0a9033dd78835f2013a71321b4cf93b5c95cda868e6ec4a13e9991233ff3b6e8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_482_Indivisible_Under_God_the_Revival_of_Atomism8hveh.json",
+      "source_sha256": "48888c8994d70b8c574b8665a06998dbff250e5d41d7ccbb507332e2ffa9780a"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_483_Between_Infinity_and_the_Void_Blaise_Pascal6usr1.json",
+      "source_sha256": "365791a7c2dc916a8073961f56001e97063810c496acb5b210640d0f86a6f13d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_484_You_Bet_Your_Life_Pascal_s_Wager6b9ua.json",
+      "source_sha256": "56c9cf48e2bc6d1aed2c4e22cbe767ed93c563c170f6d9c66c9d4a77c08afa99"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_485_Liz_Jackson_on_Pascal_s_Wager9stna.json",
+      "source_sha256": "7d3d4dc80ea999c1c7d58a8769d03359c317dcbe312f02b267c316deab489460"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_486_Friends_of_the_Truth_Arnauld_and_Jansenismadsrc.json",
+      "source_sha256": "5482ce5661cf9e41b89af3496f3bf822c006a4c58d8605fa89faa869ff454fce"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_487_Showing_Good_Judgment_The_Port_Royal_Logicaaj77.json",
+      "source_sha256": "9077afec659dda9f8e961b3534d152c6a4a57788816278b9be4c9f4b97b18924"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_488_No_Particular_Reason_Nicolas_Malebranche95foj.json",
+      "source_sha256": "f294ee5f717abf8cbc1ea800819e779dbde46f42aefeab2208e9813c75bfcb52"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_489_Malebranche_occasionalismbep6f.json",
+      "source_sha256": "a55b026c60f74c242d2cf7dc81eaca4aabe16c852d8b762f2156ccf7a51f3c79"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_490_Steven_Nadler_on_Occasionalism6d0vt.json",
+      "source_sha256": "3fda3fd392c0992fb92c42010cc6d1f49fa8d807059809b7ea16aff51353b29c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_491_Image_Problems_Arnauld_vs_Malebranche_on_Ideas7tt4e.json",
+      "source_sha256": "f05960f31db9bde24b223959d283d994a6493f827988b3d1253e83b58a44c316"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_492_Changing_By_Degrees_French_Scholasticismag13i.json",
+      "source_sha256": "93d753567813de61fe9f37c9516703f9127b775a611ea73a477df4060a593915"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_493_Better_Nature_The_French_Garden7uy03.json",
+      "source_sha256": "9b7e1d8d7ff351c28ce6573d79e248b3fdefabf64948d83c73327eca689f45da"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_494_Tell_the_Truth_While_Laughing_The_French_Moralists92o05.json",
+      "source_sha256": "8ded83958ffeeceda8c4ccbf8b86f6f06677816d2ffb3dd6f3dff3a5b08959b2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_495_Comedy_of_Errors_Molie_re9ucrf.json",
+      "source_sha256": "528080fc0de3ae8a9ea181ead717f0c079c16c29b51f1675c4e5a26d47697d2b"
+    },
+    {
+      "source_path": "HoP/01_whisper/OfhhekHoP_095___Anne_Sheppard_on_Ancient_Aesthetics.json",
+      "source_sha256": "465cdb8ac7039869a3945074ce0eb289934105693f4d74ed0d7ea413e86aaaa8"
+    },
+    {
+      "source_path": "HoP/01_whisper/P_011_All_You_Need_Is_Love_And_Five_Other_Things_Empedocles.json",
+      "source_sha256": "8a6d52f4608b20c2ba26750f3f7fbfbf52aa35b4f93884756cf95ef3ca9a48ae"
+    },
+    {
+      "source_path": "HoP/01_whisper/_003_Created_In_Our_Image_Xenophanes_Against_Greek_Religion.json",
+      "source_sha256": "836601b5b59db8f1307193755e7b4d53573d5b32f871c89c10073f4e857e13c0"
+    }
+  ]
+}

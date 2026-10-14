@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "api_url": "https://www.wikidata.org/w/api.php",
+  "request_timeout_seconds": 20,
+  "request_delay_seconds": 0.25,
+  "retries": 3,
+  "maxlag": null,
+  "entity_types": ["Person"],
+  "reviewed_qids": null,
+  "living_max_age_years": 110
+}

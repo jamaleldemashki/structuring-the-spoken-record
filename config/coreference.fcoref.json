@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "framework": "fastcoref",
+  "framework_version": "2.1.6",
+  "architecture": "FCoref",
+  "repo_id": "biu-nlp/f-coref",
+  "revision": "e91dfff12879495d882ba9460d0c5d5dd44ade59",
+  "device": "cpu",
+  "offline_only": true,
+  "max_tokens_in_batch": 2048,
+  "reference_forms": ["he", "him", "his", "himself", "she", "her", "hers", "herself"],
+  "anchor_type": "Person",
+  "require_capitalized_anchor": true,
+  "include_nominals": false
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "task": "mention_detection",
+  "framework": "gliner",
+  "framework_version": "0.2.21",
+  "repo_id": "urchade/gliner_medium-v2.1",
+  "revision": "40ec419335d09393f298636f471328b722c6da9e",
+  "revision_resolved_at": "2026-09-13",
+  "device": "cpu",
+  "labels_config": "config/entity_labels.development-calibrated.json",
+  "words_splitter": "whitespace",
+  "model_max_words": 384,
+  "encoder_max_tokens": 512,
+  "window_max_tokens": 200,
+  "window_overlap_tokens": 40,
+  "candidate_floor": 0.25,
+  "batch_size": 4,
+  "smoke_test": {
+    "status": "passed",
+    "date": "2026-09-13",
+    "cold_load_seconds": 246.0,
+    "cold_load_note": "includes first-time download of 5 checkpoint files (~3m51s fetch)",
+    "inference_seconds_short_text": 0.57,
+    "detected": 7
+  },
+  "notes": [
+    "Revision is pinned to an immutable commit SHA, not a branch name.",
+    "Nested checkpoint and tokenizer loading is forced offline after the smoke-test cache was established.",
+    "Acceptance threshold 0.30 was selected only from the six reviewed development passages; held-out test data was not processed."
+  ]
+}

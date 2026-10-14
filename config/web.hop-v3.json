@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "site": {
+    "archive_id": "history-of-philosophy",
+    "title": "History of Philosophy",
+    "subtitle": "without any gaps · podcast archive",
+    "series_facet": "sub_show",
+    "series_label": "Series",
+    "era_facet": "content_era",
+    "era_label": "Era",
+    "episode_number_pattern": "\\s*(\\d+)\\.",
+    "entity_types": [
+      {"type": "Person", "label": "Person", "plural": "people"},
+      {"type": "Concept", "label": "Concept", "plural": "concepts"},
+      {"type": "Work", "label": "Work", "plural": "works"},
+      {"type": "School", "label": "School", "plural": "schools"},
+      {"type": "Place", "label": "Place", "plural": "places", "visible_by_default": false},
+      {"type": "Period", "label": "Period", "plural": "periods", "visible_by_default": false},
+      {"type": "Group", "label": "Group", "plural": "groups", "visible_by_default": false},
+      {"type": "Language", "label": "Language", "plural": "languages", "visible_by_default": false}
+    ],
+    "lifespan_type": "Person",
+    "lived_presets": [
+      {"label": "Ancient", "start": -600, "end": 500},
+      {"label": "Medieval", "start": 500, "end": 1500},
+      {"label": "Modern", "start": 1500, "end": 2100}
+    ],
+    "search_placeholder": "Search philosophers, concepts, works…"
+  },
+  "co_discussed_types": ["Person", "Work", "School", "Concept"],
+  "min_shared_passages": 1,
+  "include_passage_text": true,
+  "predicate_labels": {"authored": "wrote"},
+  "discovery_method": "mpnet_cosine"
+}

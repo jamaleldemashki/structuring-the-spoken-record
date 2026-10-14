@@ -1,0 +1,49 @@
+{
+  "schema_version": 2,
+  "status": "development-calibrated; freeze before held-out test evaluation",
+  "decoding": "flat",
+  "labels": {
+    "Person": "person",
+    "Work": "title of a written work",
+    "School": "philosophical school, tradition, or religion",
+    "Concept": "philosophical concept",
+    "Place": "location",
+    "Period": "historical period",
+    "Language": "language",
+    "Group": "group of people or race"
+  },
+  "provisional_threshold": 0.30,
+  "calibration": {
+    "date": "2026-09-13",
+    "packet": "data/prototype1/evaluation/m3-development-six-v2",
+    "passages": 6,
+    "gold_mentions": 78,
+    "selection_metric": "micro exact flat typed-span F1",
+    "selection_rule": "maximum F1; ties prefer higher precision, then higher threshold",
+    "candidate_floor": 0.25,
+    "selected_threshold": 0.30,
+    "selected_precision": 0.8305084745762712,
+    "selected_recall": 0.6282051282051282,
+    "selected_f1": 0.7153284671532847,
+    "grid": [
+      {"threshold": 0.25, "precision": 0.78125, "recall": 0.6410256410256411, "f1": 0.704225352112676},
+      {"threshold": 0.30, "precision": 0.8305084745762712, "recall": 0.6282051282051282, "f1": 0.7153284671532847},
+      {"threshold": 0.35, "precision": 0.8363636363636363, "recall": 0.5897435897435898, "f1": 0.6917293233082706},
+      {"threshold": 0.40, "precision": 0.88, "recall": 0.5641025641025641, "f1": 0.6875},
+      {"threshold": 0.45, "precision": 0.8913043478260869, "recall": 0.5256410256410257, "f1": 0.6612903225806451},
+      {"threshold": 0.50, "precision": 0.8837209302325582, "recall": 0.48717948717948717, "f1": 0.628099173553719},
+      {"threshold": 0.55, "precision": 0.9047619047619048, "recall": 0.48717948717948717, "f1": 0.6333333333333333},
+      {"threshold": 0.60, "precision": 0.925, "recall": 0.47435897435897434, "f1": 0.6271186440677966},
+      {"threshold": 0.65, "precision": 0.9210526315789473, "recall": 0.44871794871794873, "f1": 0.603448275862069},
+      {"threshold": 0.70, "precision": 0.9393939393939394, "recall": 0.3974358974358974, "f1": 0.5585585585585585},
+      {"threshold": 0.75, "precision": 0.9375, "recall": 0.38461538461538464, "f1": 0.5454545454545454},
+      {"threshold": 0.80, "precision": 0.9354838709677419, "recall": 0.3717948717948718, "f1": 0.5321100917431193},
+      {"threshold": 0.85, "precision": 1.0, "recall": 0.34615384615384615, "f1": 0.5142857142857142},
+      {"threshold": 0.90, "precision": 1.0, "recall": 0.2948717948717949, "f1": 0.45544554455445546}
+    ]
+  },
+  "changelog": [
+    "v2 (2026-09-13): School widened to cover religions. Added Language and Group per thesis-author decision. God reclassified Person to Concept in the development gold.",
+    "Development calibration selected 0.30 from a predeclared 0.05 grid between the retained-candidate floor and 0.90. Label wordings were not changed after scoring."
+  ]
+}

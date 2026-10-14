@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "name": "pilot-24-preview-v1",
+  "split": "exploratory",
+  "selection_basis": "Union of the existing 12 development and 12 test selections for visual testing. Their original files remain unchanged. Inspecting/tuning on these outputs removes untouched-holdout status.",
+  "episodes": [
+    {
+      "source_path": "HoP/01_whisper/HoP243-TheOxHeardRoundtheWorld-ThomasAquinas.json",
+      "source_sha256": "e854da6347f8889f8ace84ee3b13e005ff9960f55902c075b065b88abd207fdf"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP244-EverybodyNeedsSomeBody-AquinasonSoulandKnowledge.json",
+      "source_sha256": "872aff7fd335b74d0b0c3d0f5e4aaffaa6e3d623d796e4fbce327a7e63a9c858"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP54-WilsonMosesontheRootsofBlackNationalismaxnma.json",
+      "source_sha256": "1a69e2f1deaf7dd516afdb6b9590a0a38e4fba72d49e91965e98c5ca60c42728"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_310_-_Purple_Prose_-_Byzantine_Political_Philosophy.json",
+      "source_sha256": "dfadaf7c79fc07f9e4a0a6dc2352ab7da2c4b578e022fb51069f012833f14f9c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_011_Mark_Csikszentmihalyi_on_Early_Confucianism95m0q.json",
+      "source_sha256": "0119f35a7950872f1ee82ed88528139a7b1df673e1038e58cdd27700068c47e8"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP047-GodOnlyKnows-AristotleonMindandGod.json",
+      "source_sha256": "7aa3782ee93a0869f39b1cb1b7e5d25e4e508da22d7196b31292e67bbd7e48dd"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_490_Steven_Nadler_on_Occasionalism6d0vt.json",
+      "source_sha256": "3fda3fd392c0992fb92c42010cc6d1f49fa8d807059809b7ea16aff51353b29c"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI07-BrianBlackontheUpanisads.json",
+      "source_sha256": "7bf659c4fb07bd3917396d4d7619b61ef8b44c29853ba42e898f6afb1c0d4af4"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_138___The_Self_Made_Man___Avicennas_Life_and_Works.json",
+      "source_sha256": "65fabab4c7652f4b8d2dc2063ab0000aecb95c2f2e969f66d52dd68ce058ecb9"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_139___By_the_Time_I_Get_to_Phoenix___Avicenna_on_Existence.json",
+      "source_sha256": "24b2b110c5111bed76a0ebacbb919842785f354aed8200f69580c84f19d37c5d"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_069___Beyond_Belief___Pyrrho_and_Skepticism.json",
+      "source_sha256": "8b522ee85eca289411c3e5c6c5b366167d8dcd11b7a42c88a729b311d0005530"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_374_-_Opposites_Attract_-_Nicholas_of_Cusaaq5r4.json",
+      "source_sha256": "d869150c2ee5161176a307bc16a5ccffae242e7d06d0ca5d663e8c33380afe40"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP230-ALightThatNeverGoesOut-RobertGrosseteste.json",
+      "source_sha256": "2083e7cd28ba8bef2f940c99cb46d339f3a0a443c61c445ad46670860915da54"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP231-OriginofSpecies-RogerBacon.json",
+      "source_sha256": "a46cdcfb477208efd3f3f800a17f9288b0552a0cca7c48884e7d2fd145bdfaa0"
+    },
+    {
+      "source_path": "HoP/01_whisper/HAP_07_-_Richard_Parkinson_on_Egyptian_Poetry.json",
+      "source_sha256": "0ec5e2aa0d97eb4d86534d6b0aa192d7c515e383c003167fee18095c0c0d8f03"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_313_-_Queen_of_the_Sciences_-_Anna_Komnene_and_her_Circle.json",
+      "source_sha256": "6cf144c7c8eb425ec569abc6fdf125531386a6c093d48b8b145aff6ea7642c16"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPC_03_Karyn_Lai_on_Classical_Chinese_Philosophy6rpw8.json",
+      "source_sha256": "4c470f218bdf948e338c41fadf17ab5d5c0ade3846ccd34570ef2752077dd519"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_004_The_Man_With_The_Golden_Thigh_Pythagoras.json",
+      "source_sha256": "2132aa5a020e2fb111f55b4f2661a21e1d29d33f1e6017990fac63ac6acbae22"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_474_States_of_the_Union_Descartes_on_the_Passions7kfod.json",
+      "source_sha256": "69bd2f6b868a610c376982c07d45800d599b4afc4fc6a1ab0dd777ac2d68b9a6"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_476_What_He_Should_Have_Said_the_Early_Cartesians7gcj1.json",
+      "source_sha256": "35afb2c29dda94044d94692ef98b8640f15fb95ed6f88cbad18cf1b4677bab33"
+    },
+    {
+      "source_path": "HoP/01_whisper/HPI12-RupertGethinonBuddhismandtheSelf.json",
+      "source_sha256": "545756fb622ceaad6d6d3c9b35627dfd41c35b491099abde60409512cc750de2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_134___Balancing_Acts___Arabic_Ethical_Literature.json",
+      "source_sha256": "73f80d8f4a823085afe3b2e0d9099642189cf561927160f49830d54d353223d2"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_073___Healthy_Skepticism___Sextus_Empiricus.json",
+      "source_sha256": "b61df106f031a9ab05162232ebd90646ddf802e0cfac1cd6b34f1c6a23358455"
+    },
+    {
+      "source_path": "HoP/01_whisper/HoP_376_-_Books_That_Last_Forever_-_Erasmus9oneb.json",
+      "source_sha256": "9b0be2271e4d9e3c2114874c5123781891feac0bd51eadd42f2168f81c483460"
+    }
+  ]
+}

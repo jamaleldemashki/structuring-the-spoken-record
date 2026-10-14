@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "repo_id": "sentence-transformers/all-mpnet-base-v2",
+  "revision": "12e86a3c702fc3c50205a8db88f0ec7c0b6b94a0",
+  "offline_only": true,
+  "max_tokens": 384,
+  "batch_size": 8,
+  "top_k": 3,
+  "minimum_cosine": 0.60,
+  "minimum_jaccard": 0.05,
+  "cross_episode_only": true
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "passage_min_words": 150,
+  "passage_target_words": 200,
+  "passage_max_words": 300,
+  "window_max_tokens": 200,
+  "window_overlap_tokens": 40
+}

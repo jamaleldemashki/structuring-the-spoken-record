@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "adapter": "hop_whisper",
+  "transcripts_dir": "HoP/01_whisper",
+  "known_shows": ["HoP", "HAP", "HPI", "HPC", "GPW"],
+  "series_to_group": {"Africana": "HAP", "India": "HPI", "China": "HPC"},
+  "main_series": ["Classical Greek", "Later Antiquity", "Islamic World", "Medieval", "Byzantine", "Renaissance Reformation", "Early Modern"]
+}

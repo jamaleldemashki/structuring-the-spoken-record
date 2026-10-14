@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "vault_name": "Structuring the Spoken Record — Concept and school exploration",
+  "corpus_title": "History of Philosophy pilot corpus",
+  "series_facet": "sub_show",
+  "series_codes": {
+    "HOP": "HoP",
+    "HAP": "HAP",
+    "HPI": "HPI",
+    "HPC": "HPC",
+    "GPW": "GPW"
+  },
+  "episode_number_pattern": "^\\s*(\\d+[A-Za-z]?)\\b",
+  "source_key_pattern": "\\b(HoP|HAP|HPI|HPC|GPW)[_ -]?(\\d+[A-Za-z]?)",
+  "graph_exclude_paths": [
+    "00_Index",
+    "90_Review",
+    "05_Corpus",
+    "START HERE.md"
+  ],
+  "concept_navigation": true,
+  "navigation_max_neighbors": 8,
+  "navigation_max_evidence": 3
+}

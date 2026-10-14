@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "corpus_id": "hop",
+  "profile": "config/profiles/hop.json",
+  "metadata": "HoP/00_infos/hop_episodes_cache.jsonl",
+  "audit": "data/audit/episode_audit.jsonl",
+  "quarantine": "data/audit/quarantine.jsonl"
+}
