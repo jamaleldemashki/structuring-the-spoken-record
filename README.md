@@ -21,33 +21,37 @@ The corpus itself, around 700 Whisper-transcribed episodes spanning the main _Hi
 ## What is in this repository
 
 ```
-src/spoken_record/   the pipeline (Python), one module per stage
-config/              recipes, stage configs and the HoP profile, pilots and reviewed aliases
+src/spoken_record/   the pipeline (Python)
+config/              the corpus config of each podcast and the settings of every step
 web/                 the exploration web app (Svelte, TypeScript, Cytoscape)
 tests/               pipeline tests on synthetic transcripts with offline model fakes
-scripts/             the HoP corpus audit that the HoP adapter relies on
-data/audit/          output of that audit (metadata joins, no transcript text)
+scripts/             the HoP corpus audit that episode selection and metadata rely on
+data/audit/          output of that audit (metadata joins and checksums, no transcript text)
 schema/              JSON schema of the source records
 ```
 
-The pipeline reads Whisper transcripts and episode metadata and runs these stages:
+One command processes the chosen episodes and builds the archive:
 
-ingest, segment into passages, extract mentions (GLiNER), resolve identities, refine Person
-identities, link to Wikidata, pronoun coreference (FCoref), relations (GLiREL), check relations
-with NLI, find related passages (MPNet), add Wikidata lifespans, and export to Obsidian or to
-the web app.
+```sh
+spoken-record update --corpus config/hop.json --episodes "HoP 230-254"
+```
 
-Every stage writes a new snapshot (JSONL plus a `manifest.json` with hashes) and never changes
-its input, so each result can be traced back to the transcript passage it comes from. The web
-app shows the archive as a graph of people, works, concepts and so on, where every connection
-opens the passages behind it and plays the audio from there.
+The pipeline works from the bottom up. Each episode is processed on its own and stored in its
+own folder: passages, mentions (GLiNER), the entities of the episode, pronoun links (FCoref),
+relations (GLiREL) and their check against the transcript (NLI), and passage vectors (MPNet).
+An episode is processed once and only again when its transcript or the settings change. The
+corpus build then joins all episodes: it merges the same person, work or concept across
+episodes, links them to Wikidata, finds related passages in other episodes, adds lifespans
+and portraits, and writes the knowledge graph of the archive (`graph.json`), from which the
+data for the web app is made. Adding a new episode only runs the models on that episode.
 
-Nothing in the pipeline or the app is specific to History of Philosophy. A podcast is described
-by config files, see [DEVELOPMENT.md](DEVELOPMENT.md#add-another-podcast).
+Every connection in the app opens the passages behind it and plays the audio from there.
+Nothing in the pipeline or the app is specific to History of Philosophy. A podcast is
+described by one corpus config, see [DEVELOPMENT.md](DEVELOPMENT.md#add-another-podcast).
 
-- [DEVELOPMENT.md](DEVELOPMENT.md): setup, running the pipeline and the web app, adding a podcast
-- [ARCHITECTURE.md](ARCHITECTURE.md): how the stages, records and exports fit together
+- [DEVELOPMENT.md](DEVELOPMENT.md): setup, running the pipeline and the web app, adding episodes and podcasts
+- [ARCHITECTURE.md](ARCHITECTURE.md): the two layers, the merge rules, the records and the cache
 
 The transcripts were provided by the supervisor and are not in this repository. Everything
-that contains transcript text (`data/prototype1/`, `export/prototype1/`, `web/public/data/`)
-stays local and is ignored by git.
+that contains transcript text (`data/episodes/`, `data/builds/`, `data/cache/`, `export/`,
+`web/public/data/`) stays local and is ignored by git.
