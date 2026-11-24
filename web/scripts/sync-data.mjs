@@ -1,8 +1,8 @@
 // Copy one validated web export into public/data for dev and build.
 //
 //   npm run data                                  newest export -> public/data
-//   npm run data -- <export run folder>           that export   -> public/data
-//   npm run data -- <export run folder> <id>      that export   -> public/data/<id>  (open the app with ?archive=<id>)
+//   npm run data -- <export folder>               that export   -> public/data
+//   npm run data -- <export folder> <id>          that export   -> public/data/<id>  (open the app with ?archive=<id>)
 //
 // The file list and checksums come from the export's manifest, so the app always gets a
 // complete and unchanged export in the data version it reads.
@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 
 const SCHEMA_VERSION = 2; // keep in step with SCHEMA_VERSION in src/lib/types.ts
 const here = dirname(fileURLToPath(import.meta.url));
-const exports = resolve(here, "../../export/prototype1");
+const exports = resolve(here, "../../export");
 
 const readManifest = (dir) => JSON.parse(readFileSync(join(dir, "manifest.json"), "utf8"));
 const usable = (m) => m.stage === "export_web" && m.status === "complete" && m.schema_version === SCHEMA_VERSION;
@@ -24,7 +24,7 @@ function newestExport() {
     .map((d) => ({ dir: join(exports, d.name), manifest: readManifest(join(exports, d.name)) }))
     .filter((r) => usable(r.manifest))
     .sort((a, b) => a.manifest.started_utc.localeCompare(b.manifest.started_utc));
-  if (!runs.length) throw new Error(`No completed schema-${SCHEMA_VERSION} web export in ${exports}. Run the export-web stage first.`);
+  if (!runs.length) throw new Error(`No completed schema-${SCHEMA_VERSION} web export in ${exports}. Run spoken-record update first.`);
   return runs.at(-1).dir;
 }
 

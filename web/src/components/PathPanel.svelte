@@ -2,6 +2,7 @@
   import { app } from "../lib/state.svelte.ts";
   import type { PathResult } from "../lib/graph.ts";
   import { typeVar } from "../lib/entityStyle.ts";
+  import TopicLink from "./TopicLink.svelte";
 
   let { path }: { path: PathResult } = $props();
   const label = (id: string) => app.idx!.entity.get(id)!.label;
@@ -9,8 +10,8 @@
 </script>
 
 <p class="eyebrow">Connection</p>
-<h2 class="serif">How {label(path.nodes[0])} is connected to {label(path.nodes.at(-1)!)}</h2>
-<p class="note">The shortest chain of links between the two, using what is in view. Named relations are preferred over “discussed together” links. Click a step to read its passages.</p>
+<h2 class="serif">How <TopicLink id={path.nodes[0]} /> is connected to <TopicLink id={path.nodes.at(-1)!} /></h2>
+<p class="note">The shortest chain between the two inside the current filters. Click a step to read the passages behind it.</p>
 
 <ol class="chain">
   {#each path.edges as ed, i (ed.id)}
@@ -19,13 +20,13 @@
     <li>
       <button onclick={() => app.selectEdge(ed)}>
         <span class="node"><span class="dot" style:background={typeVar(type(from))}></span>{label(from)}</span>
-        <span class="link">{ed.kind === "co_discussed" ? `discussed together (${ed.count})` : ed.source === from ? `${ed.label} →` : `← ${ed.label}`}</span>
+        <span class="link">{ed.kind === "co_discussed" ? `discussed together (${ed.count})` : ed.source === from ? ed.label : `${ed.label} (by)`}</span>
         <span class="node"><span class="dot" style:background={typeVar(type(to))}></span>{label(to)}</span>
       </button>
     </li>
   {/each}
 </ol>
-<button class="btn ghost" onclick={() => { app.path = null; app.selection = { kind: "entity", id: path.nodes[0] }; }}>Clear connection</button>
+<button class="btn" title="Keeps this chain and brings in what both ends are connected to" onclick={() => app.continueConnection(true)}>See what they share</button>
 
 <style>
   h2 { font-size: 22px; font-weight: 600; margin: 4px 0 8px; text-wrap: balance; }

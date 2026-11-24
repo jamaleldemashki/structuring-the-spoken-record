@@ -1,48 +1,54 @@
 /* Colour tokens: cool grey neutrals, one accent, and three hues for the first three entity
-   types of an archive (see lib/entityStyle.ts). Later types use neutrals, and every type has
-   its own node shape, so the type can be told apart without colour too. */
+   types of an archive (see lib/entityStyle.ts). The fourth type is a dark neutral and later
+   types are drawn as rings, so the type can be told apart without colour too.
+   The graph has a canvas of its own, a step darker than the panels, so the white details stand
+   in front of it and the map is not one large white glare. The type colours are checked against
+   the canvas: every mark at least 3:1. */
 :root {
   --bg: #f3f5f8;
   --surface: #ffffff;
+  --canvas: #f6f8fb;
   --surface-2: #eaeef4;
   --ink: #161c27;
   --ink-2: #485164;
-  --ink-3: #727b8f;
+  --ink-3: #5f6879;
   --line: #d8dee8;
   --accent: #27324f;
   --accent-ink: #ffffff;
   --mark: #fde9a8;
   --hue-1: #2a78d6;
   --hue-2: #eb6834;
-  --hue-3: #1baf7a;
+  --hue-3: #17a06f;
   --neutral-1: #3a4256;
-  --neutral-2: #8b93a4;
+  --neutral-2: #848c9d;
   --neutral-3: #b9c0cc;
   --edge-relation: #27324f;
   --edge-co: #b3bccb;
+  --episode: #6a4fb3;
+  --edge-episode: #c9bfe3;
   --shadow: 0 10px 30px rgba(15, 20, 30, 0.14);
   --font-ui: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-read: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --radius: 10px;
-  --audio-h: 64px;
-  --rail-w: 60px;
+  --audio-h: 58px;
+  --tabs-h: 0px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f131a; --surface: #171c25; --surface-2: #202734; --ink: #e8ecf3; --ink-2: #b2bacb; --ink-3: #8a93a6;
+    --bg: #0f131a; --surface: #171c25; --canvas: #171c25; --surface-2: #202734; --ink: #e8ecf3; --ink-2: #b2bacb; --ink-3: #8a93a6;
     --line: #2b3342; --accent: #c9d3ee; --accent-ink: #11151d; --mark: #5a4a12;
     --hue-1: #3987e5; --hue-2: #d95926; --hue-3: #199e70; --neutral-1: #c3cadb; --neutral-2: #8a93a6; --neutral-3: #5d6577;
-    --edge-relation: #c9d3ee; --edge-co: #475063; --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --edge-relation: #c9d3ee; --edge-co: #475063; --episode: #a48ae0; --edge-episode: #4a4068; --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f131a; --surface: #171c25; --surface-2: #202734; --ink: #e8ecf3; --ink-2: #b2bacb; --ink-3: #8a93a6;
+  --bg: #0f131a; --surface: #171c25; --canvas: #171c25; --surface-2: #202734; --ink: #e8ecf3; --ink-2: #b2bacb; --ink-3: #8a93a6;
   --line: #2b3342; --accent: #c9d3ee; --accent-ink: #11151d; --mark: #5a4a12;
   --hue-1: #3987e5; --hue-2: #d95926; --hue-3: #199e70; --neutral-1: #c3cadb; --neutral-2: #8a93a6; --neutral-3: #5d6577;
-  --edge-relation: #c9d3ee; --edge-co: #475063; --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --edge-relation: #c9d3ee; --edge-co: #475063; --episode: #a48ae0; --edge-episode: #4a4068; --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   color-scheme: dark;
 }
 
@@ -54,27 +60,46 @@ button, input, select { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 
-/* Shared building blocks */
-.note { font-size: 12px; color: var(--ink-3); }
+/* Shared building blocks. There is one kind of button in three strengths (.btn, .btn.ghost and
+   .btn.quiet), and one kind of chip, which is either a switch or a topic. */
+.note { font-size: 12.5px; color: var(--ink-3); }
 .empty { color: var(--ink-3); font-size: 13px; }
 .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block; }
 .dot.hollow { background: none !important; border: 1.5px solid var(--ink-3); }
-.eyebrow { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); display: inline-flex; gap: 6px; align-items: center; }
-.section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 18px 0 8px; font-weight: 600; }
-.chip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.eyebrow { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); display: inline-flex; gap: 6px; align-items: center; }
+.section-title { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); margin: 18px 0 8px; font-weight: 600; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 4px 12px; border-radius: 7px; border: 1px solid var(--accent);
+  background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.btn:hover { filter: brightness(1.12); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; filter: none; }
+.btn.ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--ink-3); filter: none; }
+.btn.ghost[aria-pressed="true"], .btn.ghost[aria-expanded="true"] { border-color: var(--ink-2); background: var(--surface-2); }
+.btn.quiet { background: none; border-color: transparent; color: var(--ink-2); padding-inline: 8px; }
+.btn.quiet:hover { background: var(--surface-2); color: var(--ink); filter: none; }
+.btn.icon { padding-inline: 7px; }
+.chip, .echip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 11px; min-height: 26px; font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
+.chip:hover, .echip:hover { border-color: var(--ink-3); }
+/* Switched on: tinted, not filled, so the mark of a type stays visible on it. */
+.chip[aria-pressed="true"] { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); border-color: var(--accent); font-weight: 500; }
 .chips { display: inline-flex; flex-wrap: wrap; gap: 5px; }
-.btn { border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
-.btn.ghost { background: none; color: var(--ink); border-color: var(--line); }
-.iconbtn { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 5px 10px; cursor: pointer; font-size: 12.5px; display: inline-flex; gap: 6px; align-items: center; color: var(--ink-2); }
-.iconbtn[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-3); }
 .seg { display: inline-flex; background: var(--surface-2); border-radius: 8px; padding: 2px; }
-.seg button { border: 0; background: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; color: var(--ink-2); }
+.seg button { border: 0; background: none; padding: 4px 10px; min-height: 26px; border-radius: 6px; cursor: pointer; font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+.seg button:hover { color: var(--ink); }
 .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(15, 20, 30, 0.12); }
+.seg button:disabled { opacity: 0.45; cursor: not-allowed; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
-.play { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 2px 9px; font-family: var(--font-data); font-size: 11.5px; cursor: pointer; white-space: nowrap; }
+.play { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 2px 10px; min-height: 26px; font-family: var(--font-data); font-size: 12px; cursor: pointer; white-space: nowrap; color: var(--ink); }
 .play:hover { border-color: var(--ink-3); }
-.echip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 1px 9px; font-size: 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.close { flex: none; display: grid; place-items: center; border: 0; background: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; color: var(--ink-3); font-size: 18px; line-height: 1; }
+.close:hover { background: var(--surface-2); color: var(--ink); }
+.linkish { border: 0; background: none; padding: 0; cursor: pointer; color: var(--ink-2); font-size: 12.5px; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.linkish:hover { color: var(--ink); text-decoration-color: currentColor; }
 .serif { font-family: var(--font-read); }
 mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 2px; }
-select { border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 3px 6px; font-size: 12px; }
+select { border: 1px solid var(--line); background: var(--surface); border-radius: 6px; padding: 4px 6px; font-size: 12.5px; }
+/* A finger needs more room than a pointer. */
+@media (pointer: coarse) {
+  .btn, .seg button, .chip, .echip, .play { min-height: 38px; }
+  .close { width: 38px; height: 38px; }
+}

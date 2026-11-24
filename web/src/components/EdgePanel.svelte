@@ -4,6 +4,7 @@
   import { plural } from "../lib/format.ts";
   import type { Edge } from "../lib/types.ts";
   import Quote from "./Quote.svelte";
+  import TopicLink from "./TopicLink.svelte";
 
   let { edge }: { edge: Edge } = $props();
   const idx = $derived(app.idx!);
@@ -11,7 +12,7 @@
   const b = $derived(idx.entity.get(edge.target)!);
   const evidence = $derived(evidenceInView(edge, app.vp));
   const source = $derived(edge.kind === "co_discussed"
-    ? `Mentioned in the same ${plural(edge.count, "passage")}. This says nothing about how they are related.`
+    ? `Both are named in the same ${plural(evidence.length, "passage")}${evidence.length < edge.evidence.length ? ` of the ${edge.evidence.length} in the whole archive` : ""}. This says nothing about how they are related.`
     : edge.status === "nli_supported"
       ? "Extracted from the transcript and checked against the passage by a second model. Still unreviewed."
       : "Extracted from the transcript by a model. Not yet checked.");
@@ -20,11 +21,11 @@
 
 <p class="eyebrow">{edge.kind === "co_discussed" ? "Discussed together" : "Relation"}</p>
 <h2 class="serif">
-  {a.label} <span class="verb">{edge.kind === "co_discussed" ? "and" : `${edge.label}`}</span> {b.label}
+  <TopicLink id={a.id} /> <span class="verb">{edge.kind === "co_discussed" ? "and" : `${edge.label}`}</span> <TopicLink id={b.id} />
 </h2>
 <p class="source">{source}</p>
 
-<h3 class="section-title">Evidence in the podcast</h3>
+<h3 class="section-title">Where the podcast says so</h3>
 {#each evidence as p (p)}
   <Quote passageId={p} ranges={ranges(p)} />
 {:else}
@@ -32,8 +33,7 @@
 {/each}
 
 <div class="actions">
-  <button class="btn ghost" onclick={() => app.selectEntity(a.id)}>Open {a.label}</button>
-  <button class="btn ghost" onclick={() => app.selectEntity(b.id)}>Open {b.label}</button>
+  <button class="btn" title="What both are connected to, on the map and in a list" onclick={() => app.exploreTogether(a.id, b.id)}>See what they share</button>
 </div>
 
 <style>

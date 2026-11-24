@@ -33,6 +33,10 @@ export interface Site {
   lifespan_type: EntityType | null;
   lived_presets: TimePreset[];
   search_placeholder: string;
+  /** Default share of each item's "discussed together" weight that is drawn (0 to 1). */
+  co_discussed_share?: number;
+  /** Headings that group the named relations of a topic, in this order. */
+  relation_groups?: string[];
 }
 
 export interface Episode {
@@ -55,6 +59,8 @@ export interface Passage {
   end_s: number | null;
   word_count: number;
   text?: string;
+  /** The transcript segments: character range in the text (can reach past either end) and times. */
+  timing?: [number, number, number, number][];
 }
 
 export interface Occurrence {
@@ -87,6 +93,19 @@ export interface Entity {
   occurrences: Occurrence[];
   /** Present only when the enrichment stage found dates. */
   life?: Life;
+  /** Wikidata image of the item, hosted on Wikimedia Commons. */
+  image?: CommonsImage;
+  /** A general word ("philosopher") rather than a name. It has no edges in the graph. */
+  generic?: boolean;
+}
+
+export interface CommonsImage {
+  file: string;
+  /** 250 px wide thumbnail. */
+  thumb: string;
+  original: string;
+  /** File page with author and licence. */
+  page: string;
 }
 
 export interface RelationEdge {
@@ -96,6 +115,10 @@ export interface RelationEdge {
   target: string;
   predicate: string;
   label: string;
+  /** The relation read from its object ("influenced" for influenced_by). Older exports lack it. */
+  inverse_label?: string;
+  /** The heading it is listed under, for example "Positions". Without one it is a named relation. */
+  group?: string;
   status: "nli_supported" | "unverified";
   confidence: number;
   evidence: string[];
@@ -109,6 +132,8 @@ export interface CoEdge {
   count: number;
   pmi: number;
   evidence: string[];
+  /** Weight from the passages in view, set by the app when it picks the links (strength.ts). */
+  weight?: number;
 }
 
 export type Edge = RelationEdge | CoEdge;
@@ -156,4 +181,6 @@ export interface Index {
   passageEntities: Map<string, Set<string>>;
   /** Visible-or-not edges touching each entity. */
   edgesOf: Map<string, Edge[]>;
+  /** How much one shared passage counts for each pair named in it (strength.ts). */
+  passageWeight: Map<string, number>;
 }

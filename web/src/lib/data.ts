@@ -1,4 +1,6 @@
 import { configureTypes } from "./entityStyle.ts";
+import { setLargestTopic } from "./forces.ts";
+import { passageWeights } from "./strength.ts";
 import { SCHEMA_VERSION, type Dataset, type Edge, type Index } from "./types.ts";
 
 const FILES = ["site", "episodes", "passages", "entities", "edges", "related", "summary"] as const;
@@ -46,7 +48,7 @@ export function buildIndex(ds: Dataset): Index {
       edgesOf.get(id)!.push(ed);
     }
   }
-  return {
+  const index = {
     site: ds.site,
     episode: new Map(ds.episodes.map((e) => [e.id, e])),
     passage: new Map(ds.passages.map((p) => [p.id, p])),
@@ -54,5 +56,9 @@ export function buildIndex(ds: Dataset): Index {
     entityPassages,
     passageEntities,
     edgesOf,
+    passageWeight: new Map<string, number>(),
   };
+  index.passageWeight = passageWeights(index, ds.edges);
+  setLargestTopic(Math.max(0, ...[...entityPassages.values()].map((s) => s.size)));
+  return index;
 }
