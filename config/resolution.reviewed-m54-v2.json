@@ -1,9 +1,0 @@
-{
-  "schema_version": 1,
-  "normalization": "unicode-nfc-casefold-whitespace-v1",
-  "aliases": "config/aliases/hop.reviewed-m54.v1.jsonl",
-  "cross_episode_exact_types": ["Place", "Language"],
-  "cross_episode_multitoken_person": true,
-  "single_token_person_requires_review": true,
-  "all_other_types_require_review": true
-}
