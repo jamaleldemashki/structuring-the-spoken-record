@@ -1,17 +1,13 @@
 """Tests for NLI verification: policy, provenance, withheld evidence and saved runs."""
 
-import json
-from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
 from test_relation_contexts import contexts
-from spoken_record.adapters.base import sha256
-from spoken_record.ingestion import dump_json, read_jsonl
 from spoken_record.relations import project_predictions, build_assertions
 from spoken_record.relation_verification import (aggregate, evidence_policy, prepare_evidence,
-                                                verify_evidence, verify_run, validate_run)
+                                                verify_evidence)
 from spoken_record.verification_models import NLIScores, VerificationConfig
 
 
@@ -135,44 +131,3 @@ def test_invalid_templates_and_unnormalized_scores_are_rejected():
         config(templates={"authored": "{subject.__class__} wrote {object}."})
     with pytest.raises(ValueError):
         NLIScores(entailment=.9, contradiction=.9, neutral=.1)
-
-
-def test_verification_snapshot_rebuild_and_evidence_tampering(tmp_path, monkeypatch):
-    """Saved runs reproduce the decisions and catch edited source evidence, even after rehashing."""
-    inputs = evidence_fixture()
-    parent = tmp_path/"data/prototype1/runs/source-relations"
-    parent.mkdir(parents=True)
-    dump_json(parent/"manifest.json", {"stage": "relations", "status": "complete"})
-    dump_json(tmp_path/"verify.json", config().model_dump(mode="json"))
-    monkeypatch.setattr("spoken_record.relation_verification.load_inputs", lambda path: inputs)
-    output = verify_run(tmp_path, str(parent.relative_to(tmp_path)), "verify.json", "verify",
-                        backend_factory=lambda root, settings: FakeBackend())
-    assert validate_run(output)["counts"]["supported_assertions"] == 1
-    with pytest.raises(FileExistsError):
-        verify_run(tmp_path, str(parent.relative_to(tmp_path)), "verify.json", "verify")
-    path = output/"verification_evidence.jsonl"
-    rows = read_jsonl(path)
-    rows[0]["premise"] = "An invented premise."
-    rows[0]["premise_sha256"] = sha256(rows[0]["premise"].encode())
-    path.write_text("".join(json.dumps(row)+"\n" for row in rows))
-    manifest = json.loads((output/"manifest.json").read_bytes())
-    manifest["artifact_sha256"][path.name] = sha256(path.read_bytes())
-    dump_json(output/"manifest.json", manifest)
-    with pytest.raises(ValueError, match="evidence differs"):
-        validate_run(output)
-
-
-def test_preflight_rejects_legacy_relation_contexts(tmp_path, monkeypatch):
-    """Catch a known stage kind with an incompatible artifact before inference."""
-    from spoken_record.pipeline import plan_pipeline
-    parent = tmp_path/"data/prototype1/runs/legacy"
-    parent.mkdir(parents=True)
-    manifest = {"stage": "relations", "status": "complete", "artifact_sha256": {}}
-    dump_json(parent/"manifest.json", manifest)
-    dump_json(tmp_path/"verify.json", config().model_dump(mode="json"))
-    dump_json(tmp_path/"recipe.json", {"schema_version": 1, "input_run": str(parent.relative_to(tmp_path)),
-        "stages": [{"id": "verify", "kind": "verify-relations", "config": "verify.json"}]})
-    monkeypatch.setattr("spoken_record.pipeline.validate_snapshot", lambda path: manifest)
-    with pytest.raises(ValueError, match="antecedent-window"):
-        plan_pipeline(tmp_path, "recipe.json", "refuse")
-    assert not (tmp_path/"data/prototype1/pipelines").exists()

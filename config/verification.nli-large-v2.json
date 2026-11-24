@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "repo_id": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+  "revision": "b3546ea6b0346eb6f8d5d68b13c7dc6d0376b3d7",
+  "cache_dir": null,
+  "offline_only": true,
+  "device": "cpu",
+  "max_tokens": 512,
+  "entailment_threshold": 0.9,
+  "minimum_margin": 0.2,
+  "contradiction_threshold": 0.8,
+  "label_order": [
+    "entailment",
+    "neutral",
+    "contradiction"
+  ],
+  "templates": {
+    "view_on": "{subject} held a view about {object}.",
+    "rejected": "{subject} rejected {object}.",
+    "introduced": "{subject} introduced {object}.",
+    "agreed_with": "{subject} agreed with {object}.",
+    "influenced_by": "{subject} was influenced by {object}.",
+    "criticized": "{subject} criticized {object}.",
+    "student_of": "{subject} was a student of {object}.",
+    "authored": "{subject} wrote {object}.",
+    "attributed_to": "{subject} is attributed to {object}.",
+    "commented_on": "{subject} commented on {object}.",
+    "translated": "{subject} translated {object}.",
+    "work_about": "{subject} is about {object}.",
+    "founded": "{subject} founded {object}."
+  }
+}

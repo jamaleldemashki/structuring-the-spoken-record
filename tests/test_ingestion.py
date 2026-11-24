@@ -1,7 +1,4 @@
 import json
-import subprocess
-import sys
-from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -9,7 +6,7 @@ from pydantic import ValidationError
 from spoken_record.adapters.base import sha256, stable_id
 from spoken_record.adapters.hop_whisper import HoPWhisperAdapter, MetadataIndex
 from spoken_record.adapters.plain_text import PlainTextAdapter
-from spoken_record.ingestion import dump_json, ingest, read_jsonl, validate_run
+from spoken_record.ingestion import IngestSetup, dump_json
 from spoken_record.models import SourceBundle
 
 PROFILE = {
@@ -119,7 +116,6 @@ def workspace(tmp_path):
     dump_json(tmp_path / "profile.json", PROFILE)
     dump_json(tmp_path / "config.json", {"schema_version": 1, "corpus_id": "hop", "profile": "profile.json",
               "metadata": "meta.jsonl", "audit": "audit.jsonl", "quarantine": "quarantine.jsonl"})
-    dump_json(tmp_path / "pilot.json", {"schema_version": 1, "episodes": [{"source_path": source, "source_sha256": digest}]})
     (tmp_path / "meta.jsonl").write_text(json.dumps({"filename": "HoP001.json", "title": "Synthetic", "series": "Medieval"}) + "\n")
     (tmp_path / "audit.jsonl").write_text(json.dumps({"source_path": source, "source_sha256": digest,
         "episode_id": "ep_legacy", "join_tier": "tier1_filename", "content_era": "Medieval"}) + "\n")
@@ -127,89 +123,41 @@ def workspace(tmp_path):
     return tmp_path, source
 
 
-def test_snapshot_integrity_determinism_and_no_overwrite(workspace):
+def reader(root):
+    return IngestSetup(root, json.loads((root / "config.json").read_bytes()), root / "config.json")
+
+
+def test_reading_is_repeatable_and_never_changes_the_source(workspace):
     root, source = workspace
     original = (root / source).read_bytes()
-    first = ingest(root, "config.json", "pilot.json", "first")
-    second = ingest(root, "config.json", "pilot.json", "second")
+    first = reader(root).read(source, original, sha256(original), "a")
+    second = reader(root).read(source, original, sha256(original), "b")
     assert (root / source).read_bytes() == original
-    assert validate_run(first)["counts"]["processed"] == 1
-    for filename in ("episodes.jsonl", "transcripts.jsonl", "segments.jsonl"):
-        a, b = read_jsonl(first / filename), read_jsonl(second / filename)
-        for record in a + b:
-            record.pop("created_by_run_id")
-        assert a == b
-    with pytest.raises(FileExistsError):
-        ingest(root, "config.json", "pilot.json", "first")
+    for left, right in ((first.episode, second.episode), (first.transcript, second.transcript)):
+        assert left.model_dump(exclude={"created_by_run_id"}) == right.model_dump(exclude={"created_by_run_id"})
+    assert first.episode.legacy_audit_id == "ep_legacy"
 
 
-def test_stale_source_is_reported_without_ingesting(workspace):
+def test_a_changed_transcript_is_refused(workspace):
     root, source = workspace
-    (root / source).write_bytes(transcript(["Changed."]))
-    output = ingest(root, "config.json", "pilot.json", "stale")
-    manifest = validate_run(output)
-    assert manifest["status"] == "failed"
-    assert manifest["counts"]["processed"] == 0
-    assert "stale_source" in read_jsonl(output / "outcomes.jsonl")[0]["reason"]
+    changed = transcript(["Changed."])
+    with pytest.raises(ValueError, match="stale_source"):
+        reader(root).read(source, changed, None, "stale")
 
 
-def test_quarantine_is_not_read(workspace):
+def test_quarantined_and_unaudited_transcripts_are_not_read(workspace):
     root, source = workspace
     (root / "audit.jsonl").write_text("")
+    assert reader(root).skip_reason(source) == ("failed", "not_in_accepted_audit")
     (root / "quarantine.jsonl").write_text(json.dumps({"source_path": source, "reason_code": "short"}) + "\n")
-    (root / source).unlink()  # A quarantined file need not even exist for exclusion to work.
-    output = ingest(root, "config.json", "pilot.json", "quarantine")
-    manifest = validate_run(output)
-    assert manifest["counts"]["excluded"] == 1
-    assert manifest["inputs"] == []
+    assert reader(root).skip_reason(source) == ("excluded", "short")
 
 
-def test_tampering_and_orphan_references_are_detected(workspace):
-    root, _ = workspace
-    output = ingest(root, "config.json", "pilot.json", "tamper")
-    segments = read_jsonl(output / "segments.jsonl")
-    segments[0]["transcript_version_id"] = "wrong-id"
-    (output / "segments.jsonl").write_text("\n".join(json.dumps(x) for x in segments) + "\n")
-    with pytest.raises(ValueError, match="checksum"):
-        validate_run(output)
-    manifest = json.loads((output / "manifest.json").read_bytes())
-    manifest["artifact_sha256"]["segments.jsonl"] = sha256((output / "segments.jsonl").read_bytes())
-    dump_json(output / "manifest.json", manifest)
-    with pytest.raises(ValueError, match="orphan"):
-        validate_run(output)
-
-
-def test_output_symlinks_and_unsafe_run_ids_are_rejected(workspace):
-    root, _ = workspace
-    with pytest.raises(ValueError, match="run ID"):
-        ingest(root, "config.json", "pilot.json", "../../HoP")
-    (root / "data").mkdir()
-    (root / "data/prototype1").symlink_to(root / "HoP", target_is_directory=True)
-    with pytest.raises(ValueError, match="symlinks"):
-        ingest(root, "config.json", "pilot.json", "unsafe")
-
-
-def test_cli_runs_in_fresh_process_and_returns_failure_for_stale_input(workspace):
+def test_changed_metadata_and_paths_outside_the_transcript_folder_are_refused(workspace):
     root, source = workspace
-    command = [sys.executable, "-m", "spoken_record.cli", "ingest", "--root", str(root),
-               "--config", "config.json", "--pilot", "pilot.json"]
-    result = subprocess.run(command + ["--run-id", "cli-ok"], cwd=root, capture_output=True, text=True)
-    assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout)["counts"]["processed"] == 1
-    (root / source).write_bytes(transcript(["Changed."]))
-    result = subprocess.run(command + ["--run-id", "cli-failed"], cwd=root, capture_output=True, text=True)
-    assert result.returncode == 1, result.stderr
-    assert json.loads(result.stdout)["counts"]["failed"] == 1
-
-
-def test_duplicate_pilot_and_stale_metadata(workspace):
-    root, _ = workspace
-    pilot = json.loads((root / "pilot.json").read_bytes())
-    pilot["episodes"].append(pilot["episodes"][0])
-    dump_json(root / "duplicate.json", pilot)
-    with pytest.raises(ValueError, match="unique"):
-        ingest(root, "config.json", "duplicate.json", "dup")
+    data = (root / source).read_bytes()
+    with pytest.raises(ValueError, match="configured source directory"):
+        reader(root).source_path("audit.jsonl")
     (root / "meta.jsonl").write_text(json.dumps({"filename": "HoP001.json", "series": "India"}) + "\n")
-    output = ingest(root, "config.json", "pilot.json", "changed-meta")
-    assert validate_run(output)["counts"]["failed"] == 1
-    assert "stale_metadata" in read_jsonl(output / "outcomes.jsonl")[0]["reason"]
+    with pytest.raises(ValueError, match="stale_metadata"):
+        reader(root).read(source, data, None, "changed")

@@ -1,10 +1,11 @@
 """Data models for Wikidata entity linking."""
 
+import re
 from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from spoken_record.evaluation import EntityType
+from spoken_record.models import EntityType
 from spoken_record.models import Record
 
 
@@ -38,13 +39,33 @@ class EntityLinkingConfig(BaseModel):
     # Extra description words that count as type evidence, on top of the English defaults
     # (for example {"Person": ["composer", "drummer"]} for a music podcast).
     extra_type_keywords: dict[EntityType, list[str]] = Field(default_factory=dict)
+    # Wikidata refuses requests while its servers lag more than this many seconds.
+    # None never sends maxlag, so a slow server doesn't stop the run.
+    maxlag: int | None = Field(default=5, ge=1, le=60)
+    # Also search the fullest name seen in the transcripts, when it has more words than the
+    # canonical label (for example "Thomas Aquinas" next to "Aquinas").
+    search_fullest_surface: bool = False
+    # Full-text search limited to items with one of these P31 values, per type. It finds
+    # well known people the label search misses (Augustine of Hippo for "Augustine").
+    fulltext_instance_types: dict[EntityType, list[str]] = Field(default_factory=dict)
+    # Candidates of these types must have one of these P31 values, everything else is dropped.
+    required_instance_types: dict[EntityType, list[str]] = Field(default_factory=dict)
+    # How well known an item is, compared with its namesakes among the candidates for the
+    # same entity: its Wikipedia sitelinks divided by the most sitelinks among them. A lesser
+    # known philosopher only loses points next to a much better known namesake.
+    popularity_weight: float = Field(default=0, ge=0, le=1)
 
     @model_validator(mode="after")
     def valid_weights_and_types(self) -> Self:
         if len(set(self.entity_types)) != len(self.entity_types):
             raise ValueError("duplicate entity-linking type")
-        if abs(self.name_weight + self.type_weight + self.context_weight - 1) > 1e-9:
+        if abs(self.name_weight + self.type_weight + self.context_weight +
+               self.popularity_weight - 1) > 1e-9:
             raise ValueError("entity-linking weights must sum to one")
+        for name in ("fulltext_instance_types", "required_instance_types"):
+            for qids in getattr(self, name).values():
+                if not qids or any(not re.fullmatch(r"Q[1-9][0-9]*", qid) for qid in qids):
+                    raise ValueError(f"{name} needs a list of QIDs")
         if self.nil_threshold > self.linked_threshold:
             raise ValueError("NIL threshold cannot exceed the linked threshold")
         return self
@@ -65,6 +86,10 @@ class WikidataCandidate(Record):
     name_similarity: float = Field(ge=0, le=1)
     type_compatibility: float = Field(ge=0, le=1)
     context_similarity: float = Field(ge=0, le=1)
+    # Number of Wikipedia sitelinks and the score made from it. Both stay empty when the
+    # popularity score is not used.
+    sitelinks: int | None = Field(default=None, ge=0)
+    popularity: float = Field(default=0, ge=0, le=1)
     rank_score: float = Field(ge=0, le=1)
 
 

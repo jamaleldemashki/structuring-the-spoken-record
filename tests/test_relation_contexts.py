@@ -10,7 +10,7 @@ from spoken_record.coreference_models import CoreferenceLink
 from spoken_record.extraction_models import ExtractedMention
 from spoken_record.passage_models import Passage
 from spoken_record.relation_contexts import antecedent_contexts, GLiRELBudget
-from spoken_record.relations import passage_endpoints, project_predictions, build_assertions, validate_context_records
+from spoken_record.relations import passage_endpoints, project_predictions, build_assertions
 from spoken_record.resolution_models import MentionAssignment
 
 
@@ -67,13 +67,6 @@ def test_distant_anchor_crosses_passage_without_changing_triple_subject():
     assertion = build_assertions('run', candidates)[0]
     assert assertion.subject_corpus_entity_id == 'ce-a'
     assert assertion.predicate == 'authored'
-    transcript = SimpleNamespace(text=text, transcript_version_id='t', episode_id='e')
-    validate_context_records(records, [transcript], passages, mentions, assignments,
-                             [reference], candidates, config, 'run')
-    corrupted = records[0].model_copy(update={'included_anchor_ids': []})
-    with pytest.raises(ValueError, match='included anchors'):
-        validate_context_records([corrupted], [transcript], passages, mentions, assignments,
-                                 [reference], candidates, config, 'run')
 
 
 @pytest.mark.parametrize('limits', [dict(max_context_tokens=12), dict(encoder_max_tokens=36),

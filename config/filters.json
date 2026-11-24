@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "boilerplate": {
+    "shingle_words": 5,
+    "min_episodes": 2,
+    "min_episode_share": 0.1,
+    "covered_share": 0.8,
+    "min_sentence_words": 6
+  },
+  "generic": {
+    "proper_name_types": [
+      "Person",
+      "Place",
+      "Work",
+      "Language"
+    ]
+  }
+}

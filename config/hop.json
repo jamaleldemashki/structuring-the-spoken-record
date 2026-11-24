@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "corpus_id": "hop",
+  "profile": "config/profiles/hop.json",
+  "metadata": "HoP/00_infos/hop_episodes_cache.jsonl",
+  "audit": "data/audit/episode_audit.jsonl",
+  "quarantine": "data/audit/quarantine.jsonl",
+  "episode_codes": {
+    "series_field": "sub_show",
+    "number_fields": [
+      "nav_title",
+      "title"
+    ]
+  },
+  "steps": {
+    "segment": "config/segmentation.json",
+    "extract": "config/model.development-calibrated.json",
+    "resolve": "config/resolution.json",
+    "refine": "config/identity_refinement.surname-variant.json",
+    "link": "config/linking.wikidata-mpnet-v5.json",
+    "coreference": "config/coreference.fcoref.json",
+    "relations": "config/relations.glirel-proposals-v2.json",
+    "verify": "config/verification.nli-large-v2.json",
+    "discover": "config/discovery.mpnet-v1.json",
+    "enrich": "config/enrichment.wikidata-v1.json",
+    "web": "config/web.hop-v3.json",
+    "refine_episode": "config/identity_refinement.within-episode.json",
+    "filters": "config/filters.json",
+    "search": "config/search.minilm-v1.json"
+  },
+  "merge_by_wikidata": [
+    "Person",
+    "Place",
+    "Language",
+    "Work",
+    "School"
+  ]
+}

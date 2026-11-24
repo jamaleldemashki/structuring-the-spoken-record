@@ -28,16 +28,25 @@ venv/
 build/
 dist/
 .cache/
-data/prototype1/
-export/prototype1/
+data/episodes/
+data/builds/
+data/cache/
+export/
 
 # Web app: dependencies, build output, and transcript-bearing data copied from an export
 web/node_modules/
 web/dist/
 web/public/data/
+web/public/models/
+
+# Local state of the hosting preview
+.wrangler/
 
 # Old notes, configs, scripts and exports, kept locally only
 archive/
+
+# Running thesis notes (decisions, numbers, open questions), kept locally only
+notes/
 
 # Independent Overleaf repository
 /6a8316847f1d770aff3cb407/

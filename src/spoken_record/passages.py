@@ -131,3 +131,29 @@ def build_passages(bundle: SourceBundle, config: SegmentationConfig, run_id: str
             segmentation_fingerprint=fingerprint,
         ))
     return result
+
+
+def check_passages(bundle: SourceBundle, passages: list[Passage]) -> None:
+    """Passages must tile the transcript without gaps or overlaps, reproduce its text exactly,
+    and carry the segment times and IDs they were made from."""
+    text = bundle.transcript.text
+    cursor = 0
+    for index, passage in enumerate(passages):
+        if passage.transcript_version_id != bundle.transcript.transcript_version_id or \
+                passage.episode_id != bundle.episode.episode_id:
+            raise ValueError("passage refers to another transcript or episode")
+        if passage.index != index or passage.char_start != cursor:
+            raise ValueError("passage coverage has a gap, overlap or wrong index")
+        if text[passage.char_start:passage.char_end] != passage.text:
+            raise ValueError("passage does not reproduce source text")
+        segments = evidence_segments(bundle.segments, passage.char_start, passage.char_end)
+        if passage.source_segment_ids != [s.segment_id for s in segments] or \
+                (passage.start_s, passage.end_s) != time_bounds(segments):
+            raise ValueError("passage times or segment references do not match the source")
+        if passage.passage_id != stable_id("p", passage.transcript_version_id, passage.segmentation_fingerprint,
+                                           str(passage.char_start), str(passage.char_end)):
+            raise ValueError("passage ID does not match version and range")
+        cursor = passage.char_end
+    if cursor != len(text):
+        raise ValueError("passages do not cover the full transcript")
+

@@ -4,8 +4,19 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from spoken_record.evaluation import EntityType
+from spoken_record.models import EntityType
 from spoken_record.models import Record
+
+
+class TermKeys(BaseModel):
+    """How the matching keys of terms are built (see terms.py)."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    lemmatize_types: list[EntityType] = Field(default_factory=list)
+    article_types: list[EntityType] = Field(default_factory=list)
+    articles: list[str] = Field(default_factory=lambda: ["the", "a", "an"])
+    lemmatizer: Literal["en_core_web_sm"] = "en_core_web_sm"
+    lemmatizer_version: str = Field(pattern=r"^\d+\.\d+\.\d+$")
 
 
 class ResolutionConfig(BaseModel):
@@ -17,6 +28,13 @@ class ResolutionConfig(BaseModel):
     cross_episode_multitoken_person: bool = True
     single_token_person_requires_review: bool = True
     all_other_types_require_review: bool = True
+    # Words that are never a name, even when the NER model tags them ("I", "you", "she").
+    # Mentions that consist of one of them are dropped before entities are formed. Pronouns
+    # are left to coreference, which links them to a named person or abstains.
+    not_names: list[str] = Field(default_factory=list)
+    # Lemmatized matching keys for terms ("virtue" and "virtues"). Without it, only the
+    # Unicode form, case and spaces are normalized.
+    term_keys: TermKeys | None = None
 
     @model_validator(mode="after")
     def unique_types(self) -> Self:
@@ -97,10 +115,10 @@ class CorpusEntity(Record):
     mention_count: int = Field(gt=0)
     episode_count: int = Field(gt=0)
     resolution_method: Literal["episode_local", "provisional_exact", "reviewed_alias", "blocked",
-                               "automatic_context"]
+                               "automatic_context", "same_wikidata_item"]
     resolution_status: Literal["provisional", "reviewed", "unresolved"]
-    # Wikidata linking runs after local resolution. The defaults keep older runs valid and
-    # tell "linking not run" apart from a NIL or ambiguous decision.
+    # Filled in by linking. "not_attempted" tells an entity of a type that is not linked
+    # apart from a NIL or ambiguous decision.
     wikidata_qid: str | None = Field(default=None, pattern=r"^Q[1-9][0-9]*$")
     link_status: Literal["not_attempted", "linked", "nil", "ambiguous"] = "not_attempted"
     link_confidence: float | None = Field(default=None, ge=0, le=1)

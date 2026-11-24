@@ -1,23 +1,17 @@
 """Finds related passages across episodes.
 
-The output wraps the parent run. It never merges entities, and a high similarity is not
-treated as a statement about the content. The embeddings are saved, so the rankings can be
-rebuilt and checked later without running the model again.
+It never merges entities, and a high similarity is not treated as a statement about the
+content. The passage vectors are stored per episode, so the ranking can be redone without
+running the model again.
 """
 
-import importlib.metadata
-import json
 import math
-import re
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
-from time import perf_counter
-from uuid import uuid4
 
 from spoken_record.adapters.base import sha256, stable_id
 from spoken_record.discovery_models import DiscoveryConfig
-from spoken_record.ingestion import dump_json, dump_jsonl, read_jsonl, workspace_path
+from spoken_record.ingestion import workspace_path
 
 
 def token_ranges(length: int, capacity: int) -> list[tuple[int, int]]:
@@ -91,39 +85,15 @@ class PassageEncoder:
         return output
 
 
-def load_inputs(root: Path, parent: Path):
-    """Read both source runs through one validated chain so they can't get out of sync."""
-    from spoken_record.vault import vault_input, load_resolution_chain
-    manifest = json.loads((parent / "manifest.json").read_bytes())
-    if manifest["stage"] not in {"resolve", "refine_resolution", "entity_linking", "coreference",
-                                  "relations", "relation_verification"}:
-        raise ValueError("discovery requires an identity-compatible upstream snapshot")
-    if manifest.get("status") != "complete" or manifest.get("counts", {}).get("failed", 0):
-        raise ValueError("discovery parent is incomplete or contains failures")
-    identity, _, _ = vault_input(root, parent)
-    records = load_resolution_chain(root, identity)
-    identity_manifest = json.loads((identity / "manifest.json").read_bytes())
-    extraction = parent.parent / identity_manifest.get("extraction_run_id", identity_manifest["parent_run_id"])
-    extraction_manifest = json.loads((extraction / "manifest.json").read_bytes())
-    passage_run = parent.parent / extraction_manifest["parent_run_id"]
-    sources = {"identity_run_id": identity.name, "passage_run_id": passage_run.name,
-        "identity_manifest_sha256": sha256((identity / "manifest.json").read_bytes()),
-        "passage_manifest_sha256": sha256((passage_run / "manifest.json").read_bytes())}
-    return records, read_jsonl(passage_run / "exclusions.jsonl"), sources
-
-
 def prepare_inputs(records, exclusions: list[dict]) -> list[dict]:
-    """Leave reviewed exclusions (like credits) out of the retrieval text.
+    """Leave excluded spans (boilerplate, reviewed credits) out of the retrieval text.
 
     The transcript and passages are not changed. The remaining ranges are joined with
     newlines only for the model input, and their offsets and both hashes are recorded.
     """
     passages, mentions, assignments = records[2], records[3], records[6]
-    if any(e.get("review_status") != "reviewed" for e in exclusions):
-        raise ValueError("discovery accepts only reviewed source exclusions")
-    from spoken_record.navigation import build_concept_navigation
-    # Still run the provenance check when the corpus has no Concepts or Schools.
-    build_concept_navigation(passages, mentions, records[5], assignments)
+    if any(e.get("review_status") not in ("reviewed", "automatic") for e in exclusions):
+        raise ValueError("discovery accepts only reviewed or automatic source exclusions")
     by_mention = {a.mention_id: a.corpus_entity_id for a in assignments}
     by_passage = defaultdict(list)
     for mention in mentions:
@@ -235,96 +205,14 @@ def rank_connections(inputs, embeddings, config):
     return scores, selected, counts
 
 
-ARTIFACTS = ("config.json", "passage_inputs.jsonl", "passage_embeddings.jsonl",
-             "passage_scores.jsonl", "passage_connections.jsonl", "summary.json")
-
-
-def discover_run(root: Path, input_name: str, config_name: str, run_id: str | None = None,
-                 *, backend_factory=None) -> Path:
-    """Write the discovery run. If the model fails, nothing is written (no empty result)."""
-    root, started = root.resolve(), perf_counter()
-    run_id = run_id or f"discovery-{uuid4().hex[:12]}"
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", run_id):
-        raise ValueError("invalid discovery run ID")
-    parent = workspace_path(root, input_name)
-    output = workspace_path(root, f"data/prototype1/runs/{run_id}")
-    if parent.parent != output.parent or parent == output:
-        raise ValueError("discovery requires a sibling snapshot")
-    if output.exists():
-        raise FileExistsError(output)
-    raw_config = workspace_path(root, config_name).read_bytes()
-    config = DiscoveryConfig.model_validate_json(raw_config)
-    parent_hash = sha256((parent/"manifest.json").read_bytes())
-    records, exclusions, sources = load_inputs(root, parent)
+def compute_discovery(records, exclusions, config, encode):
+    """Encode the passages and rank related passages in other episodes. ``encode`` gets the
+    passage texts and is only called when there is at least one."""
     inputs = prepare_inputs(records, exclusions)
     ready = [r for r in inputs if r["status"] == "ready"]
-    backend = (backend_factory or PassageEncoder)(root, config) if ready else None
-    encoded = backend.encode([r["input_text"] for r in ready]) if ready else []
+    encoded = encode([r["input_text"] for r in ready]) if ready else []
     embeddings = [{**e, "passage_id": r["passage_id"], "input_sha256": r["input_sha256"]}
                   for r, e in zip(ready, encoded, strict=True)]
     check_embeddings(inputs, embeddings, config)
     scores, connections, counts = rank_connections(inputs, embeddings, config)
-    if (workspace_path(root, config_name).read_bytes() != raw_config or
-            sha256((parent/"manifest.json").read_bytes()) != parent_hash):
-        raise ValueError("discovery inputs changed during inference")
-    output.mkdir(parents=True, exist_ok=False)
-    dump_json(output/"config.json", config.model_dump(mode="json"))
-    for name, data in (("passage_inputs", inputs), ("passage_embeddings", embeddings),
-                       ("passage_scores", scores), ("passage_connections", connections)):
-        dump_jsonl(output/f"{name}.jsonl", data)
-    dump_json(output/"summary.json", counts)
-    code_root = Path(__file__).parent
-    dump_json(output/"manifest.json", {"schema_version": 1, "stage": "passage_discovery",
-        "status": "complete", "run_id": run_id, "parent_run_id": parent.name,
-        "parent_manifest_sha256": parent_hash, "source_snapshots": sources,
-        "input_config": config_name, "input_config_sha256": sha256(raw_config),
-        "model": {"repo_id": config.repo_id, "revision": config.revision, "pooling": config.pooling},
-        "created_utc": datetime.now(timezone.utc).isoformat(), "elapsed_seconds": perf_counter()-started,
-        "dependencies": {n: importlib.metadata.version(n) for n in ("torch", "transformers", "pydantic")},
-        "code_sha256": {str(p.relative_to(code_root)): sha256(p.read_bytes()) for p in sorted(code_root.rglob("*.py"))},
-        "counts": counts, "artifact_sha256": {n: sha256((output/n).read_bytes()) for n in ARTIFACTS}})
-    validate_run(output)
-    return output
-
-
-def validate_run(output: Path) -> dict:
-    """Rebuild inputs and rankings from the saved vectors, without running the model.
-
-    Hashes and chunk coverage are checked. The model output itself can only be checked by
-    running the pinned model again.
-    """
-    output = output.resolve()
-    root = output.parents[3]
-    manifest = json.loads((output/"manifest.json").read_bytes())
-    if (manifest.get("schema_version"), manifest.get("stage"), manifest.get("status")) != (1, "passage_discovery", "complete"):
-        raise ValueError("unsupported discovery snapshot")
-    if manifest["run_id"] != output.name or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", manifest["parent_run_id"]):
-        raise ValueError("invalid discovery snapshot ID")
-    parent = output.parent / manifest["parent_run_id"]
-    if parent == output or sha256((parent/"manifest.json").read_bytes()) != manifest["parent_manifest_sha256"]:
-        raise ValueError("discovery parent changed")
-    if set(manifest["artifact_sha256"]) != set(ARTIFACTS):
-        raise ValueError("unexpected discovery artifacts")
-    for name, digest in manifest["artifact_sha256"].items():
-        if sha256((output/name).read_bytes()) != digest:
-            raise ValueError(f"discovery artifact changed: {name}")
-    raw_config = workspace_path(root, manifest["input_config"]).read_bytes()
-    config = DiscoveryConfig.model_validate_json(raw_config)
-    if sha256(raw_config) != manifest["input_config_sha256"] or config.model_dump(mode="json") != json.loads((output/"config.json").read_bytes()):
-        raise ValueError("discovery configuration changed")
-    if manifest["model"] != {"repo_id": config.repo_id, "revision": config.revision, "pooling": config.pooling}:
-        raise ValueError("discovery model provenance differs")
-    records, exclusions, sources = load_inputs(root, parent)
-    if sources != manifest["source_snapshots"]:
-        raise ValueError("discovery source snapshot mismatch")
-    inputs = prepare_inputs(records, exclusions)
-    if inputs != read_jsonl(output/"passage_inputs.jsonl"):
-        raise ValueError("discovery source inputs differ")
-    embeddings = read_jsonl(output/"passage_embeddings.jsonl")
-    check_embeddings(inputs, embeddings, config)
-    scores, connections, counts = rank_connections(inputs, embeddings, config)
-    if scores != read_jsonl(output/"passage_scores.jsonl") or connections != read_jsonl(output/"passage_connections.jsonl"):
-        raise ValueError("discovery rankings not reproducible")
-    if counts != manifest["counts"] or counts != json.loads((output/"summary.json").read_bytes()):
-        raise ValueError("discovery summary differs")
-    return manifest
+    return inputs, embeddings, scores, connections, counts

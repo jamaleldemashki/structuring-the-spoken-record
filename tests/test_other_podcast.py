@@ -1,78 +1,63 @@
-"""A second, unrelated podcast runs through every stage with configuration only.
+"""A second, unrelated podcast runs through every step with configuration only.
 
 Nothing here looks like History of Philosophy: a different transcript layout, the generic
-Whisper JSON adapter, metadata matched by file name, no corpus audit, a season facet and
-its own web app config. The same offline fakes as in the HoP pipeline test replace GLiNER,
-FCoref, GLiREL, Wikidata and MPNet.
+Whisper JSON adapter, metadata matched by file name, no corpus audit, episodes chosen by
+season and number, and its own web app settings. The same offline fakes as in the HoP test
+replace the models and Wikidata.
 """
 
 import json
 
 import pytest
 
-from test_extraction import transcript
-from test_pipeline import full_recipe
-from spoken_record.adapters.base import sha256
-from spoken_record.ingestion import dump_json, ingest
-from spoken_record.pipeline import run_pipeline, validate_snapshot
+from test_ingestion import transcript
+from test_update import loaders, quiet, web_data, write_steps
+from spoken_record.build import update
+from spoken_record.corpus import load_corpus, select_episodes
+from spoken_record.ingestion import dump_json
 
 SOURCE = "Podcasts/Longitude/whisper/season-2/ep07.json"
 
 
 @pytest.fixture
 def other_podcast(tmp_path):
-    (tmp_path / SOURCE).parent.mkdir(parents=True)
-    (tmp_path / SOURCE).write_bytes(transcript())
-    dump_json(tmp_path / "profile.json", {"schema_version": 1, "adapter": "whisper_json",
-                                          "transcripts_dir": "Podcasts/Longitude/whisper"})
-    dump_json(tmp_path / "config.json", {"schema_version": 1, "corpus_id": "longitude",
-                                         "profile": "profile.json", "metadata": "episodes.jsonl"})
-    dump_json(tmp_path / "pilot.json", {"schema_version": 1, "episodes": [
-        {"source_path": SOURCE, "source_sha256": sha256(transcript())}]})
-    (tmp_path / "episodes.jsonl").write_text(json.dumps({
+    root = tmp_path
+    (root / SOURCE).parent.mkdir(parents=True)
+    (root / SOURCE).write_bytes(transcript(["Pāṇini studies free will and words. ",
+                                            "He defends free will against his critics. "] * 6))
+    dump_json(root / "profile.json", {"schema_version": 1, "adapter": "whisper_json",
+                                      "transcripts_dir": "Podcasts/Longitude/whisper"})
+    (root / "episodes.jsonl").write_text(json.dumps({
         "file": "season-2/ep07.json", "title": "Ep. 7 — Clocks at Sea", "date": "2022-05-17",
         "audio_url": "https://example.org/longitude/ep07.mp3", "page_url": "https://example.org/longitude/7",
         "facets": {"season": "Season 2"}}) + "\n")
-    return tmp_path, SOURCE
-
-
-def test_generic_adapter_reads_metadata_by_file_and_needs_no_audit(other_podcast):
-    root, _ = other_podcast
-    episode = json.loads((ingest(root, "config.json", "pilot.json", "plain") / "episodes.jsonl").read_text())
-    assert (episode["title"], episode["publication_date"], episode["metadata_method"]) == \
-        ("Ep. 7 — Clocks at Sea", "2022-05-17", "exact_file")
-    assert episode["facets"] == {"season": "Season 2"} and episode["audio_url"].endswith("ep07.mp3")
-
-
-def test_unknown_adapter_and_missing_metadata_fail_clearly(other_podcast):
-    root, _ = other_podcast
-    dump_json(root / "profile.json", {"schema_version": 1, "adapter": "srt", "transcripts_dir": "Podcasts"})
-    with pytest.raises(ValueError, match="unknown transcript adapter 'srt'"):
-        ingest(root, "config.json", "pilot.json", "bad-adapter")
-    dump_json(root / "profile.json", {"schema_version": 1, "adapter": "whisper_json",
-                                      "transcripts_dir": "Podcasts/Longitude/whisper"})
-    (root / "episodes.jsonl").write_text("")
-    run = ingest(root, "config.json", "pilot.json", "no-metadata")
-    outcome = json.loads((run / "outcomes.jsonl").read_text())
-    assert outcome["status"] == "failed" and outcome["reason"].startswith("metadata_join_unresolved")
-
-
-def test_second_podcast_runs_every_stage_to_the_web_app(other_podcast, monkeypatch):
-    root = full_recipe(other_podcast, monkeypatch, True, {"id": "web", "kind": "export-web", "config": "web.json"})
+    steps = write_steps(root)
     dump_json(root / "web.json", {"schema_version": 2, "site": {
         "archive_id": "longitude", "title": "Longitude", "subtitle": "a podcast about navigation",
         "series_facet": "season", "series_label": "Season", "episode_number_pattern": r"Ep\. (\d+) —",
         "entity_types": [{"type": "Person", "label": "Person", "plural": "people"},
-                         {"type": "Place", "label": "Place", "plural": "places"}],
-        "lifespan_type": None, "search_placeholder": "Search people and places…"}})
-    result = run_pipeline(root, "pipeline.json", "longitude")
-    assert result["completed_stages"] == 10
-    output = root / result["final_output"]
-    assert validate_snapshot(output)["stage"] == "export_web"
-    data = {n: json.loads((output / "data" / f"{n}.json").read_bytes()) for n in ("site", "episodes", "summary")}
-    assert data["site"]["title"] == "Longitude" and data["site"]["series_label"] == "Season"
-    assert data["site"]["lifespan_type"] is None
-    [episode] = data["episodes"]
+                         {"type": "Concept", "label": "Idea", "plural": "ideas"}],
+        "lifespan_type": None, "search_placeholder": "Search people and ideas…"}})
+    dump_json(root / "corpus.json", {"schema_version": 1, "corpus_id": "longitude", "profile": "profile.json",
+              "metadata": "episodes.jsonl", "episode_codes": {"series_field": "facets.season",
+              "number_fields": ["title"], "number_pattern": r"Ep\. (\d+)", "path_field": "file",
+              "path_in_transcripts_dir": True}, "steps": steps})
+    return root
+
+
+def test_episodes_of_another_podcast_are_chosen_by_season_and_number(other_podcast):
+    config, setup = load_corpus(other_podcast, "corpus.json")
+    [episode] = select_episodes(setup, config.episode_codes, "season 2 7")
+    assert (episode.code, episode.source_path, episode.expected_sha256) == ("Season 2 7", SOURCE, None)
+
+
+def test_second_podcast_runs_every_step_to_the_web_app(other_podcast):
+    root = other_podcast
+    update(root, "corpus.json", "Season 2 7", "longitude", loaders=loaders(), progress=quiet)
+    data = {name: json.loads(value) for name, value in web_data(root, "longitude").items()}
+    assert data["site.json"]["title"] == "Longitude" and data["site.json"]["series_label"] == "Season"
+    assert data["site.json"]["lifespan_type"] is None
+    [episode] = data["episodes.json"]
     assert (episode["code"], episode["title"], episode["series"]) == ("Season 2 7", "Clocks at Sea", "Season 2")
     assert episode["audio_url"] == "https://example.org/longitude/ep07.mp3"
-    assert data["summary"]["episodes"] == 1
+    assert data["summary.json"]["episodes"] == 1 and data["summary.json"]["relation_edges"] >= 1

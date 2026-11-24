@@ -1,17 +1,48 @@
-"""Tests for passage discovery: source coverage, ranking, saved runs and the evidence shown."""
-
-import json
+"""Tests for passage discovery: source coverage, ranking and the evidence it keeps."""
 
 import pytest
 
-from spoken_record.adapters.base import sha256
-from spoken_record.discovery import (check_embeddings, discover_run, normalized, prepare_inputs,
-                                      rank_connections, token_ranges, validate_run)
+from spoken_record.discovery import (check_embeddings, compute_discovery, normalized, prepare_inputs,
+                                      rank_connections, token_ranges)
 from spoken_record.discovery_models import DiscoveryConfig
-from spoken_record.ingestion import dump_json
-from spoken_record.vault import build_vault_files, validate_links
-from spoken_record.vault_models import VaultConfig
-from test_navigation import navigation_records
+from spoken_record.extraction_models import ExtractedMention
+from spoken_record.models import Episode, TranscriptVersion
+from spoken_record.passage_models import Passage
+from spoken_record.resolution import resolve_records
+from spoken_record.resolution_models import ResolutionConfig
+
+
+def navigation_records():
+    """Two episodes that share a person and have local concepts, a school and a work."""
+    texts = {"e1": "Thomas Aquinas discusses form, form and Academy in Book.",
+             "e2": "Thomas Aquinas discusses form."}
+    episodes = [Episode(created_by_run_id="source", episode_id=eid, corpus_id="hop", source_key=f"{eid}.json",
+        source_path=f"HoP/{eid}.json", title=f"Episode {eid}", language="en", metadata_status="matched",
+        metadata_method="exact") for eid in texts]
+    transcripts = [TranscriptVersion(created_by_run_id="source", transcript_version_id=f"t-{eid}", episode_id=eid,
+        kind="raw_asr", text=text, source_sha256="a" * 64, adapter="test", adapter_version="1")
+        for eid, text in texts.items()]
+    passages = [Passage(created_by_run_id="passages", passage_id=f"p-{eid}", episode_id=eid,
+        transcript_version_id=f"t-{eid}", index=0, char_start=0, char_end=len(text), text=text,
+        word_count=len(text.split()), timing_precision="unavailable", source_segment_ids=[],
+        method="sentence_packing", segmentation_fingerprint="s") for eid, text in texts.items()]
+    mentions = []
+    for eid, text in texts.items():
+        for term, kind in (("Thomas Aquinas", "Person"), ("form", "Concept"), ("Academy", "School"), ("Book", "Work")):
+            start = 0
+            while (position := text.find(term, start)) >= 0:
+                mention_id = f"m-{eid}" if kind == "Person" else f"{eid}-{term}-{position}"
+                mentions.append(ExtractedMention(created_by_run_id="extract", mention_id=mention_id, episode_id=eid,
+                    transcript_version_id=f"t-{eid}", char_start=position, char_end=position + len(term),
+                    text=term, type=kind, score=.9, passage_ids=[f"p-{eid}"], source_window_ids=["w"],
+                    extraction_fingerprint="x"))
+                start = position + len(term)
+    config = ResolutionConfig(normalization="unicode-nfc-casefold-whitespace-v1", aliases="aliases.jsonl",
+                              cross_episode_exact_types=["Place"])
+    episode_entities, entities, assignments, _, queue = resolve_records(
+        "resolve", "hop", mentions, passages, [], config, "fingerprint")
+    return (episodes, transcripts, passages, mentions, list(episode_entities), list(entities),
+            list(assignments), list(queue))
 
 
 def config(**changes):
@@ -114,65 +145,12 @@ def test_top_k_ties_use_stable_target_ids():
     assert any(r["decision"] == "outside_top_k" for r in scores)
 
 
-def test_discovery_vault_shows_two_passages_and_separate_comparison():
-    """Suggested passage notes keep the source text, anchors and the uncertainty labels."""
-    records, inputs, vectors = example()
-    _, links, counts = rank_connections(inputs, vectors, config())
-    view = {"run_id": "discovery-test", "inputs": inputs, "connections": links, "counts": counts}
-    settings = VaultConfig(vault_name="Discovery", concept_navigation=True)
-    files = build_vault_files(settings, *records, discovery=view)
-    validate_links(files, settings, records[2])
-    nodes = [data.decode() for name, data in files.items() if name.startswith("40_Discussions/")]
-    assert len(nodes) == 2
-    assert "40_Discussions/Episode e1 — Passage 1.md" in files
-    assert all("retrieval suggestions, not factual relations" in text for text in nodes)
-    assert all("timestamp unavailable" in text for text in nodes)
-    assert all("Cosine similarity: 1.000" in text for text in nodes)
-    review = files["90_Review/Passage discovery comparison.md"].decode()
-    assert "Shared-entity Jaccard" in review and "MPNet cosine" in review
-    assert not any(name.startswith("30_Relations/") for name in files)
-    no_view = build_vault_files(settings, *records)
-    assert not any(name.startswith("40_Discussions/") for name in no_view)
-
-
-def test_snapshot_roundtrip_and_rehashed_ranking_tampering(tmp_path, monkeypatch):
-    """A saved run validates offline and fails when scores are edited, even with new hashes."""
-    import spoken_record.discovery as module
-    records = navigation_records()
-    sources = {"identity_run_id": "parent", "passage_run_id": "passages",
-               "identity_manifest_sha256": "a"*64, "passage_manifest_sha256": "b"*64}
-    monkeypatch.setattr(module, "load_inputs", lambda root, parent: (records, [], sources))
-    parent = tmp_path / "data/prototype1/runs/parent"
-    parent.mkdir(parents=True)
-    dump_json(parent/"manifest.json", {"stage": "resolve", "status": "complete"})
-    dump_json(tmp_path/"discovery.json", config().model_dump(mode="json"))
-    output = discover_run(tmp_path, str(parent.relative_to(tmp_path)), "discovery.json",
-                          "discovery-test", backend_factory=FakeEncoder)
-    assert validate_run(output)["counts"]["mpnet_cosine_connections"] == 2
-    with pytest.raises(FileExistsError):
-        discover_run(tmp_path, str(parent.relative_to(tmp_path)), "discovery.json", "discovery-test")
-    path = output/"passage_connections.jsonl"
-    rows = [json.loads(line) for line in path.read_text().splitlines()]
-    rows[0]["score"] = .123
-    path.write_text("".join(json.dumps(r)+"\n" for r in rows))
-    manifest = json.loads((output/"manifest.json").read_text())
-    manifest["artifact_sha256"][path.name] = sha256(path.read_bytes())
-    dump_json(output/"manifest.json", manifest)
-    with pytest.raises(ValueError, match="rankings not reproducible"):
-        validate_run(output)
-
-
-def test_backend_failure_does_not_publish(tmp_path, monkeypatch):
-    """A model failure must not produce a valid run with no suggestions."""
-    import spoken_record.discovery as module
-    monkeypatch.setattr(module, "load_inputs", lambda root, parent: (navigation_records(), [], {}))
-    parent = tmp_path/"data/prototype1/runs/parent"
-    parent.mkdir(parents=True)
-    dump_json(parent/"manifest.json", {})
-    dump_json(tmp_path/"discovery.json", config().model_dump(mode="json"))
-    def fail(root, settings):
-        """Pretend the checkpoint is missing, before anything is written."""
+def test_a_model_failure_stops_discovery_instead_of_finding_nothing():
+    """A model failure must not look like a result with no related passages."""
+    def fail(texts):
         raise RuntimeError("model failed")
     with pytest.raises(RuntimeError, match="model failed"):
-        discover_run(tmp_path, "data/prototype1/runs/parent", "discovery.json", "failed", backend_factory=fail)
-    assert not (parent.parent/"failed").exists()
+        compute_discovery(navigation_records(), [], config(), fail)
+    _, _, _, connections, counts = compute_discovery(
+        navigation_records(), [], config(), FakeEncoder(None, config()).encode)
+    assert counts["mpnet_cosine_connections"] == 2 and len(connections) == 4

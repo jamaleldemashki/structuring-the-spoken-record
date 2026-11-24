@@ -1,18 +1,12 @@
-import json
-import subprocess
-import sys
 from dataclasses import dataclass
 
 import pytest
 from pydantic import ValidationError
 
-from test_ingestion import parse, transcript, workspace  # Reuse the synthetic source fixture
-from spoken_record.adapters.base import sha256
+from test_ingestion import parse, transcript
 from spoken_record.adapters.plain_text import PlainTextAdapter
-from spoken_record.ingestion import dump_json, ingest, read_jsonl
 from spoken_record.passage_models import SegmentationConfig
-from spoken_record.passages import build_passages, sentence_boundaries
-from spoken_record.segmentation import segment_run, validate_records, validate_run
+from spoken_record.passages import build_passages, check_passages, sentence_boundaries
 from spoken_record.windows import WhitespaceBudget, build_windows, require_model_ready
 
 CONFIG = SegmentationConfig(passage_min_words=5, passage_target_words=8, passage_max_words=12,
@@ -29,7 +23,7 @@ def text_bundle(text, language="en"):
 def derive(bundle, config=CONFIG, run="derived"):
     passages = build_passages(bundle, config, run)
     windows = build_windows(bundle, passages, config, run)
-    validate_records([bundle], passages, windows, [], run, config)
+    check_passages(bundle, passages)
     return passages, windows
 
 
@@ -142,38 +136,24 @@ def test_invalid_configuration(values):
         SegmentationConfig(**values)
 
 
-def test_segmentation_snapshot_cli_and_immutable_parent(workspace):
-    root, _ = workspace
-    parent = ingest(root, "config.json", "pilot.json", "source")
-    hashes = {p.name: sha256(p.read_bytes()) for p in parent.iterdir()}
-    dump_json(root / "segmentation.json", CONFIG.model_dump())
-    output = segment_run(root, str(parent.relative_to(root)), "segmentation.json", run_id="passages")
-    assert validate_run(output)["counts"]["processed"] == 1
-    assert hashes == {p.name: sha256(p.read_bytes()) for p in parent.iterdir()}
-    assert "Pāṇini" in (output / "passages.md").read_text()
-    with pytest.raises(FileExistsError):
-        segment_run(root, str(parent.relative_to(root)), "segmentation.json", run_id="passages")
-    result = subprocess.run([sys.executable, "-m", "spoken_record.cli", "segment", "--root", str(root),
-        "--input-run", str(parent.relative_to(root)), "--config", "segmentation.json", "--run-id", "cli-passages"],
-        capture_output=True, text=True)
-    assert result.returncode == 0, result.stderr
-    assert json.loads(result.stdout)["counts"]["passages"] > 0
-
-
-def test_missing_passage_or_window_fails_integrity():
+def test_missing_or_changed_passages_fail_the_check():
     bundle = text_bundle(" ".join(["word"] * 40))
-    passages, windows = derive(bundle)
+    passages, _ = derive(bundle)
     with pytest.raises(ValueError, match="cover"):
-        validate_records([bundle], passages[:-1], windows, [], "derived", CONFIG)
-    with pytest.raises(ValueError, match="windows"):
-        validate_records([bundle], passages, windows[:-1], [], "derived", CONFIG)
+        check_passages(bundle, passages[:-1])
+    with pytest.raises(ValueError, match="reproduce"):
+        check_passages(bundle, [passages[0].model_copy(update={"text": "changed"}), *passages[1:]])
 
 
-def test_parent_modification_detected(workspace):
-    root, _ = workspace
-    parent = ingest(root, "config.json", "pilot.json", "source")
-    dump_json(root / "segmentation.json", CONFIG.model_dump())
-    output = segment_run(root, str(parent.relative_to(root)), "segmentation.json", run_id="passages")
-    (parent / "transcripts.jsonl").write_text("corrupted")
-    with pytest.raises(ValueError, match="checksum"):
-        validate_run(output)
+def test_passage_timing_gives_each_segment_offset_and_times():
+    from spoken_record.graph import timing
+    bundle = parse(transcript(["  Pāṇini studies language. Thomas studies philosophy.\r\n",
+                               "Saint Thomas writes about knowledge. 😀 The discussion continues.  "]))
+    passages, _ = derive(bundle)
+    by_id = {s.segment_id: s for s in bundle.segments}
+    for passage in passages:
+        rows = timing(passage, by_id)
+        assert [row[0] for row in rows] == sorted(row[0] for row in rows)
+        assert rows[0][0] <= 0 and rows[-1][1] >= len(passage.text)
+        assert all(row[0] < row[1] and row[2] <= row[3] for row in rows)
+        assert rows[0][2] == passage.start_s and rows[-1][3] == passage.end_s

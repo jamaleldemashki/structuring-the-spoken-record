@@ -1,13 +1,13 @@
 """Tests for mapping GLiREL output to entities and grouping relations."""
 
+import pytest
 import spacy
 
 from spoken_record.coreference_models import CoreferenceLink
 from spoken_record.extraction_models import ExtractedMention
 from spoken_record.passage_models import Passage
 from spoken_record.relation_models import RelationExtractionConfig
-from spoken_record.relations import (align_mentions, build_assertions, build_cooccurrence,
-                                     abstain_direction_conflicts, passage_endpoints,
+from spoken_record.relations import (build_assertions, build_cooccurrence, choose_proposals, passage_endpoints,
                                      project_predictions, sentence_contexts)
 from spoken_record.resolution_models import MentionAssignment
 
@@ -20,7 +20,7 @@ def relation_config() -> RelationExtractionConfig:
         "encoder_repo_id": "example/encoder", "encoder_revision": "b" * 40,
         "offline_only": True, "tokenizer": "spacy-blank-en-v1",
         "context_unit": "sentence_within_passage",
-        "candidate_floor": 0.1, "acceptance_threshold": 0.5, "top_k": 1,
+        "candidate_floor": 0.1, "acceptance_threshold": 0.5,
         "labels": [{"prompt_label": "student of", "canonical_predicate": "student_of",
                     "asymmetric": True,
                     "allowed_head": ["Person"], "allowed_tail": ["Person"]},
@@ -52,10 +52,21 @@ def records():
     return passage, [aquinas, albert], assignments
 
 
+def context():
+    """The model input for the only sentence of the passage."""
+    passage, mentions, assignments = records()
+    nlp = spacy.blank("en")
+    nlp.add_pipe("sentencizer")
+    endpoints = passage_endpoints(passage, mentions, {row.mention_id: row for row in assignments}, [])
+    contexts, _, skipped = sentence_contexts(passage, endpoints, nlp)
+    [(tokens, ner, by_span, _, _)] = contexts
+    return tokens, ner, by_span, skipped
+
+
 def test_glirel_prediction_is_grounded_and_aggregated():
     """Exclusive token spans from the model map to mentions, entities and one assertion."""
     passage, mentions, assignments = records()
-    tokens, ner, by_span, skipped = align_mentions(passage, mentions, spacy.blank("en"))
+    tokens, ner, by_span, skipped = context()
     assert tokens == ["Aquinas", "studied", "under", "Albert", "."]
     assert ner == [[0, 0, "Person", "Aquinas"], [3, 3, "Person", "Albert"]]
     assert skipped == []
@@ -75,7 +86,7 @@ def test_glirel_prediction_is_grounded_and_aggregated():
 def test_low_score_is_retained_but_not_asserted():
     """Weak output above the floor is kept for inspection, but not accepted."""
     passage, mentions, assignments = records()
-    _, _, by_span, _ = align_mentions(passage, mentions, spacy.blank("en"))
+    _, _, by_span, _ = context()
     predictions = [{"head_pos": [0, 1], "tail_pos": [3, 4], "label": "student of", "score": .2}]
     candidates = project_predictions("m6", passage, predictions, by_span,
         {row.mention_id: row for row in assignments}, relation_config(), "fingerprint")
@@ -91,22 +102,6 @@ def test_cooccurrence_is_undirected_and_passage_grounded():
     assert (edges[0].left_corpus_entity_id, edges[0].right_corpus_entity_id) == \
            ("ce-albert", "ce-aquinas")
     assert edges[0].passage_ids == ["p1"]
-
-
-def test_asymmetric_predictions_in_both_directions_abstain():
-    """A prediction in both directions must not become two opposite assertions."""
-    passage, mentions, assignments = records()
-    _, _, by_span, _ = align_mentions(passage, mentions, spacy.blank("en"))
-    predictions = [
-        {"head_pos": [0, 1], "tail_pos": [3, 4], "label": "student of", "score": .8},
-        {"head_pos": [3, 4], "tail_pos": [0, 1], "label": "student of", "score": .7},
-    ]
-    config = relation_config()
-    candidates = project_predictions("m6", passage, predictions, by_span,
-        {row.mention_id: row for row in assignments}, config, "fingerprint")
-    candidates = abstain_direction_conflicts(candidates, config)
-    assert {row.decision for row in candidates} == {"direction_conflict"}
-    assert build_assertions("m6", list(candidates)) == ()
 
 
 def test_resolved_pronoun_becomes_canonical_relation_endpoint():
@@ -163,3 +158,50 @@ def test_resolved_pronoun_becomes_canonical_relation_endpoint():
     assert (assertion.subject_corpus_entity_id, assertion.predicate,
             assertion.object_corpus_entity_id) == ("ce-thomas", "authored", "ce-book")
     assert assertion.evidence[0].head_endpoint_kind == "coreference_reference"
+
+
+def proposal_config(**changes) -> RelationExtractionConfig:
+    """Predicates with wordings, a predicate without direction and a low threshold."""
+    data = relation_config().model_dump()
+    data.update({"proposals_per_pair": 1, "acceptance_threshold": 0.2,
+                 "labels": [{"prompt_label": "student of", "wordings": ["taught by"], "canonical_predicate": "student_of",
+                             "asymmetric": True, "allowed_head": ["Person"], "allowed_tail": ["Person"]},
+                            {"prompt_label": "agreed with", "canonical_predicate": "agreed_with",
+                             "asymmetric": False, "allowed_head": ["Person"], "allowed_tail": ["Person"]}]})
+    data.update(changes)
+    return RelationExtractionConfig.model_validate(data)
+
+
+def predict(config, predictions):
+    passage, mentions, assignments = records()
+    _, _, by_span, _ = context()
+    return project_predictions("m6", passage, predictions, by_span,
+                               {row.mention_id: row for row in assignments}, config, "fingerprint")
+
+
+def test_wordings_of_one_predicate_give_one_candidate_with_the_best_score():
+    config = proposal_config()
+    assert config.prompts() == ["student of", "taught by", "agreed with"]
+    rows = predict(config, [{"head_pos": [0, 1], "tail_pos": [3, 4], "label": "student of", "score": .3},
+                            {"head_pos": [0, 1], "tail_pos": [3, 4], "label": "taught by", "score": .6}])
+    assert [(row.canonical_predicate, row.prompt_label, row.score) for row in rows] == [("student_of", "taught by", .6)]
+
+
+def test_the_strongest_predicate_is_proposed_in_both_directions():
+    """GLiREL ranks the kind of relation, the NLI check decides the direction."""
+    rows = choose_proposals(predict(proposal_config(), [
+        {"head_pos": [0, 1], "tail_pos": [3, 4], "label": "student of", "score": .4},
+        {"head_pos": [3, 4], "tail_pos": [0, 1], "label": "student of", "score": .35},
+        {"head_pos": [0, 1], "tail_pos": [3, 4], "label": "agreed with", "score": .3}]), proposal_config())
+    kept = sorted((row.head_corpus_entity_id, row.canonical_predicate) for row in rows if row.decision == "accepted")
+    assert kept == [("ce-albert", "student_of"), ("ce-aquinas", "student_of")]
+    assert [row.decision for row in rows if row.canonical_predicate == "agreed_with"] == ["not_proposed"]
+
+
+def test_a_predicate_without_direction_is_proposed_once():
+    config = proposal_config(proposals_per_pair=2)
+    rows = choose_proposals(predict(config, [
+        {"head_pos": [0, 1], "tail_pos": [3, 4], "label": "agreed with", "score": .4},
+        {"head_pos": [3, 4], "tail_pos": [0, 1], "label": "agreed with", "score": .5}]), config)
+    assert [(row.head_corpus_entity_id, row.decision) for row in sorted(rows, key=lambda r: r.head_corpus_entity_id)] == \
+        [("ce-albert", "accepted"), ("ce-aquinas", "not_proposed")]

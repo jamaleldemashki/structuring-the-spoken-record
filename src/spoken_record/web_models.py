@@ -59,6 +59,9 @@ class SiteConfig(BaseModel):
     lifespan_type: EntityType | None = "Person"
     lived_presets: list[TimePreset] = Field(default_factory=list)
     search_placeholder: str = "Search people, concepts, works…"
+    # Share of each item's "discussed together" weight the app draws by default (see
+    # web/src/lib/strength.ts). The viewer can change it in the graph settings.
+    co_discussed_share: float = Field(default=0.1, gt=0, le=1)
 
     @model_validator(mode="after")
     def consistent(self):
@@ -80,4 +83,14 @@ class WebExportConfig(BaseModel):
     min_shared_passages: int = Field(default=2, ge=1)
     include_passage_text: bool = True
     predicate_labels: dict[str, str] = Field(default_factory=lambda: {"authored": "wrote"})
+    # The same relation read from its object, for the details panel of the object: "Aristotle
+    # influenced Aquinas" when "Aquinas influenced_by Aristotle". Without an entry the label is
+    # shown as "<label> (by)" so the direction is still clear.
+    inverse_labels: dict[str, str] = Field(default_factory=dict)
+    # Headings that group the relations of a topic in the details, in the order given. A predicate
+    # without a group is listed under the general heading.
+    predicate_groups: dict[str, str] = Field(default_factory=dict)
+    # Predicates the graph keeps but the app does not show, because reading their evidence
+    # found too many of them wrong. They stay in graph.json for inspection.
+    hidden_predicates: list[str] = Field(default_factory=list)
     discovery_method: Literal["mpnet_cosine", "shared_entity_jaccard"] = "mpnet_cosine"

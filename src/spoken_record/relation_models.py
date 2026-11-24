@@ -4,7 +4,7 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from spoken_record.evaluation import EntityType
+from spoken_record.models import EntityType
 from spoken_record.models import Record
 
 
@@ -13,6 +13,9 @@ class RelationLabel(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
     prompt_label: str = Field(min_length=1)
+    # More wordings of the same predicate. GLiREL reacts to the wording, so each is asked and
+    # the best one counts. They never become predicates of their own.
+    wordings: list[str] = Field(default_factory=list)
     canonical_predicate: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
     asymmetric: bool
     allowed_head: list[EntityType] = Field(min_length=1)
@@ -48,12 +51,26 @@ class RelationExtractionConfig(BaseModel):
     include_linked_coreference: bool = False
     candidate_floor: float = Field(ge=0, le=1)
     acceptance_threshold: float = Field(ge=0, le=1)
-    top_k: int = Field(gt=0)
+    # How many labels GLiREL returns per pair. 0 returns every label over the floor, which the
+    # proposals need.
+    top_k: Literal[0] = 0
+    # Per pair the best predicates that fit the types and reach the threshold are proposed in
+    # every direction GLiREL scored, and the NLI check decides which one holds. GLiREL ranks the
+    # kind of relation well on this material but cannot tell its direction.
+    selection: Literal["proposals"] = "proposals"
+    proposals_per_pair: int = Field(default=2, ge=1)
     labels: list[RelationLabel] = Field(min_length=1)
+
+    def prompts(self) -> list[str]:
+        """Every wording GLiREL is asked, predicates first, in the configured order."""
+        return [prompt for label in self.labels for prompt in [label.prompt_label, *label.wordings]]
+
+    def label_by_prompt(self) -> dict[str, RelationLabel]:
+        return {prompt: label for label in self.labels for prompt in [label.prompt_label, *label.wordings]}
 
     @model_validator(mode="after")
     def valid_inventory(self) -> Self:
-        prompts = [label.prompt_label for label in self.labels]
+        prompts = self.prompts()
         predicates = [label.canonical_predicate for label in self.labels]
         if len(set(prompts)) != len(prompts) or len(set(predicates)) != len(predicates):
             raise ValueError("relation labels and predicates must be unique")
@@ -124,7 +141,7 @@ class RelationCandidate(Record):
     canonical_predicate: str
     score: float = Field(ge=0, le=1)
     decision: Literal["accepted", "below_threshold", "type_rejected", "self_relation",
-                      "direction_conflict"]
+                      "not_proposed"]
     reason: str
 
     @model_validator(mode="after")

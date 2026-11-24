@@ -4,7 +4,7 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from spoken_record.evaluation import EntityType
+from spoken_record.models import EntityType
 from spoken_record.models import Record
 
 
@@ -15,6 +15,11 @@ RetrievalMethod = Literal[
     "person_name_block",
     "person_surname_variant",
     "fuzzy_surface",
+    # The two were already merged as one entity inside an episode.
+    "same_episode_entity",
+    # A first name and the one full name in the episode that starts with it ("Alexander" and
+    # "Alexander of Hales").
+    "person_first_name",
 ]
 
 Contradiction = Literal[
@@ -31,7 +36,6 @@ class IdentityRefinementConfig(BaseModel):
     candidate_types: list[EntityType]
     merge_methods: list[RetrievalMethod]
     fuzzy_similarity_floor: float = Field(ge=0, le=1)
-    # The default keeps runs made before this rule existed valid.
     person_surname_similarity_floor: float = Field(default=.9, ge=0, le=1)
     merge_threshold: float = Field(ge=0, le=1)
     minimum_context_similarity: float = Field(ge=0, le=1)
@@ -77,4 +81,4 @@ class EntityRedirect(Record):
     from_corpus_entity_id: str
     to_corpus_entity_id: str
     candidate_ids: list[str] = Field(min_length=1)
-    reason: Literal["provisional_automatic_merge"] = "provisional_automatic_merge"
+    reason: Literal["provisional_automatic_merge", "same_wikidata_item"] = "provisional_automatic_merge"

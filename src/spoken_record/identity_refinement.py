@@ -2,31 +2,19 @@
 are provisional.
 """
 
-import importlib.metadata
 import itertools
-import json
 import math
-import platform
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
 from difflib import SequenceMatcher
-from pathlib import Path
-from time import perf_counter
-from uuid import uuid4
 
-from spoken_record import __version__
-from spoken_record.adapters.base import sha256, stable_id
-from spoken_record.context_resolution import cosine, jaccard, tokens
+from spoken_record.adapters.base import stable_id
 from spoken_record.extraction_models import ExtractedMention
 from spoken_record.identity_models import (EntityRedirect, IdentityCandidateDecision,
                                            IdentityRefinementConfig)
-from spoken_record.ingestion import dump_json, dump_jsonl, read_jsonl, workspace_path
 from spoken_record.passage_models import Passage
-from spoken_record.resolution import (evaluate_resolution, normalize_surface,
-                                      validate_run as validate_resolution)
-from spoken_record.resolution_models import (AliasRule, CorpusEntity, EpisodeEntity,
-                                             MentionAssignment, ResolutionConfig,
+from spoken_record.resolution import normalize_surface
+from spoken_record.resolution_models import (CorpusEntity, EpisodeEntity, MentionAssignment,
                                              ResolutionDecision, ReviewCandidate)
 
 
@@ -35,6 +23,31 @@ QUALIFIERS = frozenset({"of", "from"})
 PERSON_DESCRIPTORS = frozenset({"aunt", "brother", "father", "great", "her", "his", "king",
                                 "mother", "my", "our", "pope", "queen", "saint", "sister", "st",
                                 "their", "uncle", "your"})
+
+
+WORD = re.compile(r"[^\W\d_]+(?:['’-][^\W\d_]+)*", re.UNICODE)
+STOPWORDS = frozenset("a an and are as at be been being but by did do does for from had has have he her hers him "
+                      "his i if in into is it its me my no not of on or our she so than that the their them then "
+                      "there these they this those to was we were what when which who will with would you your".split())
+
+
+def tokens(text: str) -> list[str]:
+    """Lowercase words for the context comparison, without stopwords and one-letter words."""
+    return [token.casefold() for token in WORD.findall(text) if token.casefold() not in STOPWORDS and len(token) > 1]
+
+
+def cosine(left: Counter, right: Counter, idf: dict[str, float]) -> float:
+    """TF-IDF cosine of two word counts."""
+    shared = sorted(set(left) & set(right))
+    dot = math.fsum(left[t] * right[t] * idf[t] ** 2 for t in shared)
+    left_norm = math.sqrt(math.fsum(left[t] ** 2 * idf[t] ** 2 for t in sorted(left)))
+    right_norm = math.sqrt(math.fsum(right[t] ** 2 * idf[t] ** 2 for t in sorted(right)))
+    value = dot / (left_norm * right_norm) if left_norm and right_norm else 0.0
+    return min(1.0, max(0.0, value))
+
+
+def jaccard(left: set[str], right: set[str]) -> float:
+    return len(left & right) / len(left | right) if left or right else 0.0
 
 
 def name_tokens(value: str) -> tuple[str, ...]:
@@ -114,8 +127,7 @@ def surface_features(left: CorpusEntity, right: CorpusEntity, config: IdentityRe
                 methods.add("person_name_block")
             # This finds ASR spelling variants like Douglas/Douglass. It is not in merge_methods,
             # so context similarity alone can't turn such a pair into an automatic merge.
-            surname_variants_enabled = "person_surname_similarity_floor" in config.model_fields_set
-            if surname_variants_enabled and len(short) == 1 and len(long) > 1 and short[0] != long[-1]:
+            if len(short) == 1 and len(long) > 1 and short[0] != long[-1]:
                 surname_similarity = SequenceMatcher(None, short[0], long[-1]).ratio()
                 if surname_similarity >= config.person_surname_similarity_floor:
                     methods.add("person_surname_variant")
@@ -199,9 +211,7 @@ def build_decisions(run_id: str, entities: list[CorpusEntity], mentions: list[Ex
         evidence = sorted(entity_passages[left_id] | entity_passages[right_id],
                           key=lambda pid: (passage_by_id[pid].episode_id, passage_by_id[pid].index, pid))
         rows.append(IdentityCandidateDecision(created_by_run_id=run_id,
-            # exclude_unset keeps the IDs of runs made before the optional rules existed.
-            candidate_id=stable_id("ic", left_id, right_id,
-                                   config.model_dump_json(exclude_unset=True)), type=left.type,
+            candidate_id=stable_id("ic", left_id, right_id, config.model_dump_json()), type=left.type,
             left_corpus_entity_id=left_id, right_corpus_entity_id=right_id,
             left_label=left.canonical_label, right_label=right.canonical_label,
             episode_ids=sorted(set(left.episode_ids) | set(right.episode_ids)),
@@ -247,9 +257,12 @@ def consistent_components(entities: list[CorpusEntity], decisions: tuple[Identit
         right = components.members[components.find(row.right_corpus_entity_id)]
         combined = left | right
         conflicts = any(frozenset(pair) in separate for pair in itertools.product(left, right))
-        if len(combined) > maximum or conflicts:
+        # Merges made inside an episode are kept as they are. The size limit is only there to
+        # stop name-variant merges across episodes from snowballing.
+        too_big = len(combined) > maximum and row.retrieval_methods != ["same_episode_entity"]
+        if too_big or conflicts:
             reason = ("merge abstained because transitive closure would exceed the configured component limit"
-                      if len(combined) > maximum else
+                      if too_big else
                       "merge abstained because transitive closure would violate an explicit separate decision")
             final.append(row.model_copy(update={"decision": "abstain", "reason": reason}))
             continue
@@ -330,174 +343,3 @@ def refine_records(run_id: str, corpus_entities: list[CorpusEntity], episode_ent
             tuple(sorted(refined_decisions, key=lambda row: row.decision_id)),
             tuple(sorted(remaining_queue, key=lambda row: row.candidate_id)),
             tuple(sorted(redirects, key=lambda row: row.from_corpus_entity_id)), candidates)
-
-
-def review_view(candidates: tuple[IdentityCandidateDecision, ...]) -> str:
-    lines = ["# Automatic identity refinement", "",
-             "> [!warning] Provisional output",
-             "> Automatic merges improve navigation but are not human-reviewed identity facts.", ""]
-    for decision in ("merge", "separate", "abstain"):
-        rows = [row for row in candidates if row.decision == decision]
-        lines.extend([f"## {decision.title()} ({len(rows)})", "",
-                      "| Type | Left | Right | Retrieval | Score | Reason |",
-                      "|---|---|---|---|---:|---|"])
-        for row in rows:
-            values = (row.type, row.left_label, row.right_label, ", ".join(row.retrieval_methods),
-                      f"{row.combined_score:.3f}", row.reason)
-            lines.append("| " + " | ".join(value.replace("|", "\\|") for value in values) + " |")
-        lines.append("")
-    return "\n".join(lines)
-
-
-def load_base(parent: Path):
-    manifest = validate_resolution(parent)
-    extraction = parent.parent / manifest["parent_run_id"]
-    extraction_manifest = json.loads((extraction / "manifest.json").read_bytes())
-    passage_run = extraction.parent / extraction_manifest["parent_run_id"]
-    return (manifest, extraction,
-        [EpisodeEntity.model_validate(row) for row in read_jsonl(parent / "episode_entities.jsonl")],
-        [CorpusEntity.model_validate(row) for row in read_jsonl(parent / "corpus_entities.jsonl")],
-        [MentionAssignment.model_validate(row) for row in read_jsonl(parent / "assignments.jsonl")],
-        [ResolutionDecision.model_validate(row) for row in read_jsonl(parent / "decisions.jsonl")],
-        [ReviewCandidate.model_validate(row) for row in read_jsonl(parent / "review_queue.jsonl")],
-        [AliasRule.model_validate(row) for row in read_jsonl(parent / "aliases.jsonl")],
-        ResolutionConfig.model_validate_json((parent / "config.json").read_bytes()),
-        [ExtractedMention.model_validate(row) for row in read_jsonl(extraction / "mentions.jsonl")],
-        [Passage.model_validate(row) for row in read_jsonl(passage_run / "passages.jsonl")])
-
-
-def summary_of(episode_entities, entities, assignments, decisions, queue, redirects, candidates):
-    return {"mentions": len(assignments), "episode_entities": len(episode_entities),
-        "corpus_entities": len(entities), "assignments": len(assignments), "decisions": len(decisions),
-        "review_candidates": len(queue), "redirects": len(redirects),
-        "identity_candidates": len(candidates),
-        "automatic_merges": sum(row.decision == "merge" for row in candidates),
-        "automatic_separates": sum(row.decision == "separate" for row in candidates),
-        "automatic_abstentions": sum(row.decision == "abstain" for row in candidates),
-        "automatic_components": sum(entity.resolution_method == "automatic_context" for entity in entities),
-        "cross_episode_entities": sum(entity.episode_count > 1 for entity in entities),
-        "unresolved_entities": sum(entity.resolution_status == "unresolved" for entity in entities)}
-
-
-def refine_run(root: Path, input_name: str, config_name: str, run_id: str | None = None) -> Path:
-    """Apply the provisional Person merges that pass the consistency checks."""
-    root, started, now = root.resolve(), perf_counter(), datetime.now(timezone.utc)
-    run_id = run_id or f"refine-{now:%Y%m%dT%H%M%SZ}-{uuid4().hex[:8]}"
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", run_id):
-        raise ValueError("invalid run ID")
-    parent = workspace_path(root, input_name)
-    if parent.parent != root / "data/prototype1/runs":
-        raise ValueError("input must be a resolution snapshot")
-    output = parent.parent / run_id
-    if output.exists():
-        raise FileExistsError(output)
-    parent_digest = sha256((parent / "manifest.json").read_bytes())
-    config_path = workspace_path(root, config_name)
-    config_bytes = config_path.read_bytes()
-    config = IdentityRefinementConfig.model_validate_json(config_bytes)
-    (base_manifest, extraction, episode_entities, corpus_entities, assignments, base_decisions,
-     queue, rules, base_config, mentions, passages) = load_base(parent)
-    candidates = build_decisions(run_id, corpus_entities, mentions, assignments, passages, config)
-    entities, assignments, decisions, queue, redirects, candidates = refine_records(
-        run_id, corpus_entities, episode_entities, assignments, base_decisions, queue, candidates, config)
-    # Gold data isn't needed. If the parent run had an evaluation packet, it is scored too.
-    evaluation = {"status": "not_evaluated", "reason": "no evaluation packet supplied"}
-    if base_manifest["evaluation_packet"]:
-        packet = workspace_path(root, base_manifest["evaluation_packet"])
-        evaluation = evaluate_resolution(packet, mentions, list(assignments), rules, base_config)
-    if sha256((parent / "manifest.json").read_bytes()) != parent_digest or config_path.read_bytes() != config_bytes:
-        raise ValueError("parent or identity-refinement configuration changed")
-    output.mkdir(parents=True, exist_ok=False)
-    artifacts = {"episode_entities.jsonl": episode_entities, "corpus_entities.jsonl": entities,
-        "assignments.jsonl": assignments, "decisions.jsonl": decisions, "review_queue.jsonl": queue,
-        "aliases.jsonl": rules, "identity_candidates.jsonl": candidates, "redirects.jsonl": redirects}
-    for name, rows in artifacts.items():
-        dump_jsonl(output / name, list(rows))
-    dump_json(output / "config.json", config.model_dump(mode="json"))
-    dump_json(output / "base_config.json", base_config.model_dump(mode="json"))
-    dump_json(output / "evaluation.json", evaluation)
-    summary = summary_of(episode_entities, entities, assignments, decisions, queue, redirects, candidates)
-    dump_json(output / "summary.json", summary)
-    (output / "review.md").write_text(review_view(candidates), encoding="utf-8")
-    names = [*artifacts, "config.json", "base_config.json", "evaluation.json", "summary.json", "review.md"]
-    code_root = Path(__file__).parent
-    manifest = {"schema_version": 1, "stage": "refine_resolution", "run_id": run_id,
-        "status": "complete", "package_version": __version__, "started_utc": now.isoformat(),
-        "elapsed_seconds": round(perf_counter() - started, 4), "python": platform.python_version(),
-        "dependencies": {"pydantic": importlib.metadata.version("pydantic")},
-        "parent_run_id": parent.name, "parent_manifest_sha256": parent_digest,
-        "extraction_run_id": extraction.name, "input_config": config_name,
-        "input_config_sha256": sha256(config_bytes), "evaluation_packet": base_manifest["evaluation_packet"],
-        "counts": summary,
-        "code_sha256": {str(path.relative_to(code_root)): sha256(path.read_bytes())
-                        for path in sorted(code_root.rglob("*.py"))},
-        "artifact_sha256": {name: sha256((output / name).read_bytes()) for name in names}}
-    dump_json(output / "manifest.json", manifest)
-    validate_run(output)
-    return output
-
-
-def validate_run(output: Path) -> dict:
-    output = output.resolve()
-    manifest = json.loads((output / "manifest.json").read_bytes())
-    if manifest.get("schema_version") != 1 or manifest.get("stage") != "refine_resolution" \
-            or manifest.get("status") != "complete":
-        raise ValueError("unsupported identity-refinement snapshot")
-    root = output.parents[3]
-    parent = output.parent / manifest["parent_run_id"]
-    if sha256((parent / "manifest.json").read_bytes()) != manifest["parent_manifest_sha256"]:
-        raise ValueError("parent resolution manifest changed")
-    config_path = workspace_path(root, manifest["input_config"])
-    if sha256(config_path.read_bytes()) != manifest["input_config_sha256"]:
-        raise ValueError("identity-refinement configuration changed")
-    expected_names = {"episode_entities.jsonl", "corpus_entities.jsonl", "assignments.jsonl",
-        "decisions.jsonl", "review_queue.jsonl", "aliases.jsonl", "identity_candidates.jsonl",
-        "redirects.jsonl", "config.json", "base_config.json", "evaluation.json", "summary.json",
-        "review.md"}
-    if set(manifest["artifact_sha256"]) != expected_names:
-        raise ValueError("unexpected identity-refinement artifact set")
-    for name, digest in manifest["artifact_sha256"].items():
-        if sha256((output / name).read_bytes()) != digest:
-            raise ValueError(f"identity-refinement artifact changed: {name}")
-    config = IdentityRefinementConfig.model_validate_json((output / "config.json").read_bytes())
-    (base_manifest, _, episode_entities, corpus_entities, base_assignments, base_decisions,
-     base_queue, rules, base_config, mentions, passages) = load_base(parent)
-    expected_candidates = build_decisions(manifest["run_id"], corpus_entities, mentions,
-                                          base_assignments, passages, config)
-    expected = refine_records(manifest["run_id"], corpus_entities, episode_entities, base_assignments,
-                              base_decisions, base_queue, expected_candidates, config)
-    entities, assignments, decisions, queue, redirects, candidates = expected
-    model_files = ((CorpusEntity, "corpus_entities.jsonl", entities),
-        (MentionAssignment, "assignments.jsonl", assignments),
-        (ResolutionDecision, "decisions.jsonl", decisions),
-        (ReviewCandidate, "review_queue.jsonl", queue), (EntityRedirect, "redirects.jsonl", redirects),
-        (IdentityCandidateDecision, "identity_candidates.jsonl", candidates))
-    for model, name, expected_rows in model_files:
-        actual = tuple(model.model_validate(row) for row in read_jsonl(output / name))
-        if actual != expected_rows:
-            raise ValueError(f"identity-refinement records are not reproducible: {name}")
-    actual_episode_entities = tuple(EpisodeEntity.model_validate(row)
-                                    for row in read_jsonl(output / "episode_entities.jsonl"))
-    if actual_episode_entities != tuple(episode_entities):
-        raise ValueError("identity refinement changed EpisodeEntities")
-    if tuple(AliasRule.model_validate(row) for row in read_jsonl(output / "aliases.jsonl")) != tuple(rules):
-        raise ValueError("identity refinement changed reviewed aliases")
-    if ResolutionConfig.model_validate_json((output / "base_config.json").read_bytes()) != base_config:
-        raise ValueError("identity refinement changed its base resolution configuration")
-    entity_ids = {entity.corpus_entity_id for entity in entities}
-    if len(assignments) != len(mentions) or {row.mention_id for row in assignments} != {row.mention_id for row in mentions}:
-        raise ValueError("every mention must have one refined assignment")
-    if any(row.corpus_entity_id not in entity_ids for row in assignments):
-        raise ValueError("refined assignment refers to an unknown CorpusEntity")
-    summary = summary_of(episode_entities, entities, assignments, decisions, queue, redirects, candidates)
-    if summary != manifest["counts"] or summary != json.loads((output / "summary.json").read_bytes()):
-        raise ValueError("identity-refinement counts differ")
-    if review_view(candidates) != (output / "review.md").read_text(encoding="utf-8"):
-        raise ValueError("identity-refinement review is not reproducible")
-    evaluation = {"status": "not_evaluated", "reason": "no evaluation packet supplied"}
-    if base_manifest["evaluation_packet"]:
-        packet = workspace_path(root, base_manifest["evaluation_packet"])
-        evaluation = evaluate_resolution(packet, mentions, list(assignments), rules, base_config)
-    if evaluation != json.loads((output / "evaluation.json").read_bytes()):
-        raise ValueError("identity-refinement evaluation is not reproducible")
-    return manifest

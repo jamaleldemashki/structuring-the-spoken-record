@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "candidate_types": [
+    "Person"
+  ],
+  "merge_methods": [
+    "exact_key",
+    "person_name_containment",
+    "person_initial_alignment"
+  ],
+  "fuzzy_similarity_floor": 0.88,
+  "person_surname_similarity_floor": 0.9,
+  "merge_threshold": 0.4,
+  "minimum_context_similarity": 0.0,
+  "surface_weight": 0.45,
+  "lexical_context_weight": 0.4,
+  "neighbor_weight": 0.15,
+  "block_conflicting_numbers": true,
+  "separate_incompatible_person_names": true,
+  "maximum_component_entities": 8
+}

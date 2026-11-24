@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "repo_id": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "browser_repo_id": "Xenova/all-MiniLM-L6-v2",
+  "browser_revision": "751bff37182d3f1213fa05d7196b954e230abad9",
+  "browser_dtype": "q8",
+  "max_tokens": 256,
+  "batch_size": 16,
+  "dimension": 384,
+  "topic_types": ["Concept", "School", "Work", "Period", "Group"]
+}

@@ -22,7 +22,7 @@ class GLiRELBudget:
 
     def __call__(self, tokens, ner):
         """Run the model's own preprocessing (no truncation, no forward pass) to count tokens."""
-        labels = [label.prompt_label for label in self.config.labels]
+        labels = self.config.prompts()
         words = list(tokens)
         if getattr(self.model.base_config, "add_entity_markers", False):
             from glirel.modules.base import insert_entity_markers

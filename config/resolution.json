@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "normalization": "unicode-nfc-casefold-whitespace-v1",
+  "aliases": "config/aliases/hop.jsonl",
+  "cross_episode_exact_types": [
+    "Place",
+    "Language"
+  ],
+  "cross_episode_multitoken_person": true,
+  "single_token_person_requires_review": true,
+  "all_other_types_require_review": false,
+  "not_names": [
+    "I",
+    "me",
+    "my",
+    "mine",
+    "myself",
+    "you",
+    "your",
+    "yours",
+    "yourself",
+    "yourselves",
+    "he",
+    "him",
+    "his",
+    "himself",
+    "she",
+    "her",
+    "hers",
+    "herself",
+    "it",
+    "its",
+    "itself",
+    "we",
+    "us",
+    "our",
+    "ours",
+    "ourselves",
+    "they",
+    "them",
+    "their",
+    "theirs",
+    "themselves",
+    "someone",
+    "somebody",
+    "anyone",
+    "anybody",
+    "everyone",
+    "everybody",
+    "no one",
+    "nobody",
+    "who",
+    "whom",
+    "people"
+  ],
+  "term_keys": {
+    "lemmatize_types": [
+      "Concept",
+      "School",
+      "Group",
+      "Language",
+      "Period"
+    ],
+    "article_types": [
+      "Concept",
+      "School",
+      "Group",
+      "Language",
+      "Period",
+      "Work"
+    ],
+    "articles": [
+      "the",
+      "a",
+      "an"
+    ],
+    "lemmatizer": "en_core_web_sm",
+    "lemmatizer_version": "3.8.0"
+  }
+}

@@ -1,35 +1,24 @@
 """Links corpus entities to Wikidata: search, ranking with passage context, and abstention.
 
-Local identity resolution stays in charge. This stage only adds a link decision to each
-eligible CorpusEntity. Two local entities are never merged just because the search
-returned the same item for both.
+This step only adds a link decision to each eligible corpus entity. Entities that end up
+with the same confident item are merged afterwards, in consolidation.py, where the rules for
+that live.
 """
 
-import importlib.metadata
-import json
 import math
-import platform
 import re
 import time
-from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from collections import defaultdict
 from difflib import SequenceMatcher
-from pathlib import Path
-from time import perf_counter
-from typing import Callable
-from uuid import uuid4
 
 from spoken_record import __version__
 from spoken_record.backends import CandidateRetriever, TextEncoder
-from spoken_record.adapters.base import sha256, stable_id
+from spoken_record.adapters.base import stable_id
 from spoken_record.extraction_models import ExtractedMention
-from spoken_record.ingestion import dump_json, dump_jsonl, read_jsonl, workspace_path
 from spoken_record.linking_models import EntityLinkingConfig, LinkDecision, WikidataCandidate
 from spoken_record.passage_models import Passage
-from spoken_record.resolution import normalize_surface, validate_run as validate_resolution
-from spoken_record.resolution_models import (AliasRule, CorpusEntity, EpisodeEntity,
-                                             MentionAssignment, ResolutionDecision,
-                                             ReviewCandidate)
+from spoken_record.resolution import normalize_surface
+from spoken_record.resolution_models import (CorpusEntity, MentionAssignment)
 
 
 # P31 (instance of) QIDs are used when present. For subclasses we fall back on words in
@@ -46,21 +35,25 @@ DIRECT_INSTANCE_TYPES = {
     "Period": {"Q11514315", "Q186081"},
 }
 
-# English description words per type, used for every podcast. A podcast about musicians,
-# for example, can add its own words with `extra_type_keywords`.
+# English description words per type, used for every podcast, so none of them belongs to one
+# subject. A podcast adds the words of its subject with `extra_type_keywords` in its linking
+# settings: "composer" for music, "philosopher" for philosophy.
 TYPE_KEYWORDS = {
-    "Person": {"person", "philosopher", "theologian", "writer", "historian", "scholar", "poet",
-               "politician", "cleric", "priest", "professor", "activist", "leader", "saint"},
+    "Person": {"person", "writer", "historian", "scholar", "poet", "politician", "professor",
+               "activist", "leader"},
     "Language": {"language", "dialect", "linguistic", "creole"},
     "Place": {"city", "country", "state", "region", "town", "village", "place", "island", "capital",
               "district", "municipality", "continent", "kingdom", "empire"},
-    "Work": {"book", "work", "treatise", "text", "dialogue", "manuscript", "publication", "writing"},
-    "School": {"school", "movement", "tradition", "religion", "church", "university", "theology",
-               "philosophy", "doctrine", "denomination"},
+    "Work": {"book", "work", "text", "publication", "writing"},
+    "School": {"school", "movement", "tradition", "religion", "church", "university"},
     "Group": {"people", "group", "ethnic", "community", "population", "organization", "tribe"},
-    "Concept": {"concept", "theory", "idea", "principle", "doctrine", "term", "notion"},
+    "Concept": {"concept", "theory", "idea", "principle", "term", "notion"},
     "Period": {"period", "era", "century", "age", "year", "epoch"},
 }
+
+# Sitelinks that end in "wiki" but are not a Wikipedia language version.
+NON_WIKIPEDIA_SITES = {"commonswiki", "specieswiki", "metawiki", "mediawikiwiki", "wikidatawiki",
+                       "sourceswiki", "incubatorwiki", "outreachwiki", "wikimaniawiki"}
 
 PERSON_CONTRADICTIONS = {"album", "book", "city", "country", "film", "language", "river", "song",
                          "species", "television series", "village"}
@@ -69,10 +62,13 @@ PERSON_CONTRADICTIONS = {"album", "book", "city", "country", "film", "language",
 class WikidataRetriever:
     """Small client for the Wikidata (MediaWiki) API, with retries."""
 
-    def __init__(self, config: EntityLinkingConfig):
+    def __init__(self, config: EntityLinkingConfig, cache=None):
         import requests
 
         self.config = config
+        # Optional request cache (see cache.py). Wikidata answers then stay frozen until the
+        # cache is cleared on purpose.
+        self.cache = cache
         self.session = requests.Session()
         self.session.headers.update({
             # Wikimedia asks bots for a descriptive User-Agent with a contact page.
@@ -84,8 +80,24 @@ class WikidataRetriever:
                                "(https://github.com/jamaleldemashki/structuring-the-spoken-record)"),
         })
 
-    def _get(self, params: dict) -> dict:
-        """GET one JSON response, retrying on temporary API or network errors."""
+    def _get(self, params: dict, keep=None) -> dict:
+        """GET one JSON response, retrying on temporary API or network errors.
+
+        ``keep`` reduces the answer to the fields the caller reads. A fresh answer goes
+        through it too, so it doesn't matter whether an answer came from the cache.
+        """
+        keep = keep or (lambda payload: payload)
+        if self.cache is not None:
+            key = self.cache.key("wikidata", self.config.api_url, params)
+            cached = self.cache.get(key)
+            if cached is not None:
+                return cached
+            payload = keep(self._fetch(params))
+            self.cache.put(key, payload)
+            return payload
+        return keep(self._fetch(params))
+
+    def _fetch(self, params: dict) -> dict:
         last_error: Exception | None = None
         for attempt in range(self.config.retries):
             wait = min(2 ** attempt, 4)
@@ -109,47 +121,189 @@ class WikidataRetriever:
                     time.sleep(wait)
         raise RuntimeError(f"Wikidata request failed after {self.config.retries} attempts") from last_error
 
+    def _with_maxlag(self, params: dict) -> dict:
+        return params if self.config.maxlag is None else {**params, "maxlag": self.config.maxlag}
+
     def search(self, query: str) -> list[dict]:
-        """Top search matches for one local entity label."""
-        payload = self._get({"action": "wbsearchentities", "search": query,
+        """Top label and alias matches for one name."""
+        payload = self._get(self._with_maxlag({"action": "wbsearchentities", "search": query,
             "language": self.config.language, "uselang": self.config.language,
-            "type": "item", "limit": self.config.top_k, "format": "json", "maxlag": 5})
+            "type": "item", "limit": self.config.top_k, "format": "json"}))
         return [{"qid": row["id"], "label": row.get("label", ""),
                  "description": row.get("description", ""),
                  "aliases": list(row.get("aliases", [])), "retrieval_rank": rank}
                 for rank, row in enumerate(payload.get("search", []), 1)
                 if re.fullmatch(r"Q[1-9][0-9]*", row.get("id", ""))]
 
+    def fulltext_search(self, query: str, instance_types: list[str]) -> list[dict]:
+        """Full-text matches limited to the given P31 values. Label and description come later."""
+        filters = "|".join(f"P31={qid}" for qid in instance_types)
+        payload = self._get(self._with_maxlag({"action": "query", "list": "search",
+            "srsearch": f"{query} haswbstatement:{filters}", "srnamespace": 0,
+            "srlimit": self.config.top_k, "format": "json"}))
+        return [{"qid": row["title"], "label": "", "description": "", "aliases": [],
+                 "retrieval_rank": rank}
+                for rank, row in enumerate(payload.get("query", {}).get("search", []), 1)
+                if re.fullmatch(r"Q[1-9][0-9]*", row.get("title", ""))]
+
+    def entities(self, qids: list[str], params: dict, keep) -> dict[str, dict]:
+        """The answer for every item, fetched in batches of 50 the API accepts.
+
+        The cache holds one entry per item, not per batch. Otherwise a slightly different
+        set of items would shift the batches and make every later batch look new. An item
+        the API does not return at all gets ``{"absent": True}``.
+        """
+        found, missing, keys = {}, [], {}
+        for qid in dict.fromkeys(qids):
+            if self.cache is not None:
+                keys[qid] = self.cache.key("wikidata-item", self.config.api_url, params, qid)
+                cached = self.cache.get(keys[qid])
+                if cached is not None:
+                    found[qid] = cached
+                    continue
+            missing.append(qid)
+        for start in range(0, len(missing), 50):
+            batch = missing[start:start + 50]
+            payload = keep(self._fetch({**params, "ids": "|".join(batch)}))
+            for qid in batch:
+                found[qid] = payload.get("entities", {}).get(qid, {"absent": True})
+                if self.cache is not None:
+                    self.cache.put(keys[qid], found[qid])
+        return found
+
     def details(self, qids: list[str]) -> dict[str, dict]:
-        """Fetch aliases and instance-of (P31) claims, in batches the API accepts."""
+        """Labels, aliases, P31 claims and sitelinks of every item."""
         result: dict[str, dict] = {}
-        for start in range(0, len(qids), 50):
-            batch = qids[start:start + 50]
-            payload = self._get({"action": "wbgetentities", "ids": "|".join(batch),
-                "props": "labels|descriptions|aliases|claims", "languages": self.config.language,
-                "languagefallback": 1, "format": "json", "maxlag": 5})
-            for qid, row in payload.get("entities", {}).items():
-                aliases = [value.get("value", "") for value in row.get("aliases", {}).get(
-                    self.config.language, [])]
-                instance_of = []
-                for claim in row.get("claims", {}).get("P31", []):
-                    value = claim.get("mainsnak", {}).get("datavalue", {}).get("value", {})
-                    if isinstance(value, dict) and re.fullmatch(r"Q[1-9][0-9]*", value.get("id", "")):
-                        instance_of.append(value["id"])
-                result[qid] = {"aliases": aliases, "instance_of_qids": sorted(set(instance_of))}
+        rows = self.entities(qids, self._with_maxlag({"action": "wbgetentities",
+            "props": "labels|descriptions|aliases|claims|sitelinks",
+            "languages": self.config.language, "languagefallback": 1, "format": "json"}), linking_fields)
+        for qid, row in rows.items():
+            if row.get("absent"):
+                continue
+            aliases = [value.get("value", "") for value in row.get("aliases", {}).get(
+                self.config.language, [])]
+            instance_of = []
+            for claim in row.get("claims", {}).get("P31", []):
+                value = claim.get("mainsnak", {}).get("datavalue", {}).get("value", {})
+                if isinstance(value, dict) and re.fullmatch(r"Q[1-9][0-9]*", value.get("id", "")):
+                    instance_of.append(value["id"])
+            result[qid] = {"aliases": aliases, "instance_of_qids": sorted(set(instance_of)),
+                "label": row.get("labels", {}).get(self.config.language, {}).get("value", ""),
+                "description": row.get("descriptions", {}).get(self.config.language, {}).get("value", ""),
+                # Only Wikipedia language versions, not Wikiquote, Commons and so on.
+                "sitelinks": sum(key.endswith("wiki") and key not in NON_WIKIPEDIA_SITES
+                                 for key in row.get("sitelinks", {}))}
         return result
 
     def retrieve(self, entities: list[CorpusEntity]) -> dict[str, list[dict]]:
-        """Search every eligible entity, then fetch all distinct candidates in batches."""
-        raw = {entity.corpus_entity_id: self.search(entity.canonical_label) for entity in entities}
+        """Run every search for every eligible entity, then fetch all distinct candidates in batches."""
+        raw = {}
+        for entity in entities:
+            results = []
+            for kind, query in search_queries(entity, self.config):
+                rows = (self.search(query) if kind == "label" else
+                        self.fulltext_search(query, self.config.fulltext_instance_types[entity.type]))
+                results.append((query, rows))
+            raw[entity.corpus_entity_id] = merge_results(results)
         qids = sorted({row["qid"] for rows in raw.values() for row in rows}, key=lambda q: int(q[1:]))
         details = self.details(qids) if qids else {}
-        for rows in raw.values():
+        for entity_id, rows in raw.items():
             for row in rows:
                 detail = details.get(row["qid"], {})
+                row["label"] = row["label"] or detail.get("label", "")
+                row["description"] = row["description"] or detail.get("description", "")
                 row["aliases"] = list(dict.fromkeys([*row["aliases"], *detail.get("aliases", [])]))[:50]
                 row["instance_of_qids"] = detail.get("instance_of_qids", [])
-        return raw
+                if self.config.popularity_weight:
+                    row["sitelinks"] = detail.get("sitelinks", 0)
+        return {entity.corpus_entity_id: allowed_candidates(entity, raw[entity.corpus_entity_id], self.config)
+                for entity in entities}
+
+
+def linking_fields(payload: dict) -> dict:
+    """Of an entity answer, keep labels, descriptions, aliases, the P31 values and the names
+    of the sitelinks. The full claims of 50 items can be many megabytes."""
+    entities = {}
+    for qid, row in payload.get("entities", {}).items():
+        instance_of = [{"mainsnak": {"datavalue": {"value": {"id": value["id"]}}}}
+                       for claim in row.get("claims", {}).get("P31", [])
+                       if isinstance(value := claim.get("mainsnak", {}).get("datavalue", {}).get("value"), dict)
+                       and "id" in value]
+        entities[qid] = {**{name: row[name] for name in ("labels", "descriptions", "aliases") if name in row},
+                         "claims": {"P31": instance_of}, "sitelinks": {name: {} for name in row.get("sitelinks", {})}}
+    return {"entities": entities}
+
+
+def fullest_surface(entity: CorpusEntity) -> str | None:
+    """The observed name with more full words than the canonical label, if there is one."""
+    def full_words(value: str) -> int:
+        return sum(len(token) > 1 for token in re.findall(r"[^\W\d_]+", value))
+
+    best = max(entity.observed_surfaces, key=lambda value: (full_words(value), len(value), value),
+               default=None)
+    if best is None or full_words(best) <= full_words(entity.canonical_label):
+        return None
+    return best
+
+
+def search_queries(entity: CorpusEntity, config: EntityLinkingConfig) -> list[tuple[str, str]]:
+    """The searches for one entity, in order: label searches first, then full-text ones."""
+    names = [entity.canonical_label]
+    fullest = fullest_surface(entity) if config.search_fullest_surface else None
+    if fullest and normalize_surface(fullest) != normalize_surface(entity.canonical_label):
+        names.append(fullest)
+    queries = [("label", name) for name in names]
+    if entity.type in config.fulltext_instance_types:
+        queries.extend(("fulltext", name) for name in names)
+    return queries
+
+
+def merge_results(results: list[tuple[str, list[dict]]]) -> list[dict]:
+    """Pool the results of several searches. A QID found by several searches is kept once,
+    with its best rank, and the merged order takes the first hit of every search before the
+    second hit of any search."""
+    best: dict[str, tuple[int, int, str, dict]] = {}
+    for order, (query, rows) in enumerate(results):
+        for row in rows:
+            key = (row["retrieval_rank"], order)
+            if row["qid"] not in best or key < best[row["qid"]][:2]:
+                best[row["qid"]] = (*key, query, row)
+    merged = []
+    for rank, (_, _, query, row) in enumerate(sorted(best.values(), key=lambda item: item[:2]), 1):
+        merged.append({**row, "query": query, "retrieval_rank": rank})
+    return merged
+
+
+def allowed_candidates(entity: CorpusEntity, rows: list[dict], config: EntityLinkingConfig) -> list[dict]:
+    """Drop candidates whose P31 is not one of the required types for this entity type."""
+    required = set(config.required_instance_types.get(entity.type, []))
+    if not required:
+        return rows
+    kept = [row for row in rows if required & set(row.get("instance_of_qids", []))]
+    return [{**row, "retrieval_rank": rank} for rank, row in enumerate(kept, 1)]
+
+
+def is_namesake(entity: CorpusEntity, label: str, aliases: list[str]) -> bool:
+    """True when the candidate carries the transcript name: every word of a local name is in
+    its label or one alias ("Locke" and "John Locke"), or the two are almost the same."""
+    local = [normalize_surface(value) for value in [entity.canonical_label, *entity.observed_surfaces]]
+    external = [normalize_surface(value) for value in [label, *aliases]]
+    for left in filter(None, local):
+        for right in filter(None, external):
+            if set(left.split()) <= set(right.split()) or SequenceMatcher(None, left, right).ratio() >= .9:
+                return True
+    return False
+
+
+def popularity_scores(entity: CorpusEntity, candidates: list[tuple[str, list[str], int | None]]) -> list[float]:
+    """Sitelinks of each namesake divided by the most sitelinks among the namesakes of one
+    entity. Candidates with another name get 0. When no namesake has a sitelink, the score
+    says nothing, so all namesakes get 1.0."""
+    namesake = [is_namesake(entity, label, aliases) for label, aliases, _ in candidates]
+    most = max((sitelinks or 0 for (_, _, sitelinks), same in zip(candidates, namesake) if same),
+               default=0)
+    return [0.0 if not same else (sitelinks or 0) / most if most else 1.0
+            for (_, _, sitelinks), same in zip(candidates, namesake)]
 
 
 class MpnetEncoder:
@@ -278,45 +432,46 @@ def score_candidates(run_id: str, entities: list[CorpusEntity], raw: dict[str, l
     context_vectors = {entity.corpus_entity_id: vectors[index]
                        for index, entity in enumerate(ordered_entities)}
     candidate_vectors = vectors[len(ordered_entities):]
+    popularity_by_pair = {}
+    for entity in ordered_entities:
+        found = raw.get(entity.corpus_entity_id, [])
+        scores = popularity_scores(entity, [(row["label"], row.get("aliases", []), row.get("sitelinks"))
+                                            for row in found])
+        popularity_by_pair.update({(entity.corpus_entity_id, row["qid"]): score
+                                   for row, score in zip(found, scores)})
     rows = []
     for (entity, candidate), vector in zip(pairs, candidate_vectors):
         surface = name_similarity(entity, candidate)
         kind = type_compatibility(entity.type, candidate, config.keyword_type_score, config.extra_type_keywords)
         context = dot(context_vectors[entity.corpus_entity_id], vector)
-        score = min(1.0, max(0.0, config.name_weight * surface +
-                            config.type_weight * kind + config.context_weight * context))
+        sitelinks = candidate.get("sitelinks")
+        popularity = (popularity_by_pair[(entity.corpus_entity_id, candidate["qid"])]
+                      if config.popularity_weight else 0.0)
+        score = combined_score(config, surface, kind, context, popularity)
         rows.append(WikidataCandidate(created_by_run_id=run_id,
             candidate_id=stable_id("wc", entity.corpus_entity_id, candidate["qid"]),
-            corpus_entity_id=entity.corpus_entity_id, query=entity.canonical_label,
+            corpus_entity_id=entity.corpus_entity_id,
+            query=candidate.get("query", entity.canonical_label),
             qid=candidate["qid"], label=candidate["label"],
             description=candidate.get("description", ""), aliases=candidate.get("aliases", []),
             instance_of_qids=candidate.get("instance_of_qids", []),
             retrieval_rank=candidate["retrieval_rank"], name_similarity=surface,
-            type_compatibility=kind, context_similarity=context, rank_score=score))
+            type_compatibility=kind, context_similarity=context, sitelinks=sitelinks,
+            popularity=popularity, rank_score=score))
     return tuple(sorted(rows, key=lambda row: (row.corpus_entity_id, -row.rank_score,
                                                row.retrieval_rank, row.qid)))
 
 
-def rerank_cached_candidates(run_id: str, entities: list[CorpusEntity],
-                             cached: list[WikidataCandidate],
-                             config: EntityLinkingConfig) -> tuple[WikidataCandidate, ...]:
-    """Apply a (new) decision policy to saved search and embedding results."""
-    entity_by_id = {row.corpus_entity_id: row for row in entities}
-    rows = []
-    for previous in cached:
-        entity = entity_by_id.get(previous.corpus_entity_id)
-        if entity is None:
-            raise ValueError("candidate cache refers to a different resolution snapshot")
-        raw = {"label": previous.label, "aliases": previous.aliases,
-               "description": previous.description, "instance_of_qids": previous.instance_of_qids}
-        surface = name_similarity(entity, raw)
-        kind = type_compatibility(entity.type, raw, config.keyword_type_score, config.extra_type_keywords)
-        score = min(1.0, max(0.0, config.name_weight * surface + config.type_weight * kind +
-                            config.context_weight * previous.context_similarity))
-        rows.append(previous.model_copy(update={"created_by_run_id": run_id,
-            "name_similarity": surface, "type_compatibility": kind, "rank_score": score}))
-    return tuple(sorted(rows, key=lambda row: (row.corpus_entity_id, -row.rank_score,
-                                               row.retrieval_rank, row.qid)))
+def combined_score(config: EntityLinkingConfig, name: float, kind: float, context: float,
+                   popularity: float) -> float:
+    """Weighted sum of the four scores, kept between 0 and 1."""
+    score = (config.name_weight * name + config.type_weight * kind +
+             config.context_weight * context)
+    # Older configs have no popularity weight. Adding 0.0 would still be exact, but leaving
+    # the term out keeps their float sums exactly as they were.
+    if config.popularity_weight:
+        score += config.popularity_weight * popularity
+    return min(1.0, max(0.0, score))
 
 
 def make_decisions(run_id: str, entities: list[CorpusEntity], candidates: list[WikidataCandidate],
@@ -326,21 +481,16 @@ def make_decisions(run_id: str, entities: list[CorpusEntity], candidates: list[W
     for row in candidates:
         by_entity[row.corpus_entity_id].append(row)
     rows = []
-    new_policy_fields = {"keyword_type_score", "nil_threshold", "single_candidate_context_floor",
-                         "single_token_person_context_floor"}
-    legacy_policy = (config.keyword_type_score == 1 and config.nil_threshold == 0 and
-                     config.single_candidate_context_floor == 0 and
-                     config.single_token_person_context_floor == 0)
-    # Newer settings only go into the fingerprint when they are used, so older runs still validate.
-    unused = set() if config.extra_type_keywords else {"extra_type_keywords"}
-    policy_json = config.model_dump_json(exclude=(new_policy_fields if legacy_policy else set()) | unused or None)
+    policy_json = config.model_dump_json()
     for entity in sorted(entities, key=lambda row: row.corpus_entity_id):
         ranked = sorted(by_entity[entity.corpus_entity_id],
                         key=lambda row: (-row.rank_score, row.retrieval_rank, row.qid))
         ids = [row.candidate_id for row in ranked]
         if not ranked:
             decision, selected, confidence, margin = "nil", None, None, None
-            reason = "Wikidata search returned no item candidates"
+            reason = ("Wikidata search returned no candidates of an allowed type"
+                      if entity.type in config.required_instance_types
+                      else "Wikidata search returned no item candidates")
         else:
             best = ranked[0]
             margin = best.rank_score - ranked[1].rank_score if len(ranked) > 1 else best.rank_score
@@ -360,13 +510,7 @@ def make_decisions(run_id: str, entities: list[CorpusEntity], candidates: list[W
                 reason = "top candidate passed the score and separation-margin thresholds"
             else:
                 decision, selected, confidence = "ambiguous", None, best.rank_score
-                if config.nil_threshold == 0 and config.single_candidate_context_floor == 0 \
-                        and config.single_token_person_context_floor == 0:
-                    # Runs made with the first score-and-margin policy (before the extra abstention
-                    # checks) must still validate byte for byte.
-                    reason = "retrieved candidates did not pass both score and separation-margin thresholds"
-                else:
-                    reason = "retrieved candidates did not pass all score, margin, and context-floor thresholds"
+                reason = "retrieved candidates did not pass all score, margin, and context-floor thresholds"
         rows.append(LinkDecision(created_by_run_id=run_id,
             decision_id=stable_id("ld", entity.corpus_entity_id, policy_json),
             corpus_entity_id=entity.corpus_entity_id, entity_type=entity.type,
@@ -391,209 +535,19 @@ def apply_decisions(run_id: str, entities: list[CorpusEntity],
     return tuple(enriched)
 
 
-def review_view(decisions: list[LinkDecision], candidates: list[WikidataCandidate]) -> str:
-    """Short Markdown table for review. All the numbers stay in the JSONL."""
-    candidate_by_id = {row.candidate_id: row for row in candidates}
-    counts = Counter(row.decision for row in decisions)
-    lines = ["# Wikidata entity linking", "",
-        "> [!warning] Provisional external links",
-        "> A linked QID is a model-assisted decision grounded in transcript passages; ambiguous and NIL cases abstain.", "",
-        f"- Linked: {counts['linked']}", f"- Ambiguous: {counts['ambiguous']}",
-        f"- NIL: {counts['nil']}", ""]
-    for decision in sorted(decisions, key=lambda row: (row.decision, row.entity_type,
-                                                        row.canonical_label.casefold())):
-        lines.extend([f"## {decision.canonical_label} ({decision.entity_type})", "",
-                      f"- Decision: `{decision.decision}`", f"- Reason: {decision.reason}"])
-        for candidate_id in decision.candidate_ids[:3]:
-            row = candidate_by_id[candidate_id]
-            lines.append(f"- [{row.label}](https://www.wikidata.org/wiki/{row.qid}) — "
-                         f"{row.rank_score:.3f} (name {row.name_similarity:.3f}, type "
-                         f"{row.type_compatibility:.3f}, context {row.context_similarity:.3f}) — "
-                         f"{row.description or 'no description'}")
-        lines.append("")
-    return "\n".join(lines)
-
-
-def load_parent(parent: Path):
-    """Load a validated resolution-type run and its extraction evidence."""
-    manifest = validate_resolution(parent)
-    extraction = parent.parent / manifest.get("extraction_run_id", manifest["parent_run_id"])
-    extraction_manifest = json.loads((extraction / "manifest.json").read_bytes())
-    passage_run = extraction.parent / extraction_manifest["parent_run_id"]
-    return (manifest, extraction,
-        [EpisodeEntity.model_validate(row) for row in read_jsonl(parent / "episode_entities.jsonl")],
-        [CorpusEntity.model_validate(row) for row in read_jsonl(parent / "corpus_entities.jsonl")],
-        [MentionAssignment.model_validate(row) for row in read_jsonl(parent / "assignments.jsonl")],
-        [ResolutionDecision.model_validate(row) for row in read_jsonl(parent / "decisions.jsonl")],
-        [ReviewCandidate.model_validate(row) for row in read_jsonl(parent / "review_queue.jsonl")],
-        [AliasRule.model_validate(row) for row in read_jsonl(parent / "aliases.jsonl")],
-        [ExtractedMention.model_validate(row) for row in read_jsonl(extraction / "mentions.jsonl")],
-        [Passage.model_validate(row) for row in read_jsonl(passage_run / "passages.jsonl")])
-
-
-def counts_for(entities: list[CorpusEntity], eligible: list[CorpusEntity],
-               candidates: list[WikidataCandidate], decisions: list[LinkDecision]) -> dict:
-    """Counts for the manifest and the CLI output."""
-    return {"corpus_entities": len(entities), "attempted_entities": len(eligible),
-        "skipped_entities": len(entities) - len(eligible), "wikidata_candidates": len(candidates),
-        "linked": sum(row.decision == "linked" for row in decisions),
-        "ambiguous": sum(row.decision == "ambiguous" for row in decisions),
-        "nil": sum(row.decision == "nil" for row in decisions),
-        "by_type": dict(sorted(Counter(row.entity_type for row in decisions).items()))}
-
-
-def link_run(root: Path, input_name: str, config_name: str,
-             run_id: str | None = None, candidate_name: str | None = None,
-             *, retriever_factory: Callable[[EntityLinkingConfig], CandidateRetriever] | None = None,
-             encoder_factory: Callable[[EntityLinkingConfig], TextEncoder] | None = None) -> Path:
-    """Search and rank Wikidata candidates for a validated resolution run."""
-    root, started, now = root.resolve(), perf_counter(), datetime.now(timezone.utc)
-    run_id = run_id or f"link-{now:%Y%m%dT%H%M%SZ}-{uuid4().hex[:8]}"
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", run_id):
-        raise ValueError("invalid run ID")
-    parent = workspace_path(root, input_name)
-    if parent.parent != root / "data/prototype1/runs":
-        raise ValueError("input must be a resolution snapshot")
-    output = parent.parent / run_id
-    if output.exists():
-        raise FileExistsError(output)
-    parent_digest = sha256((parent / "manifest.json").read_bytes())
-    config_path = workspace_path(root, config_name)
-    config_bytes = config_path.read_bytes()
-    config = EntityLinkingConfig.model_validate_json(config_bytes)
-    (parent_manifest, extraction, episode_entities, entities, assignments, identity_decisions,
-     queue, aliases, mentions, passages) = load_parent(parent)
+def linking_inputs(entities: list[CorpusEntity], mentions: list[ExtractedMention],
+                   assignments: list[MentionAssignment], passages: list[Passage],
+                   config: EntityLinkingConfig):
+    """The entities of the configured types and the passage context of each."""
     eligible = [row for row in entities if row.type in config.entity_types]
     contexts, evidence = build_contexts(eligible, mentions, assignments, passages,
                                         config.max_context_characters)
-    candidate_source_digest = None
-    candidate_source = None
-    if candidate_name:
-        candidate_source = workspace_path(root, candidate_name)
-        if candidate_source.parent != root / "data/prototype1/runs":
-            raise ValueError("candidate cache must be a sibling run snapshot")
-        candidate_manifest = validate_run(candidate_source)
-        if candidate_manifest["parent_run_id"] != parent.name:
-            raise ValueError("candidate cache was built from a different resolution snapshot")
-        candidate_source_digest = sha256((candidate_source / "manifest.json").read_bytes())
-        cached = [WikidataCandidate.model_validate(row)
-                  for row in read_jsonl(candidate_source / "wikidata_candidates.jsonl")]
-        candidates = rerank_cached_candidates(run_id, eligible, cached, config)
-    else:
-        raw = (retriever_factory or WikidataRetriever)(config).retrieve(eligible)
-        candidates = score_candidates(run_id, eligible, raw, contexts, config,
-                                      (encoder_factory or MpnetEncoder)(config))
-    decisions = make_decisions(run_id, eligible, list(candidates), config)
-    enriched = apply_decisions(run_id, entities, list(decisions))
-    if sha256((parent / "manifest.json").read_bytes()) != parent_digest or config_path.read_bytes() != config_bytes:
-        raise ValueError("parent or entity-linking configuration changed")
-    output.mkdir(parents=True, exist_ok=False)
-    inherited = {"episode_entities.jsonl": episode_entities, "corpus_entities.jsonl": enriched,
-        "assignments.jsonl": assignments, "decisions.jsonl": identity_decisions,
-        "review_queue.jsonl": queue, "aliases.jsonl": aliases}
-    for name, rows in inherited.items():
-        dump_jsonl(output / name, list(rows))
-    dump_jsonl(output / "wikidata_candidates.jsonl", list(candidates))
-    dump_jsonl(output / "link_decisions.jsonl", list(decisions))
-    dump_jsonl(output / "link_contexts.jsonl", [{"corpus_entity_id": entity.corpus_entity_id,
-        "canonical_label": entity.canonical_label, "entity_type": entity.type,
-        "evidence_passage_ids": evidence[entity.corpus_entity_id],
-        "context": contexts[entity.corpus_entity_id]} for entity in eligible])
-    dump_json(output / "config.json", config.model_dump(mode="json"))
-    summary = counts_for(list(enriched), eligible, list(candidates), list(decisions))
-    dump_json(output / "summary.json", summary)
-    (output / "review.md").write_text(review_view(list(decisions), list(candidates)), encoding="utf-8")
-    names = [*inherited, "wikidata_candidates.jsonl", "link_decisions.jsonl",
-             "link_contexts.jsonl", "config.json", "summary.json", "review.md"]
-    code_root = Path(__file__).parent
-    manifest = {"schema_version": 1, "stage": "entity_linking", "run_id": run_id,
-        "status": "complete", "package_version": __version__, "started_utc": now.isoformat(),
-        "elapsed_seconds": round(perf_counter() - started, 4), "python": platform.python_version(),
-        "dependencies": {name: importlib.metadata.version(name)
-                         for name in ("pydantic", "requests", "torch", "transformers")},
-        "parent_run_id": parent.name, "parent_manifest_sha256": parent_digest,
-        "extraction_run_id": extraction.name, "input_config": config_name,
-        "input_config_sha256": sha256(config_bytes),
-        "candidate_source_run_id": candidate_source.name if candidate_source else None,
-        "candidate_source_manifest_sha256": candidate_source_digest,
-        "model": {"repo_id": config.embedding_repo_id, "revision": config.embedding_revision,
-                  "framework": "transformers-mean-pooling", "device": config.embedding_device},
-        "counts": summary,
-        "code_sha256": {str(path.relative_to(code_root)): sha256(path.read_bytes())
-                        for path in sorted(code_root.rglob("*.py"))},
-        "artifact_sha256": {name: sha256((output / name).read_bytes()) for name in names}}
-    dump_json(output / "manifest.json", manifest)
-    validate_run(output)
-    return output
+    return eligible, contexts, evidence
 
 
-def validate_run(output: Path) -> dict:
-    """Validate provenance and link rules, and check the decisions can be reproduced."""
-    output = output.resolve()
-    manifest = json.loads((output / "manifest.json").read_bytes())
-    if manifest.get("schema_version") != 1 or manifest.get("stage") != "entity_linking" \
-            or manifest.get("status") != "complete":
-        raise ValueError("unsupported entity-linking snapshot")
-    root = output.parents[3]
-    parent = output.parent / manifest["parent_run_id"]
-    if sha256((parent / "manifest.json").read_bytes()) != manifest["parent_manifest_sha256"]:
-        raise ValueError("parent resolution manifest changed")
-    config_path = workspace_path(root, manifest["input_config"])
-    if sha256(config_path.read_bytes()) != manifest["input_config_sha256"]:
-        raise ValueError("entity-linking configuration changed")
-    if manifest.get("candidate_source_run_id"):
-        candidate_source = output.parent / manifest["candidate_source_run_id"]
-        if sha256((candidate_source / "manifest.json").read_bytes()) != \
-                manifest["candidate_source_manifest_sha256"]:
-            raise ValueError("entity-linking candidate cache changed")
-    expected_names = {"episode_entities.jsonl", "corpus_entities.jsonl", "assignments.jsonl",
-        "decisions.jsonl", "review_queue.jsonl", "aliases.jsonl", "wikidata_candidates.jsonl",
-        "link_decisions.jsonl", "link_contexts.jsonl", "config.json", "summary.json", "review.md"}
-    if set(manifest["artifact_sha256"]) != expected_names:
-        raise ValueError("unexpected entity-linking artifact set")
-    for name, digest in manifest["artifact_sha256"].items():
-        if sha256((output / name).read_bytes()) != digest:
-            raise ValueError(f"entity-linking artifact changed: {name}")
-    config = EntityLinkingConfig.model_validate_json((output / "config.json").read_bytes())
-    (_, _, parent_episode_entities, parent_entities, parent_assignments, parent_identity_decisions,
-     parent_queue, parent_aliases, _, _) = load_parent(parent)
-    # This stage may only add link fields to CorpusEntities. All other identity records must
-    # match the parent exactly, so Wikidata can't change the local clustering.
-    inherited = ((EpisodeEntity, "episode_entities.jsonl", parent_episode_entities),
-        (MentionAssignment, "assignments.jsonl", parent_assignments),
-        (ResolutionDecision, "decisions.jsonl", parent_identity_decisions),
-        (ReviewCandidate, "review_queue.jsonl", parent_queue),
-        (AliasRule, "aliases.jsonl", parent_aliases))
-    for model, name, expected in inherited:
-        actual = [model.model_validate(row) for row in read_jsonl(output / name)]
-        if actual != list(expected):
-            raise ValueError(f"entity linking changed local identity artifact: {name}")
-    candidates = [WikidataCandidate.model_validate(row)
-                  for row in read_jsonl(output / "wikidata_candidates.jsonl")]
-    decisions = [LinkDecision.model_validate(row) for row in read_jsonl(output / "link_decisions.jsonl")]
-    if len({row.candidate_id for row in candidates}) != len(candidates):
-        raise ValueError("duplicate Wikidata candidate ID")
-    if len({row.corpus_entity_id for row in decisions}) != len(decisions):
-        raise ValueError("duplicate entity-linking decision")
-    eligible = [row for row in parent_entities if row.type in config.entity_types]
-    eligible_ids = {row.corpus_entity_id for row in eligible}
-    if {row.corpus_entity_id for row in decisions} != eligible_ids:
-        raise ValueError("every eligible entity must receive one linking decision")
-    if any(row.corpus_entity_id not in eligible_ids for row in candidates):
-        raise ValueError("candidate refers to an ineligible entity")
-    for row in candidates:
-        expected_score = config.name_weight * row.name_similarity + config.type_weight * \
-            row.type_compatibility + config.context_weight * row.context_similarity
-        if abs(row.rank_score - expected_score) > 1e-9:
-            raise ValueError("candidate score does not match configured weights")
-    if make_decisions(manifest["run_id"], eligible, candidates, config) != tuple(decisions):
-        raise ValueError("entity-linking decisions are not reproducible from candidate scores")
-    expected_entities = apply_decisions(manifest["run_id"], parent_entities, decisions)
-    actual_entities = tuple(CorpusEntity.model_validate(row)
-                            for row in read_jsonl(output / "corpus_entities.jsonl"))
-    if actual_entities != expected_entities:
-        raise ValueError("linked CorpusEntities do not match link decisions")
-    summary = counts_for(list(actual_entities), eligible, candidates, decisions)
-    if summary != manifest["counts"] or summary != json.loads((output / "summary.json").read_bytes()):
-        raise ValueError("entity-linking counts differ")
-    return manifest
+def retrieve_and_score(run_id: str, eligible: list[CorpusEntity], contexts: dict[str, str],
+                       config: EntityLinkingConfig, retriever: CandidateRetriever,
+                       encoder: TextEncoder) -> tuple[WikidataCandidate, ...]:
+    """Search Wikidata for every entity and rank the candidates."""
+    raw = retriever.retrieve(eligible)
+    return score_candidates(run_id, eligible, raw, contexts, config, encoder)

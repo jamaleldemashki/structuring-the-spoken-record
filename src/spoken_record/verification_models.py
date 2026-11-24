@@ -14,7 +14,9 @@ class VerificationConfig(BaseModel):
     schema_version: Literal[1] = 1
     repo_id: str
     revision: str = Field(pattern=r"^[0-9a-f]{40}$")
-    cache_dir: str = ".cache/huggingface/hub"
+    # A folder inside the workspace, or None for the user's Hugging Face cache. Large models are
+    # better kept outside a synced folder.
+    cache_dir: str | None = ".cache/huggingface/hub"
     offline_only: Literal[True] = True
     device: Literal["cpu"] = "cpu"
     max_tokens: int = Field(default=512, ge=16)

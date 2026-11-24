@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "entity_types": [
+    "Person",
+    "Place",
+    "Language",
+    "Work",
+    "School"
+  ],
+  "api_url": "https://www.wikidata.org/w/api.php",
+  "language": "en",
+  "top_k": 10,
+  "request_timeout_seconds": 20,
+  "request_delay_seconds": 0.25,
+  "retries": 3,
+  "max_context_characters": 2400,
+  "embedding_repo_id": "sentence-transformers/all-mpnet-base-v2",
+  "embedding_revision": "12e86a3c702fc3c50205a8db88f0ec7c0b6b94a0",
+  "embedding_device": "cpu",
+  "embedding_batch_size": 16,
+  "embedding_max_tokens": 384,
+  "name_weight": 0.3,
+  "type_weight": 0.15,
+  "context_weight": 0.35,
+  "keyword_type_score": 0.75,
+  "nil_threshold": 0.45,
+  "linked_threshold": 0.7,
+  "minimum_margin": 0.1,
+  "single_candidate_context_floor": 0.45,
+  "single_token_person_context_floor": 0.3,
+  "maxlag": null,
+  "popularity_weight": 0.2,
+  "search_fullest_surface": true,
+  "fulltext_instance_types": {
+    "Person": [
+      "Q5",
+      "Q20643955",
+      "Q15632617"
+    ]
+  },
+  "required_instance_types": {
+    "Person": [
+      "Q5",
+      "Q20643955",
+      "Q15632617"
+    ]
+  },
+  "extra_type_keywords": {
+    "Person": [
+      "philosopher",
+      "theologian",
+      "cleric",
+      "priest",
+      "saint"
+    ],
+    "Work": [
+      "treatise",
+      "dialogue",
+      "manuscript"
+    ],
+    "School": [
+      "theology",
+      "philosophy",
+      "doctrine",
+      "denomination"
+    ],
+    "Concept": [
+      "doctrine"
+    ]
+  }
+}

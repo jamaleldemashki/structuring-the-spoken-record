@@ -1,9 +1,9 @@
-"""Adds Wikidata facts (lifespans, occupations) to entities that already have a QID.
+"""Adds Wikidata facts (lifespans, occupations, image) to entities that already have a QID.
 
 Only entities linked by the linking stage, or given a QID in a reviewed file, are enriched.
-This stage never searches for an identity itself. The raw claims are saved with the run, so
-validation can derive the lifespans again offline. The date rules keep the widest plausible
-range, so a filter doesn't wrongly drop someone:
+This step never searches for an identity itself. The claims it used are stored with the
+build, so the lifespans can be derived again offline. The date rules keep the widest
+plausible range, so a filter doesn't wrongly drop someone:
 
 * Only best-rank claims: the preferred ones if there are any, otherwise the normal ones.
   Deprecated and "unknown/no value" claims are skipped.
@@ -15,30 +15,16 @@ range, so a filter doesn't wrongly drop someone:
 * Negative years are BCE, the same as in Wikidata.
 """
 
-import importlib.metadata
-import json
 import math
-import platform
 import re
-from datetime import datetime, timezone
-from pathlib import Path
-from time import perf_counter
-from uuid import uuid4
 
-from spoken_record import __version__
-from spoken_record.adapters.base import sha256
 from spoken_record.enrichment_models import EnrichmentConfig, EntityFacts, Lifespan, ReviewedQid
-from spoken_record.ingestion import dump_json, dump_jsonl, read_jsonl, workspace_path
 from spoken_record.resolution_models import CorpusEntity
-from spoken_record.vault import vault_input
 
-PROPERTIES = ("P31", "P106", "P569", "P570", "P1317", "P2031", "P2032")
+PROPERTIES = ("P18", "P31", "P106", "P569", "P570", "P1317", "P2031", "P2032")
 DATE_PROPERTIES = ("P569", "P570", "P1317", "P2031", "P2032")
 HUMAN, CIRCA = "Q5", "Q5727902"
 SCHEMA_VERSION = 2  # Version 2 stores occupations as QIDs instead of a built-in "philosopher" flag.
-ARTIFACTS = ("config.json", "reviewed_qids.jsonl", "wikidata_entities.jsonl", "entity_facts.jsonl", "summary.json")
-
-
 def make_retriever(config: EnrichmentConfig):
     """Tests replace this with an offline retriever."""
     from spoken_record.entity_linking import WikidataRetriever
@@ -47,18 +33,22 @@ def make_retriever(config: EnrichmentConfig):
         """Fetch claims in batches with the linker's API client (User-Agent, retries)."""
 
         def fetch(self, qids: list[str]) -> dict[str, dict]:
-            out = {}
-            for start in range(0, len(qids), 50):
-                batch = qids[start:start + 50]
-                params = {"action": "wbgetentities", "ids": "|".join(batch), "props": "info|claims", "format": "json"}
-                if self.config.maxlag is not None:
-                    params["maxlag"] = self.config.maxlag
-                payload = self._get(params)
-                for qid in batch:
-                    out[qid] = trim_entity(qid, payload.get("entities", {}).get(qid, {"missing": ""}))
-            return out
+            params = {"action": "wbgetentities", "props": "info|claims", "format": "json"}
+            if self.config.maxlag is not None:
+                params["maxlag"] = self.config.maxlag
+            rows = self.entities(qids, params, fact_fields)
+            return {qid: trim_entity(qid, {"missing": ""} if rows[qid].get("absent") else rows[qid]) for qid in qids}
 
     return WikidataFacts(config)
+
+
+def fact_fields(payload: dict) -> dict:
+    """Of an entity answer, keep only the claims this stage reads."""
+    entities = {}
+    for qid, row in payload.get("entities", {}).items():
+        entities[qid] = {"missing": ""} if "missing" in row else {"lastrevid": row.get("lastrevid"),
+            "claims": {pid: row["claims"][pid] for pid in PROPERTIES if pid in row.get("claims", {})}}
+    return {"entities": entities}
 
 
 def _time(snak: dict) -> tuple[str, int] | None:
@@ -88,6 +78,12 @@ def trim_entity(qid: str, entity: dict) -> dict:
                         row[q] = [list(b) for b in bounds]
                 circa = [s.get("datavalue", {}).get("value", {}).get("id") for s in qualifiers.get("P1480", [])]
                 row["circa"] = CIRCA in circa
+            elif pid == "P18":
+                # An image is a Commons file name, not an item.
+                value = snak.get("datavalue", {}).get("value")
+                if snak.get("snaktype") != "value" or not isinstance(value, str) or not value.strip():
+                    continue
+                row["file"] = value
             else:
                 target = snak.get("datavalue", {}).get("value", {})
                 if snak.get("snaktype") != "value" or not isinstance(target, dict) or "id" not in target:
@@ -179,8 +175,14 @@ def build_facts(run_id: str, entities: list[CorpusEntity], reviewed: list[Review
         ids = lambda pid: {r["id"] for r in best_rank(entry["claims"].get(pid, []))}
         rows.append(EntityFacts(created_by_run_id=run_id, corpus_entity_id=cid, qid=qid, qid_source=source,
             life=derive_life(entry, reference_year, config), is_human=HUMAN in ids("P31"),
-            occupation_qids=sorted(ids("P106"))))
+            occupation_qids=sorted(ids("P106")), image=first_image(entry)))
     return rows
+
+
+def first_image(entry: dict) -> str | None:
+    """The first best-rank image. Wikidata keeps the order editors gave the claims."""
+    images = best_rank(entry["claims"].get("P18", []))
+    return images[0]["file"] if images else None
 
 
 def targets(entities: list[CorpusEntity], reviewed: list[ReviewedQid], config: EnrichmentConfig) -> dict[str, tuple[str, str]]:
@@ -199,99 +201,3 @@ def load_reviewed(data: bytes) -> list[ReviewedQid]:
     if len({r.corpus_entity_id for r in rows}) != len(rows):
         raise ValueError("reviewed QID file assigns an entity more than once")
     return rows
-
-
-def load_entities(root: Path, parent: Path) -> list[CorpusEntity]:
-    resolution, _, _ = vault_input(root, parent)
-    return [CorpusEntity.model_validate(r) for r in read_jsonl(resolution / "corpus_entities.jsonl")]
-
-
-def summarize(facts: list[EntityFacts], raw: dict[str, dict], n_targets: int) -> dict:
-    lives = [f.life for f in facts if f.life]
-    return {"targets": n_targets, "qids": len(raw), "missing_items": sum(r["missing"] for r in raw.values()),
-            "enriched": len(facts), "with_lifespan": len(lives), "living": sum(l.living for l in lives),
-            "approximate": sum(l.approximate for l in lives), "with_occupation": sum(bool(f.occupation_qids) for f in facts),
-            "reviewed": sum(f.qid_source == "reviewed" for f in facts), "failed": 0}
-
-
-def enrich_run(root: Path, input_name: str, config_name: str, run_id: str | None = None) -> Path:
-    """Fetch claims for linked or reviewed QIDs and write the derived lifespans."""
-    root, started, now = root.resolve(), perf_counter(), datetime.now(timezone.utc)
-    run_id = run_id or f"enrich-{now:%Y%m%dT%H%M%SZ}-{uuid4().hex[:8]}"
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", run_id):
-        raise ValueError("invalid run ID")
-    parent = workspace_path(root, input_name)
-    if parent.parent != root / "data/prototype1/runs":
-        raise ValueError("input must be a local run snapshot")
-    output = parent.parent / run_id
-    if output.exists():
-        raise FileExistsError(output)
-    parent_digest = sha256((parent / "manifest.json").read_bytes())
-    config_bytes = workspace_path(root, config_name).read_bytes()
-    config = EnrichmentConfig.model_validate_json(config_bytes)
-    reviewed_bytes = workspace_path(root, config.reviewed_qids).read_bytes() if config.reviewed_qids else b""
-    reviewed = load_reviewed(reviewed_bytes)
-    entities = load_entities(root, parent)
-    wanted = targets(entities, reviewed, config)
-    qids = sorted({qid for qid, _ in wanted.values()})
-    raw = make_retriever(config).fetch(qids) if qids else {}
-    if sorted(raw) != qids:
-        raise ValueError("retriever did not return exactly the requested QIDs")
-    facts = build_facts(run_id, entities, reviewed, raw, now.year, config)
-    counts = summarize(facts, raw, len(wanted))
-    output.mkdir()
-    (output / "config.json").write_bytes(config_bytes)
-    (output / "reviewed_qids.jsonl").write_bytes(reviewed_bytes)
-    dump_jsonl(output / "wikidata_entities.jsonl", [raw[q] for q in qids])
-    dump_jsonl(output / "entity_facts.jsonl", facts)
-    dump_json(output / "summary.json", counts)
-    code_root = Path(__file__).parent
-    manifest = {"schema_version": SCHEMA_VERSION, "stage": "entity_enrichment", "run_id": run_id, "status": "complete",
-        "package_version": __version__, "started_utc": now.isoformat(), "reference_year": now.year,
-        "elapsed_seconds": round(perf_counter() - started, 4), "python": platform.python_version(),
-        "dependencies": {"pydantic": importlib.metadata.version("pydantic")},
-        "parent_run_id": parent.name, "parent_manifest_sha256": parent_digest,
-        "input_config": config_name, "counts": counts, "source": config.api_url,
-        "code_sha256": {str(p.relative_to(code_root)): sha256(p.read_bytes()) for p in sorted(code_root.rglob("*.py"))},
-        "artifact_sha256": {name: sha256((output / name).read_bytes()) for name in ARTIFACTS}}
-    dump_json(output / "manifest.json", manifest)
-    validate_run(output)
-    return output
-
-
-def validate_run(output: Path) -> dict:
-    """Derive every fact again offline from the saved claims and inputs."""
-    output = output.resolve()
-    manifest = json.loads((output / "manifest.json").read_bytes())
-    if manifest.get("schema_version") != SCHEMA_VERSION or manifest.get("stage") != "entity_enrichment" or manifest.get("status") != "complete":
-        raise ValueError("unsupported entity enrichment snapshot")
-    if set(manifest["artifact_sha256"]) != set(ARTIFACTS):
-        raise ValueError("unexpected enrichment artifact set")
-    for name, digest in manifest["artifact_sha256"].items():
-        if sha256((output / name).read_bytes()) != digest:
-            raise ValueError(f"artifact checksum mismatch: {name}")
-    parent = output.parent / manifest["parent_run_id"]
-    if sha256((parent / "manifest.json").read_bytes()) != manifest["parent_manifest_sha256"]:
-        raise ValueError("parent snapshot manifest changed")
-    config = EnrichmentConfig.model_validate_json((output / "config.json").read_bytes())
-    reviewed = load_reviewed((output / "reviewed_qids.jsonl").read_bytes())
-    raw = {r["qid"]: r for r in read_jsonl(output / "wikidata_entities.jsonl")}
-    entities = load_entities(output.parents[3], parent)
-    wanted = targets(entities, reviewed, config)
-    if sorted(raw) != sorted({qid for qid, _ in wanted.values()}):
-        raise ValueError("stored Wikidata items do not match the enrichment targets")
-    expected = build_facts(manifest["run_id"], entities, reviewed, raw, manifest["reference_year"], config)
-    actual = [EntityFacts.model_validate(r) for r in read_jsonl(output / "entity_facts.jsonl")]
-    if actual != expected:
-        raise ValueError("entity facts are not reproducible from the stored claims")
-    if manifest["counts"] != summarize(expected, raw, len(wanted)) or json.loads((output / "summary.json").read_bytes()) != manifest["counts"]:
-        raise ValueError("enrichment counts differ")
-    return manifest
-
-
-def enrichment_view(parent: Path) -> dict[str, EntityFacts] | None:
-    """Facts from the closest enrichment run above this input, if there is one."""
-    manifest = json.loads((parent / "manifest.json").read_bytes())
-    if manifest.get("stage") != "entity_enrichment":
-        return None
-    return {r["corpus_entity_id"]: EntityFacts.model_validate(r) for r in read_jsonl(parent / "entity_facts.jsonl")}

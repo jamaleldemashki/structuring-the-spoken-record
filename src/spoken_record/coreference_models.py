@@ -79,23 +79,3 @@ class CoreferenceLink(Record):
         if self.decision == "linked" and not self.anchor_mention_ids:
             raise ValueError("linked reference has no named anchor")
         return self
-
-
-class CoreferenceOutcome(Record):
-    episode_id: str
-    transcript_version_id: str
-    status: Literal["processed", "failed"]
-    clusters: int = Field(ge=0)
-    candidate_references: int = Field(ge=0)
-    linked_references: int = Field(ge=0)
-    abstained_references: int = Field(ge=0)
-    elapsed_seconds: float = Field(ge=0)
-    error: str | None = None
-
-    @model_validator(mode="after")
-    def valid_counts(self) -> Self:
-        if self.candidate_references != self.linked_references + self.abstained_references:
-            raise ValueError("coreference outcome counts disagree")
-        if (self.status == "failed") != (self.error is not None):
-            raise ValueError("coreference outcome status contradicts error")
-        return self

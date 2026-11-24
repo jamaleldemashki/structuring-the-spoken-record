@@ -6,6 +6,10 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+# The eight entity types, in the order the labels and the app use.
+EntityType = Literal["Person", "Work", "School", "Concept", "Place", "Period", "Language", "Group"]
+TYPES = ("Person", "Work", "School", "Concept", "Place", "Period", "Language", "Group")
+
 
 class Record(BaseModel):
     model_config = ConfigDict(extra="forbid", allow_inf_nan=False)

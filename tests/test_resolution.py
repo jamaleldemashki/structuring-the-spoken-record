@@ -1,6 +1,6 @@
 from spoken_record.extraction_models import ExtractedMention
 from spoken_record.passage_models import Passage
-from spoken_record.resolution import normalize_surface, pairwise, resolve_records, validate_aliases
+from spoken_record.resolution import normalize_surface, resolve_records, rules_for, validate_aliases
 from spoken_record.resolution_models import AliasRule, ResolutionConfig
 from spoken_record.models import Episode
 
@@ -60,7 +60,6 @@ def test_conservative_resolution_merges_only_allowed_exact_keys():
     assert len(assignments) == len(mentions) == len({a.mention_id for a in assignments})
     assert len(episode_entities) == 8  # e1 Aquinas case variants form one episode entity.
 
-    grouped = {(entity.type, tuple(entity.observed_surfaces)): entity for entity in corpus_entities}
     thomas = next(e for e in corpus_entities if e.canonical_label == "Thomas Aquinas")
     paris = next(e for e in corpus_entities if e.canonical_label == "Paris" and e.episode_count == 2)
     assert (thomas.episode_count, thomas.resolution_method, thomas.resolution_status) == (2, "provisional_exact", "provisional")
@@ -87,7 +86,7 @@ def test_reviewed_alias_can_merge_variants_and_block_exact_place():
             evidence_passage_ids=["p1", "p2"], reviewer="author", reviewed_at="2026-09-13",
             note="synthetic ambiguity"),
     ]
-    validate_aliases(rules, mentions, passages, episodes)
+    validate_aliases(rules, mentions, episodes)
     _, corpus_entities, assignments, decisions, queue = resolve_records(
         "resolve", "hop", mentions, passages, rules, config(), "fingerprint")
     aquinas = next(e for e in corpus_entities if e.registry_key == "reviewed:person-aquinas")
@@ -100,16 +99,28 @@ def test_reviewed_alias_can_merge_variants_and_block_exact_place():
     assert len(assignments) == len(mentions)
 
 
-def test_pairwise_metrics_count_false_merges_and_splits():
-    rows = [
-        {"episode_id": "e1", "gold_identity": "a", "cluster": "x"},
-        {"episode_id": "e2", "gold_identity": "a", "cluster": "y"},
-        {"episode_id": "e2", "gold_identity": "b", "cluster": "y"},
-    ]
-    assert pairwise(rows, "cluster") == {
-        "pairs_considered": 3, "gold_same_pairs": 1, "predicted_same_pairs": 1,
-        "tp": 0, "fp": 1, "fn": 1, "false_merges": 1, "false_splits": 1,
-        "precision": 0.0, "recall": 0.0, "f1": 0.0,
-    }
-    cross = pairwise(rows, "cluster", cross_episode=True)
-    assert cross["pairs_considered"] == 2 and cross["fn"] == 1 and cross["fp"] == 0
+def test_rules_about_episodes_outside_the_build_are_left_out():
+    mentions, passages, episodes = fixture_records()
+    def rule(alias_id, scope, **fields):
+        return AliasRule(alias_id=alias_id, corpus_id="hop", type="Person", identity_id="person-aquinas",
+            canonical_label="Thomas Aquinas", aliases=["Aquinas"], decision="merge", scope=scope,
+            evidence_passage_ids=["p-elsewhere"], reviewer="author", reviewed_at="2026-09-13", note="test", **fields)
+    here = episodes[0].episode_id
+    rules = [rule("corpus", "corpus"), rule("this-episode", "episode", episode_ids=[here, "ep-elsewhere"]),
+             rule("other-episode", "episode", episode_ids=["ep-elsewhere"]),
+             rule("other-mention", "mentions", mention_ids=["m-elsewhere"])]
+    kept = rules_for(rules, mentions, episodes)
+    assert [r.alias_id for r in kept] == ["corpus", "this-episode"]
+    # Evidence in an episode that is not in the build is no reason to stop.
+    validate_aliases(kept, mentions, episodes)
+
+
+
+def test_pronouns_are_never_names_but_similar_names_stay():
+    from spoken_record.resolution import name_mentions
+    mentions, _, _ = fixture_records()
+    words = [mentions[0].model_copy(update={"mention_id": f"m-{text}", "text": text})
+             for text in ("I", "You", "she", "Ian", "Theodore", "Herodotus")]
+    settings = config().model_copy(update={"not_names": ["I", "you", "she", "he"]})
+    assert [m.text for m in name_mentions(words, settings)] == ["Ian", "Theodore", "Herodotus"]
+    assert name_mentions(mentions, config()) == mentions

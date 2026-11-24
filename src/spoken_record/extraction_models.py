@@ -4,7 +4,7 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from spoken_record.evaluation import EntityType
+from spoken_record.models import EntityType
 from spoken_record.models import Record
 
 

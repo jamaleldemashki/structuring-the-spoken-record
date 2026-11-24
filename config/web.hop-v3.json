@@ -25,11 +25,51 @@
       {"label": "Medieval", "start": 500, "end": 1500},
       {"label": "Modern", "start": 1500, "end": 2100}
     ],
-    "search_placeholder": "Search philosophers, concepts, works…"
+    "search_placeholder": "Search philosophers, concepts, works…",
+    "co_discussed_share": 0.1
   },
   "co_discussed_types": ["Person", "Work", "School", "Concept"],
   "min_shared_passages": 1,
   "include_passage_text": true,
-  "predicate_labels": {"authored": "wrote"},
-  "discovery_method": "mpnet_cosine"
+  "predicate_labels": {
+    "authored": "wrote",
+    "view_on": "view on",
+    "work_about": "is about",
+    "agreed_with": "agreed with",
+    "attributed_to": "attributed to",
+    "commented_on": "commented on",
+    "influenced_by": "influenced by",
+    "student_of": "student of"
+  },
+  "inverse_labels": {
+    "student_of": "teacher of",
+    "influenced_by": "influenced",
+    "authored": "written by",
+    "criticized": "criticized by",
+    "translated": "translated by",
+    "founded": "founded by",
+    "view_on": "views of",
+    "rejected": "rejected by",
+    "introduced": "introduced by",
+    "agreed_with": "agreed with",
+    "commented_on": "commented on by",
+    "attributed_to": "attributed work",
+    "work_about": "subject of"
+  },
+  "discovery_method": "mpnet_cosine",
+  "hidden_predicates": ["agreed_with"],
+  "predicate_groups": {
+    "view_on": "Positions",
+    "rejected": "Positions",
+    "introduced": "Positions",
+    "influenced_by": "Lineage",
+    "criticized": "Lineage",
+    "student_of": "Lineage",
+    "authored": "Texts",
+    "attributed_to": "Texts",
+    "commented_on": "Texts",
+    "translated": "Texts",
+    "work_about": "Texts",
+    "founded": "Schools"
+  }
 }

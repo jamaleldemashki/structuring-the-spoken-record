@@ -53,3 +53,5 @@ class EntityFacts(Record):
     is_human: bool
     # Best-rank occupations (P106), so each archive can filter on the roles that matter to it.
     occupation_qids: list[str] = Field(default_factory=list)
+    # File name of the best-rank image (P18) on Wikimedia Commons, if the item has one.
+    image: str | None = None

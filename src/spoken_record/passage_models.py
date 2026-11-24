@@ -83,22 +83,3 @@ class ModelWindow(Record):
         if self.overlap_previous_tokens >= self.token_count:
             raise ValueError("window must include new tokens")
         return self
-
-
-class ReviewedExclusion(Record):
-    exclusion_id: str
-    transcript_version_id: str
-    char_start: int = Field(ge=0)
-    char_end: int = Field(gt=0)
-    reason: Literal["production_credit"]
-    review_status: Literal["reviewed"]
-    reviewer: str
-    method: Literal["manual_text_review"]
-    source_text_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
-    note: str
-
-    @model_validator(mode="after")
-    def valid_range(self) -> Self:
-        if self.char_end <= self.char_start:
-            raise ValueError("empty exclusion span")
-        return self

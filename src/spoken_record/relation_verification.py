@@ -4,22 +4,12 @@ This stage can't add triples, merge identities, guess speakers or change the sou
 It tests both directions and abstains when the support is too weak.
 """
 
-import importlib.metadata
-import json
-import re
-from datetime import datetime, timezone
 from pathlib import Path
-from time import perf_counter
-from typing import Callable
-from uuid import uuid4
 
-from spoken_record import __version__
 from spoken_record.adapters.base import sha256
 from spoken_record.backends import EvidenceVerifier
-from spoken_record.ingestion import dump_json, dump_jsonl, read_jsonl, workspace_path
-from spoken_record.relation_models import RelationAssertion, RelationCandidate, RelationContext
-from spoken_record.relations import (build_assertions, context_transcripts, load_chain,
-                                      validate_run as validate_relations)
+from spoken_record.ingestion import workspace_path
+from spoken_record.relations import build_assertions
 from spoken_record.verification_models import (NLIScores, VerificationConfig,
                                                VerificationDecision, VerificationEvidence)
 
@@ -36,8 +26,9 @@ class NLIBackend:
         self.config = config
         # Loading from a local folder also stops some transformers versions from asking the
         # Hub for tokenizer metadata even when local_files_only is set.
+        cache_dir = str(workspace_path(root, config.cache_dir)) if config.cache_dir else None
         local_path = snapshot_download(config.repo_id, revision=config.revision,
-            cache_dir=str(workspace_path(root, config.cache_dir)), local_files_only=True)
+            cache_dir=cache_dir, local_files_only=True)
         options = dict(local_files_only=True, trust_remote_code=False)
         self.tokenizer = AutoTokenizer.from_pretrained(local_path, **options)
         self.model = AutoModelForSequenceClassification.from_pretrained(local_path,
@@ -74,23 +65,6 @@ def evidence_policy(scores, reverse_scores, config):
     if reverse_scores is not None and reverse_scores.entailment >= config.entailment_threshold:
         return "abstain", "both_directions_supported"
     return "supported", "nli_entailment"
-
-
-def load_inputs(parent: Path):
-    """Load relations that have context records, and the evidence chain behind them."""
-    manifest = validate_relations(parent)
-    if manifest["counts"].get("failed", 0):
-        raise ValueError("verification requires a relation run without failed passages")
-    if "relation_contexts.jsonl" not in manifest["artifact_sha256"]:
-        raise ValueError("verification requires antecedent-window relation contexts")
-    upstream = parent.parent / manifest["parent_run_id"]
-    _, mentions, assignments, entities, references = load_chain(upstream)
-    candidates = [RelationCandidate.model_validate(row) for row in read_jsonl(parent / "relation_candidates.jsonl")
-                  if row["decision"] == "accepted"]
-    assertions = [RelationAssertion.model_validate(row) for row in read_jsonl(parent / "relation_assertions.jsonl")]
-    contexts = [RelationContext.model_validate(row) for row in read_jsonl(parent / "relation_contexts.jsonl")]
-    return (candidates, assertions, contexts, context_transcripts(upstream), mentions,
-            assignments, entities, references, json.loads((parent / "config.json").read_bytes()))
 
 
 def prepare_evidence(run_id, candidate, contexts, transcripts, mentions, assignments, references, config, asymmetric):
@@ -174,139 +148,14 @@ def aggregate(run_id, candidates, assertions, evidence):
     return decisions, list(build_assertions(run_id, retained))
 
 
-def summary(evidence, decisions):
-    """Counts for candidate evidence and for assertion decisions, kept apart."""
-    return {"evidence_records": len(evidence), "assertions": len(decisions), "failed": 0,
-        **{f"{status}_evidence": sum(row.decision == status for row in evidence)
-           for status in ("supported", "contradicted", "abstain")},
-        **{f"{status}_assertions": sum(row.decision == status for row in decisions)
-           for status in ("supported", "contradicted", "abstain")}}
-
-
-def review_text(decisions, assertions, entities):
-    """Readable list of decisions. NLI output is not presented as a reviewed fact."""
-    names = {row.corpus_entity_id: row.canonical_label for row in entities}
-    by_id = {row.assertion_id: row for row in assertions}
-    lines = ["# Relation verification", "", "Automated NLI decisions; uncalibrated and not human-reviewed.", ""]
-    for decision in decisions:
-        row = by_id[decision.assertion_id]
-        lines.extend([f"- {names[row.subject_corpus_entity_id]} → {row.predicate} → {names[row.object_corpus_entity_id]}",
-                      f"  - {decision.decision}: {decision.reason}"])
-    return "\n".join(lines) + "\n"
-
-
-def verify_run(root: Path, input_name: str, config_name: str, run_id: str | None = None,
-               *, backend_factory: Callable[[Path, VerificationConfig], EvidenceVerifier] | None = None) -> Path:
-    """Write the verification run. If the backend fails, nothing is written."""
-    root, started = root.resolve(), perf_counter()
-    run_id = run_id or f"verify-{uuid4().hex[:12]}"
-    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,95}", run_id):
-        raise ValueError("invalid verification run ID")
-    parent = workspace_path(root, input_name)
-    if parent.parent != root / "data/prototype1/runs":
-        raise ValueError("verification input must be a sibling relation snapshot")
-    output = parent.parent / run_id
-    if output.exists():
-        raise FileExistsError(output)
-    config_path = workspace_path(root, config_name)
-    config_bytes = config_path.read_bytes()
-    config = VerificationConfig.model_validate_json(config_bytes)
-    parent_hash = sha256((parent / "manifest.json").read_bytes())
-    candidates, assertions, contexts, transcripts, mentions, assignments, entities, references, relation_config = load_inputs(parent)
-    asymmetric = {row["canonical_predicate"]: row["asymmetric"] for row in relation_config["labels"]}
+def compute_verification(run_id, candidates, assertions, contexts, transcripts, mentions, assignments,
+                         references, relation_labels, config, make_backend):
+    """NLI check of every accepted relation candidate. ``make_backend`` is only called when at
+    least one pair needs the model."""
+    asymmetric = {row["canonical_predicate"]: row["asymmetric"] for row in relation_labels}
     prepared = [prepare_evidence(run_id, row, contexts, transcripts, mentions, assignments,
                 references, config, asymmetric[row.canonical_predicate]) for row in candidates]
-    backend = (backend_factory or NLIBackend)(root, config) if any(row.reason == "pending" for row in prepared) else None
+    backend = make_backend() if any(row.reason == "pending" for row in prepared) else None
     evidence = [verify_evidence(row, backend, config) for row in prepared]
     decisions, supported = aggregate(run_id, candidates, assertions, evidence)
-    if config_path.read_bytes() != config_bytes or sha256((parent / "manifest.json").read_bytes()) != parent_hash:
-        raise ValueError("verification inputs changed during inference")
-    output.mkdir(parents=True, exist_ok=False)
-    dump_jsonl(output / "verification_evidence.jsonl", evidence)
-    dump_jsonl(output / "verification_decisions.jsonl", decisions)
-    dump_jsonl(output / "relation_assertions.jsonl", supported)
-    dump_json(output / "config.json", config.model_dump(mode="json"))
-    counts = summary(evidence, decisions)
-    dump_json(output / "summary.json", counts)
-    (output / "review.md").write_text(review_text(decisions, assertions, entities), encoding="utf-8")
-    files = ("verification_evidence.jsonl", "verification_decisions.jsonl", "relation_assertions.jsonl",
-             "config.json", "summary.json", "review.md")
-    code_root = Path(__file__).parent
-    dump_json(output / "manifest.json", {"schema_version": 1, "stage": "relation_verification",
-        "run_id": run_id, "status": "complete", "package_version": __version__,
-        "created_utc": datetime.now(timezone.utc).isoformat(), "elapsed_seconds": perf_counter()-started,
-        "parent_run_id": parent.name, "parent_manifest_sha256": parent_hash,
-        "input_config": config_name, "input_config_sha256": sha256(config_bytes),
-        "model": {"repo_id": config.repo_id, "revision": config.revision, "label_order": config.label_order},
-        "dependencies": {name: importlib.metadata.version(name) for name in ("torch", "transformers", "pydantic")},
-        "counts": counts, "artifact_sha256": {name: sha256((output/name).read_bytes()) for name in files},
-        "code_sha256": {str(path.relative_to(code_root)): sha256(path.read_bytes()) for path in sorted(code_root.rglob("*.py"))}})
-    validate_run(output)
-    return output
-
-
-def validate_run(output: Path) -> dict:
-    """Rebuild hypotheses and decisions from the saved scores, without the model."""
-    output = output.resolve()
-    manifest = json.loads((output / "manifest.json").read_bytes())
-    if (manifest.get("schema_version"), manifest.get("stage"), manifest.get("status")) != (1, "relation_verification", "complete"):
-        raise ValueError("unsupported verification snapshot")
-    root = output.parents[3]
-    parent = output.parent / manifest["parent_run_id"]
-    if sha256((parent / "manifest.json").read_bytes()) != manifest["parent_manifest_sha256"]:
-        raise ValueError("verification parent changed")
-    config_bytes = workspace_path(root, manifest["input_config"]).read_bytes()
-    if sha256(config_bytes) != manifest["input_config_sha256"]:
-        raise ValueError("verification configuration changed")
-    config = VerificationConfig.model_validate_json(config_bytes)
-    if config.model_dump(mode="json") != json.loads((output/"config.json").read_bytes()):
-        raise ValueError("saved verification configuration differs")
-    if manifest["model"] != {"repo_id": config.repo_id, "revision": config.revision, "label_order": config.label_order}:
-        raise ValueError("verification model provenance differs from configuration")
-    names = {"verification_evidence.jsonl", "verification_decisions.jsonl", "relation_assertions.jsonl",
-             "config.json", "summary.json", "review.md"}
-    if set(manifest["artifact_sha256"]) != names:
-        raise ValueError("unexpected verification artifact set")
-    for name, digest in manifest["artifact_sha256"].items():
-        if sha256((output/name).read_bytes()) != digest:
-            raise ValueError(f"verification artifact changed: {name}")
-    candidates, assertions, contexts, transcripts, mentions, assignments, entities, references, relation_config = load_inputs(parent)
-    asymmetric = {row["canonical_predicate"]: row["asymmetric"] for row in relation_config["labels"]}
-    evidence = [VerificationEvidence.model_validate(row) for row in read_jsonl(output/"verification_evidence.jsonl")]
-    if [row.candidate_id for row in evidence] != [row.candidate_id for row in candidates]:
-        raise ValueError("verification must cover every accepted candidate exactly once")
-    for candidate, saved in zip(candidates, evidence):
-        prepared = prepare_evidence(manifest["run_id"], candidate, contexts, transcripts, mentions,
-            assignments, references, config, asymmetric[candidate.canonical_predicate])
-        for field in ("created_by_run_id", "candidate_id", "passage_id", "context_id", "subject_text",
-                      "object_text", "premise", "premise_sha256", "hypothesis", "reverse_hypothesis"):
-            if getattr(prepared, field) != getattr(saved, field):
-                raise ValueError(f"verification evidence differs: {field}")
-        if prepared.reason != "pending":
-            expected = prepared
-        else:
-            if saved.input_tokens is None or (bool(saved.reverse_hypothesis) != (saved.reverse_input_tokens is not None)):
-                raise ValueError("verification lacks complete budget accounting")
-            expected = prepared.model_copy(update={"input_tokens": saved.input_tokens,
-                                                   "reverse_input_tokens": saved.reverse_input_tokens})
-            if max(saved.input_tokens, saved.reverse_input_tokens or 0) > config.max_tokens:
-                expected = expected.model_copy(update={"reason": "token_budget_exceeded"})
-            else:
-                if saved.scores is None or (bool(saved.reverse_hypothesis) != (saved.reverse_scores is not None)):
-                    raise ValueError("verification lacks directional NLI scores")
-                decision, reason = evidence_policy(saved.scores, saved.reverse_scores, config)
-                expected = expected.model_copy(update={"scores": saved.scores, "reverse_scores": saved.reverse_scores,
-                                                       "decision": decision, "reason": reason})
-        if saved != expected:
-            raise ValueError("verification decision is not reproducible")
-    decisions, supported = aggregate(manifest["run_id"], candidates, assertions, evidence)
-    if decisions != [VerificationDecision.model_validate(row) for row in read_jsonl(output/"verification_decisions.jsonl")]:
-        raise ValueError("verification assertion decisions differ")
-    if supported != [RelationAssertion.model_validate(row) for row in read_jsonl(output/"relation_assertions.jsonl")]:
-        raise ValueError("supported assertion evidence differs")
-    counts = summary(evidence, decisions)
-    if counts != manifest["counts"] or counts != json.loads((output/"summary.json").read_bytes()):
-        raise ValueError("verification summary differs")
-    if review_text(decisions, assertions, entities) != (output/"review.md").read_text(encoding="utf-8"):
-        raise ValueError("verification review differs")
-    return manifest
+    return evidence, decisions, supported

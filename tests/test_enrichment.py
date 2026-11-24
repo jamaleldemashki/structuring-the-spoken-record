@@ -1,17 +1,10 @@
-"""Tests for the Wikidata lifespan enrichment: date rules, offline validation, web export."""
+"""Tests for the Wikidata enrichment: date rules, images, offline validation, web export."""
 
-import json
 
-import pytest
 
-from test_ingestion import workspace
-from test_pipeline import full_recipe
-from spoken_record.enrichment import date_range, derive_life, enrich_run, trim_entity, year_interval
+from spoken_record.enrichment import (date_range, derive_life, first_image, trim_entity, year_interval)
 from spoken_record.enrichment_models import EnrichmentConfig
-from spoken_record.ingestion import dump_json, read_jsonl
-from spoken_record.pipeline import run_pipeline, validate_snapshot
-from spoken_record.web_export import export_web
-from spoken_record.web_models import WebExportConfig
+from spoken_record.web_export import commons_image
 
 
 def claim(time, precision=9, rank="normal", **qualifiers):
@@ -20,6 +13,10 @@ def claim(time, precision=9, rank="normal", **qualifiers):
     if qualifiers.get("circa"):
         quals["P1480"] = [{"snaktype": "value", "datavalue": {"value": {"id": "Q5727902"}}}]
     return {"rank": rank, "mainsnak": snak(time, precision), "qualifiers": quals}
+
+
+def image(name, rank="normal"):
+    return {"rank": rank, "mainsnak": {"snaktype": "value", "datavalue": {"value": name, "type": "string"}}}
 
 
 def item(qid="Q1", **claims):
@@ -62,8 +59,25 @@ def test_derive_life_covers_living_unknown_end_and_floruit():
     assert derive_life(item(P106=[]), 2026, config) is None
 
 
+def test_first_best_rank_image_is_used():
+    assert first_image(item(P18=[image("Old.jpg"), image("Statue.jpg", "preferred")])) == "Statue.jpg"
+    assert first_image(item(P18=[image("Old.jpg", "deprecated")])) is None
+    assert first_image(item(P18=[{"rank": "normal", "mainsnak": {"snaktype": "novalue"}}])) is None
+
+
+def test_commons_links_follow_the_upload_layout():
+    links = commons_image("Aristotle Altemps Inv8575.jpg")
+    assert links["thumb"] == ("https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/"
+                              "Aristotle_Altemps_Inv8575.jpg/250px-Aristotle_Altemps_Inv8575.jpg")
+    assert links["original"] == "https://upload.wikimedia.org/wikipedia/commons/a/ae/Aristotle_Altemps_Inv8575.jpg"
+    assert links["page"] == "https://commons.wikimedia.org/wiki/File:Aristotle_Altemps_Inv8575.jpg"
+    assert commons_image("Seal.svg")["thumb"].endswith("/250px-Seal.svg.png")
+    # A browser can't show a TIFF or a PDF, so those get no image.
+    assert commons_image("Scan.tif") is None
+
+
 class FakeFacts:
-    """Offline stand-in that returns a fifth-century-BCE philosopher for any QID."""
+    """Offline stand-in that returns a fifth-century-BCE philosopher with a portrait for any QID."""
 
     def __init__(self, config):
         self.calls = []
@@ -74,43 +88,23 @@ class FakeFacts:
         human = {"snaktype": "value", "datavalue": {"value": {"id": "Q5"}}}
         return {q: trim_entity(q, {"lastrevid": 1, "claims": {
             "P31": [{"rank": "normal", "mainsnak": human}], "P106": [{"rank": "normal", "mainsnak": philosopher}],
-            "P569": [claim("-0500-00-00T00:00:00Z", 7)]}}) for q in qids}
+            "P569": [claim("-0500-00-00T00:00:00Z", 7)], "P18": [image("Panini bust.jpg")]}}) for q in qids}
 
 
-@pytest.fixture
-def enriched(workspace, monkeypatch):
-    root = full_recipe(workspace, monkeypatch, False,
-                       {"id": "vault", "kind": "export-obsidian", "config": "vault.concept-navigation-v1.json"})
-    run_pipeline(root, "pipeline.json", "full")
-    parent = "data/prototype1/runs/full-relations"
-    entities = read_jsonl(root / "data/prototype1/runs/full-link/corpus_entities.jsonl")
-    panini = next(e for e in entities if e["type"] == "Person")
-    (root / "reviewed.jsonl").write_text(json.dumps({"corpus_entity_id": panini["corpus_entity_id"],
-                                                     "qid": "Q178031", "reviewer": "test"}) + "\n")
-    dump_json(root / "enrich.json", EnrichmentConfig(reviewed_qids="reviewed.jsonl").model_dump())
-    monkeypatch.setattr("spoken_record.enrichment.make_retriever", FakeFacts)
-    output = enrich_run(root, parent, "enrich.json", "enriched")
-    return root, output, panini
-
-
-def test_enrichment_is_reproducible_offline_and_rejects_tampering(enriched):
-    root, output, panini = enriched
-    manifest = validate_snapshot(output)
-    assert manifest["counts"]["with_lifespan"] == 1 and manifest["counts"]["reviewed"] == 1
-    [facts] = read_jsonl(output / "entity_facts.jsonl")
-    assert facts["life"] == {"start": -500, "end": None, "living": False, "approximate": True, "basis": "birth_death"}
-    assert facts["occupation_qids"] == ["Q4964182"]
-    path = output / "wikidata_entities.jsonl"
-    path.write_text(path.read_text().replace("-0500", "-0400"))
-    with pytest.raises(ValueError):
-        validate_snapshot(output)
-
-
-def test_web_export_carries_lifespans_from_enrichment(enriched):
-    root, output, panini = enriched
-    dump_json(root / "web.json", WebExportConfig().model_dump())
-    web = export_web(root, str(output.relative_to(root)), "web.json", "web-enriched")
-    assert validate_snapshot(web)["counts"]["lifespans"] == "enriched"
-    entities = {e["id"]: e for e in json.loads((web / "data/entities.json").read_bytes())}
-    assert entities[panini["corpus_entity_id"]]["life"]["start"] == -500
-    assert entities[panini["corpus_entity_id"]]["qid"] == "Q178031"
+def test_a_reviewed_qid_wins_and_facts_carry_lifespan_occupation_and_image():
+    from test_consolidation import linked
+    from spoken_record.enrichment import build_facts, targets
+    from spoken_record.enrichment_models import ReviewedQid
+    entities = [linked("ce-1", "Pāṇini", "ep-1", "Q1"), linked("ce-2", "Albert", "ep-1", None, status="ambiguous"),
+                linked("ce-3", "Rome", "ep-1", "Q220", kind="Place")]
+    reviewed = [ReviewedQid(corpus_entity_id="ce-2", qid="Q60045", reviewer="test")]
+    config = EnrichmentConfig()
+    wanted = targets(entities, reviewed, config)
+    assert wanted == {"ce-1": ("Q1", "linked"), "ce-2": ("Q60045", "reviewed")}
+    raw = FakeFacts(config).fetch(sorted({qid for qid, _ in wanted.values()}))
+    facts = {row.corpus_entity_id: row for row in build_facts("test", entities, reviewed, raw, 2026, config)}
+    assert facts["ce-2"].qid_source == "reviewed" and facts["ce-1"].qid_source == "linked"
+    assert facts["ce-1"].life.model_dump() == {"start": -500, "end": None, "living": False,
+                                               "approximate": True, "basis": "birth_death"}
+    assert facts["ce-1"].occupation_qids == ["Q4964182"] and facts["ce-1"].image == "Panini bust.jpg"
+    assert facts["ce-1"].is_human
